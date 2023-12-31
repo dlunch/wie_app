@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - release
 
 name: Deploy Web
 
@@ -66,7 +67,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: "f02d26a267c8cc8f3fdd15e70e58f9f2"
-          projectName: "wie-dev"
+          projectName: ${{ fromJSON('["wie-dev", "wie"]')[ github.ref != 'refs/heads/main' ] }}
           directory: "./wie_web/dist"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: "3"
