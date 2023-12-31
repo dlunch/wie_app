@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+
+members = ["wie_web"]
+
+[profile.dev]
+opt-level = 0
+
+[profile.dev.package.wie_core_arm]
+opt-level = 1
+
+[profile.dev.package.armv4t_emu]
+opt-level = 1
+
+[profile.release]
+lto = true
+strip = true
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+license = "Proprietary"
+
+[workspace.dependencies]
+anyhow = { version = "^1.0" }
+
+wie_backend = { git = "https://github.com/dlunch/wie.git" }
+wie_base = { git = "https://github.com/dlunch/wie.git" }
+wie_ktf = { git = "https://github.com/dlunch/wie.git" }
+wie_lgt = { git = "https://github.com/dlunch/wie.git" }
+wie_skt = { git = "https://github.com/dlunch/wie.git" }
