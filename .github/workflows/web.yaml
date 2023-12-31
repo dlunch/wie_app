@@ -53,4 +53,4 @@ jobs:
 
       - name: Build
         working-directory: ./wie_web
-        run: npm run build
+        run: npm run build:dev
