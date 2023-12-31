@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve --open"
+    "build:dev": "webpack --config webpack.config.dev.ts",
+    "build:prod": "webpack --config webpack.config.prod.ts",
+    "start": "webpack --config webpack.config.dev.ts serve --open"
   },
   "author": "",
   "devDependencies": {

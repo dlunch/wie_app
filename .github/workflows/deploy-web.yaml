@@ -59,8 +59,14 @@ jobs:
         run: npm install
 
       - name: Build
+        if: github.ref == 'refs/heads/release'
         working-directory: ./wie_web
-        run: npm run build
+        run: npm run build:prod
+
+      - name: Build
+        if: github.ref == 'refs/heads/main'
+        working-directory: ./wie_web
+        run: npm run build:dev
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1

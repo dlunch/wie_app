@@ -1,12 +1,11 @@
 import path from "path";
+
 import webpack from "webpack";
 import HtmlBundlerPlugin from "html-bundler-webpack-plugin";
 import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
 import TsConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
-import "webpack-dev-server";
 
-const config: webpack.Configuration = {
-  mode: "development",
+const commonConfig: webpack.Configuration = {
   experiments: {
     futureDefaults: true,
   },
@@ -24,15 +23,6 @@ const config: webpack.Configuration = {
         configFile: "./tsconfig.json",
       }),
     ],
-  },
-  devServer: {
-    static: path.join(__dirname, "dist"),
-    watchFiles: {
-      paths: ["src/**/*.*"],
-      options: {
-        usePolling: true,
-      },
-    },
   },
   module: {
     rules: [
@@ -80,4 +70,4 @@ const config: webpack.Configuration = {
   ],
 };
 
-export default config;
+export default commonConfig;
