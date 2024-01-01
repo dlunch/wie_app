@@ -5,7 +5,7 @@
   "scripts": {
     "build:dev": "webpack --config webpack.config.dev.ts",
     "build:prod": "webpack --config webpack.config.prod.ts",
-    "start": "webpack --config webpack.config.dev.ts serve --open"
+    "start": "webpack serve --open --config webpack.config.dev.ts"
   },
   "author": "",
   "devDependencies": {
