@@ -4,7 +4,7 @@ use core::cell::Cell;
 use wasm_bindgen::{Clamped, JsCast};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
 
-use wie_backend::{canvas::Canvas, Window};
+use wie_backend::{canvas::Image, Screen};
 
 pub struct WindowImpl {
     canvas: HtmlCanvasElement,
@@ -17,14 +17,14 @@ impl WindowImpl {
     }
 }
 
-impl Window for WindowImpl {
+impl Screen for WindowImpl {
     fn request_redraw(&self) -> anyhow::Result<()> {
         self.should_redraw.set(true);
 
         Ok(())
     }
 
-    fn repaint(&self, canvas: &dyn Canvas) -> anyhow::Result<()> {
+    fn paint(&mut self, image: &dyn Image) {
         let context = self
             .canvas
             .get_context("2d")
@@ -33,12 +33,10 @@ impl Window for WindowImpl {
             .dyn_into::<CanvasRenderingContext2d>()
             .unwrap();
 
-        let image_data = canvas.colors().into_iter().flat_map(|x| [x.r, x.g, x.b, x.a]).collect::<Vec<_>>();
-        let data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(&image_data), canvas.width(), canvas.height()).unwrap();
+        let image_data = image.colors().into_iter().flat_map(|x| [x.r, x.g, x.b, x.a]).collect::<Vec<_>>();
+        let data = ImageData::new_with_u8_clamped_array_and_sh(Clamped(&image_data), self.width(), self.height()).unwrap();
 
         context.put_image_data(&data, 0.0, 0.0).unwrap();
-
-        Ok(())
     }
 
     fn width(&self) -> u32 {

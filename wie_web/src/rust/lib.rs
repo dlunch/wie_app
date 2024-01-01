@@ -1,6 +1,8 @@
 #![no_std]
 extern crate alloc;
 
+mod audio_sink;
+mod database;
 mod window;
 
 use alloc::{
@@ -16,19 +18,52 @@ use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{prelude::*, JsError};
 use web_sys::HtmlCanvasElement;
 
-use wie_backend::{extract_zip, App, Archive, Backend, Executor};
+use wie_backend::{extract_zip, App, Archive, Instant, Platform, Screen, System};
 use wie_base::{Event, KeyCode};
 use wie_ktf::KtfArchive;
 use wie_lgt::LgtArchive;
 use wie_skt::SktArchive;
 
-use self::window::WindowImpl;
+use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowImpl};
+
+struct WieWebPlatform {
+    database_repository: DatabaseRepository,
+    window: Box<dyn Screen>,
+}
+
+impl WieWebPlatform {
+    fn new(app_id: &str, window: Box<dyn Screen>) -> Self {
+        Self {
+            database_repository: DatabaseRepository::new(app_id),
+            window,
+        }
+    }
+}
+
+impl Platform for WieWebPlatform {
+    fn screen(&mut self) -> &mut dyn Screen {
+        self.window.as_mut()
+    }
+
+    fn now(&self) -> Instant {
+        let date = js_sys::Date::new_0();
+        let millis = date.value_of();
+
+        Instant::from_epoch_millis(millis as _)
+    }
+
+    fn database_repository(&self) -> &dyn wie_backend::DatabaseRepository {
+        &self.database_repository
+    }
+
+    fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
+        Box::new(AudioSink)
+    }
+}
 
 #[wasm_bindgen]
 pub struct WieWeb {
     app: Box<dyn App>,
-    executor: Executor,
-    backend: Backend,
     should_redraw: Rc<Cell<bool>>,
 }
 
@@ -52,30 +87,25 @@ impl WieWeb {
             let should_redraw = Rc::new(Cell::new(true));
             let window = WindowImpl::new(canvas, should_redraw.clone());
 
-            let mut backend = Backend::new(&archive.id(), Box::new(window));
+            let platform = WieWebPlatform::new(&archive.id(), Box::new(window));
 
-            let mut app = archive.load_app(&mut backend)?;
-            let executor = Executor::new();
+            let system = System::new(Box::new(platform));
+            let mut app = archive.load_app(system)?;
 
             app.start()?;
 
-            anyhow::Ok(Self {
-                app,
-                executor,
-                backend,
-                should_redraw,
-            })
+            anyhow::Ok(Self { app, should_redraw })
         })()
         .map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn update(&mut self) -> Result<(), JsError> {
         if self.should_redraw.get() {
-            self.backend.push_event(Event::Redraw);
+            self.app.on_event(Event::Redraw);
             self.should_redraw.set(false);
         }
 
-        self.executor.tick(&self.backend.time()).map_err(|e| {
+        self.app.tick().map_err(|e| {
             let error_str = format!("{}\n{}", e, self.app.crash_dump());
 
             JsError::new(&error_str)
@@ -85,8 +115,8 @@ impl WieWeb {
     pub fn send_key(&mut self, key: String) -> Result<(), JsError> {
         let key = KeyCode::parse(&key);
 
-        self.backend.push_event(Event::Keydown(key));
-        self.backend.push_event(Event::Keyup(key));
+        self.app.on_event(Event::Keydown(key));
+        self.app.on_event(Event::Keyup(key));
 
         Ok(())
     }
