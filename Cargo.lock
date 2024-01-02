@@ -180,7 +180,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "classfile"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/jvm.git#7d83ec052ff20c6b28e1016e02b307e7faedb3c9"
+source = "git+https://github.com/dlunch/jvm.git#0fe755fe344a6b5b41a1e221c1b450704a5e3a23"
 dependencies = [
  "anyhow",
  "bitflags 2.4.1",
@@ -567,7 +567,7 @@ dependencies = [
 [[package]]
 name = "jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/jvm.git#7d83ec052ff20c6b28e1016e02b307e7faedb3c9"
+source = "git+https://github.com/dlunch/jvm.git#0fe755fe344a6b5b41a1e221c1b450704a5e3a23"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -578,7 +578,7 @@ dependencies = [
 [[package]]
 name = "jvm_impl"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/jvm.git#7d83ec052ff20c6b28e1016e02b307e7faedb3c9"
+source = "git+https://github.com/dlunch/jvm.git#0fe755fe344a6b5b41a1e221c1b450704a5e3a23"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1421,7 +1421,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1441,7 +1441,7 @@ dependencies = [
 [[package]]
 name = "wie_base"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -1451,7 +1451,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "armv4t_emu",
@@ -1467,7 +1467,7 @@ dependencies = [
 [[package]]
 name = "wie_core_jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1483,7 +1483,7 @@ dependencies = [
 [[package]]
 name = "wie_impl_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1498,7 +1498,7 @@ dependencies = [
 [[package]]
 name = "wie_impl_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1511,7 +1511,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-recursion",
@@ -1530,7 +1530,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1547,7 +1547,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7693a5123669d13b31e3eba464eafc40c988d8d6"
+source = "git+https://github.com/dlunch/wie.git#8b981f88d9931c0c242dd3520a9db5f584916f3a"
 dependencies = [
  "anyhow",
  "async-trait",
