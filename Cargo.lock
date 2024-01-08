@@ -180,7 +180,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "classfile"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/jvm.git#ca53abacdedb719617516bdfdb503a5e91b31772"
+source = "git+https://github.com/dlunch/RustJava.git#0086e14c9e78e86ace4d61d675c34f2c1e0a3537"
 dependencies = [
  "anyhow",
  "bitflags 2.4.1",
@@ -303,6 +303,12 @@ dependencies = [
  "winapi",
  "wio",
 ]
+
+[[package]]
+name = "dyn-clone"
+version = "1.0.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "545b22097d44f8a9581187cdf93de7a71e4722bf51200cfaba810865b49a495d"
 
 [[package]]
 name = "elf"
@@ -556,6 +562,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1a46d1a171d865aa5f83f92695765caa047a9b4cbae2cbf37dbd613a793fd4c"
 
 [[package]]
+name = "java_runtime"
+version = "0.0.1"
+source = "git+https://github.com/dlunch/RustJava.git#0086e14c9e78e86ace4d61d675c34f2c1e0a3537"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "bytemuck",
+ "dyn-clone",
+ "java_runtime_base",
+ "jvm",
+ "tracing",
+]
+
+[[package]]
+name = "java_runtime_base"
+version = "0.0.1"
+source = "git+https://github.com/dlunch/RustJava.git#0086e14c9e78e86ace4d61d675c34f2c1e0a3537"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "dyn-clone",
+ "jvm",
+]
+
+[[package]]
 name = "js-sys"
 version = "0.3.66"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -567,10 +598,11 @@ dependencies = [
 [[package]]
 name = "jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/jvm.git#ca53abacdedb719617516bdfdb503a5e91b31772"
+source = "git+https://github.com/dlunch/RustJava.git#0086e14c9e78e86ace4d61d675c34f2c1e0a3537"
 dependencies = [
  "anyhow",
  "async-trait",
+ "dyn-clone",
  "nom",
  "tracing",
 ]
@@ -578,11 +610,13 @@ dependencies = [
 [[package]]
 name = "jvm_impl"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/jvm.git#ca53abacdedb719617516bdfdb503a5e91b31772"
+source = "git+https://github.com/dlunch/RustJava.git#0086e14c9e78e86ace4d61d675c34f2c1e0a3537"
 dependencies = [
  "anyhow",
  "async-trait",
  "classfile",
+ "dyn-clone",
+ "java_runtime_base",
  "jvm",
  "tracing",
 ]
@@ -1048,7 +1082,7 @@ dependencies = [
 [[package]]
 name = "smaf"
 version = "0.1.0"
-source = "git+https://github.com/dlunch/smaf.git#ac68c1a89c6ea3523a0c0251ce0e95407efa84b2"
+source = "git+https://github.com/dlunch/smaf.git#14de64bdf410e3d752a02a74c125e87f9ed1b7d9"
 dependencies = [
  "anyhow",
  "nom",
@@ -1058,7 +1092,7 @@ dependencies = [
 [[package]]
 name = "smaf_player"
 version = "0.1.0"
-source = "git+https://github.com/dlunch/smaf.git#ac68c1a89c6ea3523a0c0251ce0e95407efa84b2"
+source = "git+https://github.com/dlunch/smaf.git#14de64bdf410e3d752a02a74c125e87f9ed1b7d9"
 dependencies = [
  "smaf",
 ]
@@ -1453,7 +1487,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1474,7 +1508,7 @@ dependencies = [
 [[package]]
 name = "wie_base"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -1484,7 +1518,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "armv4t_emu",
@@ -1500,42 +1534,47 @@ dependencies = [
 [[package]]
 name = "wie_core_jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-trait",
  "bytemuck",
+ "java_runtime",
+ "java_runtime_base",
  "jvm",
  "jvm_impl",
  "tracing",
  "wie_backend",
  "wie_base",
- "wie_impl_java",
+ "wie_impl_wipi_java",
 ]
 
 [[package]]
-name = "wie_impl_java"
+name = "wie_impl_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-trait",
- "bitflags 2.4.1",
  "bytemuck",
- "jvm",
  "tracing",
  "wie_backend",
  "wie_base",
 ]
 
 [[package]]
-name = "wie_impl_wipi_c"
+name = "wie_impl_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-trait",
+ "bitflags 2.4.1",
  "bytemuck",
+ "dyn-clone",
+ "java_runtime",
+ "java_runtime_base",
+ "jvm",
  "tracing",
  "wie_backend",
  "wie_base",
@@ -1544,26 +1583,28 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-recursion",
  "async-trait",
  "bitflags 2.4.1",
  "bytemuck",
+ "java_runtime",
+ "java_runtime_base",
  "jvm",
  "tracing",
  "wie_backend",
  "wie_base",
  "wie_core_arm",
- "wie_impl_java",
  "wie_impl_wipi_c",
+ "wie_impl_wipi_java",
 ]
 
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1573,14 +1614,14 @@ dependencies = [
  "wie_backend",
  "wie_base",
  "wie_core_arm",
- "wie_impl_java",
  "wie_impl_wipi_c",
+ "wie_impl_wipi_java",
 ]
 
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#ecbeb559c5c03852facb8fc2972cc6814ac29c7d"
+source = "git+https://github.com/dlunch/wie.git#90f5c304788bbb9b33f5230982ddb9bcd0bbbc9b"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1590,8 +1631,6 @@ dependencies = [
  "wie_backend",
  "wie_base",
  "wie_core_jvm",
- "wie_impl_java",
- "wie_impl_wipi_c",
 ]
 
 [[package]]
