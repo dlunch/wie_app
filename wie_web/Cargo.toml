@@ -20,7 +20,7 @@ js-sys = { version = "^0.3" }
 web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
 
 wie_backend = { workspace = true }
-wie_base = { workspace = true }
+wie_common = { workspace = true }
 wie_ktf = { workspace = true }
 wie_lgt = { workspace = true }
 wie_skt = { workspace = true }

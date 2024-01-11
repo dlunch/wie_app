@@ -19,7 +19,7 @@ use wasm_bindgen::{prelude::*, JsError};
 use web_sys::HtmlCanvasElement;
 
 use wie_backend::{extract_zip, App, Archive, Instant, Platform, Screen, System};
-use wie_base::{Event, KeyCode};
+use wie_common::{Event, KeyCode};
 use wie_ktf::KtfArchive;
 use wie_lgt::LgtArchive;
 use wie_skt::SktArchive;

@@ -25,7 +25,7 @@ license = "Proprietary"
 anyhow = { version = "^1.0" }
 
 wie_backend = { git = "https://github.com/dlunch/wie.git" }
-wie_base = { git = "https://github.com/dlunch/wie.git" }
+wie_common = { git = "https://github.com/dlunch/wie.git" }
 wie_ktf = { git = "https://github.com/dlunch/wie.git" }
 wie_lgt = { git = "https://github.com/dlunch/wie.git" }
 wie_skt = { git = "https://github.com/dlunch/wie.git" }
