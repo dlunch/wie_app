@@ -18,7 +18,7 @@ use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{prelude::*, JsError};
 use web_sys::HtmlCanvasElement;
 
-use wie_backend::{extract_zip, App, Archive, Instant, Platform, Screen, System};
+use wie_backend::{extract_zip, App, Archive, Instant, Platform, Screen};
 use wie_common::{Event, KeyCode};
 use wie_ktf::KtfArchive;
 use wie_lgt::LgtArchive;
@@ -89,8 +89,7 @@ impl WieWeb {
 
             let platform = WieWebPlatform::new(&archive.id(), Box::new(window));
 
-            let system = System::new(Box::new(platform));
-            let mut app = archive.load_app(system)?;
+            let mut app = archive.load_app(Box::new(platform))?;
 
             app.start()?;
 
