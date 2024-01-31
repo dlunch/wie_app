@@ -7,7 +7,6 @@ mod window;
 
 use alloc::{
     boxed::Box,
-    format,
     rc::Rc,
     string::{String, ToString},
 };
@@ -104,11 +103,7 @@ impl WieWeb {
             self.should_redraw.set(false);
         }
 
-        self.app.tick().map_err(|e| {
-            let error_str = format!("{}\n{}", e, self.app.crash_dump());
-
-            JsError::new(&error_str)
-        })
+        self.app.tick().map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn send_key(&mut self, key: String) -> Result<(), JsError> {
