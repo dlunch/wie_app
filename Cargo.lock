@@ -225,6 +225,67 @@ dependencies = [
 ]
 
 [[package]]
+name = "futures"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "645c6916888f6cb6350d2550b80fb63e734897a8498abe35cfb732b6487804b0"
+dependencies = [
+ "futures-channel",
+ "futures-core",
+ "futures-io",
+ "futures-sink",
+ "futures-task",
+ "futures-util",
+]
+
+[[package]]
+name = "futures-channel"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eac8f7d7865dcb88bd4373ab671c8cf4508703796caa2b1985a9ca867b3fcb78"
+dependencies = [
+ "futures-core",
+ "futures-sink",
+]
+
+[[package]]
+name = "futures-core"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dfc6580bb841c5a68e9ef15c77ccc837b40a7504914d52e47b8b0e9bbda25a1d"
+
+[[package]]
+name = "futures-io"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a44623e20b9681a318efdd71c299b6b222ed6f231972bfe2f224ebad6311f0c1"
+
+[[package]]
+name = "futures-sink"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9fb8e00e87438d937621c1c6269e53f536c14d3fbd6a042bb24879e57d474fb5"
+
+[[package]]
+name = "futures-task"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "38d84fa142264698cdce1a9f9172cf383a0c82de1bddcf3092901442c4097004"
+
+[[package]]
+name = "futures-util"
+version = "0.3.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d6401deb83407ab3da39eba7e33987a73c3df0c82b4bb5813ee871c19c41d48"
+dependencies = [
+ "futures-core",
+ "futures-sink",
+ "futures-task",
+ "pin-project-lite",
+ "pin-utils",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.14.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -454,6 +515,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8afb450f006bf6385ca15ef45d71d2288452bc3683ce2e2cacc0d18e4be60b58"
 
 [[package]]
+name = "pin-utils"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+
+[[package]]
 name = "png"
 version = "0.17.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -566,7 +633,7 @@ checksum = "d66dc143e6b11c1eddc06d5c423cfc97062865baf299914ab64caa38182078fe"
 [[package]]
 name = "smaf"
 version = "0.1.0"
-source = "git+https://github.com/dlunch/smaf.git#52f38ff2c1f3220b700275393c407030d2e3d977"
+source = "git+https://github.com/dlunch/smaf.git#3e68c7197e857ace03bd8c9d142ddb15ef0fdd22"
 dependencies = [
  "anyhow",
  "nom",
@@ -576,8 +643,10 @@ dependencies = [
 [[package]]
 name = "smaf_player"
 version = "0.1.0"
-source = "git+https://github.com/dlunch/smaf.git#52f38ff2c1f3220b700275393c407030d2e3d977"
+source = "git+https://github.com/dlunch/smaf.git#3e68c7197e857ace03bd8c9d142ddb15ef0fdd22"
 dependencies = [
+ "async-trait",
+ "futures",
  "smaf",
 ]
 
@@ -813,7 +882,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "ab_glyph",
  "anyhow",
@@ -834,7 +903,7 @@ dependencies = [
 [[package]]
 name = "wie_common"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -844,7 +913,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "armv4t_emu",
@@ -858,7 +927,7 @@ dependencies = [
 [[package]]
 name = "wie_core_jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -876,7 +945,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "async-recursion",
@@ -899,7 +968,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -916,7 +985,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -950,7 +1019,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -963,7 +1032,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#b08130d260b289a4641b4853fbf369061eed2afb"
+source = "git+https://github.com/dlunch/wie.git#fcfbdbe35cc84b1a71c6ab739b9e74e870036f6d"
 dependencies = [
  "anyhow",
  "async-trait",
