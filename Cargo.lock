@@ -888,6 +888,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "wie_j2me"
+version = "0.0.1"
+source = "git+https://github.com/dlunch/wie.git#728cee2cc0f32585e2ad197656a252d29021d80b"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "bytemuck",
+ "tracing",
+ "wie_backend",
+ "wie_core_jvm",
+]
+
+[[package]]
 name = "wie_ktf"
 version = "0.0.1"
 source = "git+https://github.com/dlunch/wie.git#728cee2cc0f32585e2ad197656a252d29021d80b"
@@ -997,6 +1010,7 @@ dependencies = [
  "wasm-bindgen",
  "web-sys",
  "wie_backend",
+ "wie_j2me",
  "wie_ktf",
  "wie_lgt",
  "wie_skt",

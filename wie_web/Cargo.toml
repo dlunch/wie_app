@@ -23,3 +23,4 @@ wie_backend = { workspace = true }
 wie_ktf = { workspace = true }
 wie_lgt = { workspace = true }
 wie_skt = { workspace = true }
+wie_j2me = { workspace = true }

@@ -15,7 +15,11 @@ const main = () => {
 
         try {
           const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-          const wie_web = new WieWeb(new Uint8Array(data), canvas);
+          const wie_web = new WieWeb(
+            selected_file.name,
+            new Uint8Array(data),
+            canvas
+          );
 
           for (const button of document.querySelectorAll("button[data-key]")) {
             button.addEventListener("mousedown", (e) => {

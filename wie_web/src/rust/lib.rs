@@ -18,6 +18,7 @@ use wasm_bindgen::{prelude::*, JsError};
 use web_sys::HtmlCanvasElement;
 
 use wie_backend::{extract_zip, App, Archive, Event, Instant, KeyCode, Platform, Screen};
+use wie_j2me::J2MEArchive;
 use wie_ktf::KtfArchive;
 use wie_lgt::LgtArchive;
 use wie_skt::SktArchive;
@@ -68,18 +69,34 @@ pub struct WieWeb {
 #[wasm_bindgen]
 impl WieWeb {
     #[wasm_bindgen(constructor)]
-    pub fn new(buf: &[u8], canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
+    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
         (move || {
-            let files = extract_zip(buf)?;
+            let archive: Box<dyn Archive> = if filename.ends_with("zip") {
+                let files = extract_zip(buf).unwrap();
 
-            let archive: Box<dyn Archive> = if KtfArchive::is_ktf_archive(&files) {
-                Box::new(KtfArchive::from_zip(files)?)
-            } else if LgtArchive::is_lgt_archive(&files) {
-                Box::new(LgtArchive::from_zip(files)?)
-            } else if SktArchive::is_skt_archive(&files) {
-                Box::new(SktArchive::from_zip(files)?)
+                if KtfArchive::is_ktf_archive(&files) {
+                    Box::new(KtfArchive::from_zip(files)?)
+                } else if LgtArchive::is_lgt_archive(&files) {
+                    Box::new(LgtArchive::from_zip(files)?)
+                } else if SktArchive::is_skt_archive(&files) {
+                    Box::new(SktArchive::from_zip(files)?)
+                } else {
+                    anyhow::bail!("Unknown archive format");
+                }
+            } else if filename.ends_with("jar") {
+                let filename_without_ext = filename.trim_end_matches(".jar");
+
+                if KtfArchive::is_ktf_jar(buf) {
+                    Box::new(KtfArchive::from_jar(buf.to_vec(), filename_without_ext.into(), None, Default::default()))
+                } else if LgtArchive::is_lgt_jar(buf) {
+                    Box::new(LgtArchive::from_jar(buf.to_vec(), filename_without_ext, None))
+                } else if SktArchive::is_skt_jar(buf) {
+                    Box::new(SktArchive::from_jar(buf.to_vec(), filename_without_ext, None, Default::default()))
+                } else {
+                    Box::new(J2MEArchive::from_jar(filename_without_ext.into(), buf.to_vec()))
+                }
             } else {
-                anyhow::bail!("Unknown archive format");
+                anyhow::bail!("Unknown file format");
             };
 
             let should_redraw = Rc::new(Cell::new(true));
