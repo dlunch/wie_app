@@ -9,7 +9,7 @@
   },
   "author": "",
   "devDependencies": {
-    "@types/node": "^20.11.29",
+    "@types/node": "^20.11.30",
     "@types/webpack": "^5.28.5",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "css-loader": "^6.10.0",
