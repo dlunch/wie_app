@@ -7,10 +7,10 @@ mod window;
 
 use alloc::{
     boxed::Box,
-    rc::Rc,
     string::{String, ToString},
+    sync::Arc,
 };
-use core::cell::Cell;
+use core::sync::atomic::{AtomicBool, Ordering};
 
 use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 use tracing_web::MakeConsoleWriter;
@@ -63,7 +63,7 @@ impl Platform for WieWebPlatform {
 #[wasm_bindgen]
 pub struct WieWeb {
     app: Box<dyn App>,
-    should_redraw: Rc<Cell<bool>>,
+    should_redraw: Arc<AtomicBool>,
 }
 
 #[wasm_bindgen]
@@ -99,7 +99,7 @@ impl WieWeb {
                 anyhow::bail!("Unknown file format");
             };
 
-            let should_redraw = Rc::new(Cell::new(true));
+            let should_redraw = Arc::new(AtomicBool::new(true));
             let window = WindowImpl::new(canvas, should_redraw.clone());
 
             let platform = WieWebPlatform::new(&archive.id(), Box::new(window));
@@ -114,9 +114,9 @@ impl WieWeb {
     }
 
     pub fn update(&mut self) -> Result<(), JsError> {
-        if self.should_redraw.get() {
+        if self.should_redraw.load(Ordering::SeqCst) {
             self.app.on_event(Event::Redraw);
-            self.should_redraw.set(false);
+            self.should_redraw.store(false, Ordering::SeqCst)
         }
 
         self.app.tick().map_err(|e| JsError::new(&e.to_string()))

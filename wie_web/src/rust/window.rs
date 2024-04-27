@@ -1,5 +1,5 @@
-use alloc::{rc::Rc, vec::Vec};
-use core::cell::Cell;
+use alloc::{sync::Arc, vec::Vec};
+use core::sync::atomic::{AtomicBool, Ordering};
 
 use wasm_bindgen::{Clamped, JsCast};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
@@ -8,18 +8,20 @@ use wie_backend::{canvas::Image, Screen};
 
 pub struct WindowImpl {
     canvas: HtmlCanvasElement,
-    should_redraw: Rc<Cell<bool>>,
+    should_redraw: Arc<AtomicBool>,
 }
 
+unsafe impl Send for WindowImpl {} // XXX We're on wasm, so it's fine
+
 impl WindowImpl {
-    pub fn new(canvas: HtmlCanvasElement, should_redraw: Rc<Cell<bool>>) -> Self {
+    pub fn new(canvas: HtmlCanvasElement, should_redraw: Arc<AtomicBool>) -> Self {
         Self { canvas, should_redraw }
     }
 }
 
 impl Screen for WindowImpl {
     fn request_redraw(&self) -> anyhow::Result<()> {
-        self.should_redraw.set(true);
+        self.should_redraw.store(true, Ordering::SeqCst);
 
         Ok(())
     }
