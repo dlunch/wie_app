@@ -12,6 +12,8 @@ use alloc::{
 };
 use core::sync::atomic::{AtomicBool, Ordering};
 
+use midir::MidiOutput;
+use rodio::{OutputStream, OutputStreamHandle};
 use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{prelude::*, JsError};
@@ -28,13 +30,24 @@ use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowIm
 struct WieWebPlatform {
     database_repository: DatabaseRepository,
     window: Box<dyn Screen>,
+    _output_stream: OutputStream,
+    output_stream_handle: OutputStreamHandle,
 }
+
+// XXX wasm32 is single-threaded anyway
+#[cfg(target_arch = "wasm32")]
+unsafe impl Sync for WieWebPlatform {}
+#[cfg(target_arch = "wasm32")]
+unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
     fn new(app_id: &str, window: Box<dyn Screen>) -> Self {
+        let (output_stream, output_stream_handle) = OutputStream::try_default().unwrap();
         Self {
             database_repository: DatabaseRepository::new(app_id),
             window,
+            _output_stream: output_stream,
+            output_stream_handle,
         }
     }
 }
@@ -56,7 +69,12 @@ impl Platform for WieWebPlatform {
     }
 
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
-        Box::new(AudioSink)
+        let midi_out = MidiOutput::new("wie").unwrap();
+        let midi_ports = midi_out.ports();
+        let out_port = midi_ports.last().unwrap();
+        let midi_out = midi_out.connect(out_port, "wie").unwrap();
+
+        Box::new(AudioSink::new(midi_out, &self.output_stream_handle))
     }
 }
 
