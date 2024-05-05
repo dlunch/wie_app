@@ -6,10 +6,8 @@ pub struct AudioSink {
     sink: Sink,
 }
 
-// XXX wasm32 is single-threaded anyway
-#[cfg(target_arch = "wasm32")]
+// XXX we're on single thread
 unsafe impl Sync for AudioSink {}
-#[cfg(target_arch = "wasm32")]
 unsafe impl Send for AudioSink {}
 
 impl AudioSink {

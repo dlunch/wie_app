@@ -34,10 +34,8 @@ struct WieWebPlatform {
     output_stream_handle: OutputStreamHandle,
 }
 
-// XXX wasm32 is single-threaded anyway
-#[cfg(target_arch = "wasm32")]
+// XXX we're on single thread
 unsafe impl Sync for WieWebPlatform {}
-#[cfg(target_arch = "wasm32")]
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
