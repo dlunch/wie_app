@@ -2,7 +2,7 @@ use midir::MidiOutputConnection;
 use rodio::{buffer::SamplesBuffer, OutputStreamHandle, Sink};
 
 pub struct AudioSink {
-    midi_out: MidiOutputConnection,
+    _midi_out: MidiOutputConnection,
     sink: Sink,
 }
 
@@ -13,7 +13,7 @@ unsafe impl Send for AudioSink {}
 impl AudioSink {
     pub fn new(midi_out: MidiOutputConnection, stream_handle: &OutputStreamHandle) -> Self {
         let sink = Sink::try_new(stream_handle).unwrap();
-        Self { midi_out, sink }
+        Self { _midi_out: midi_out, sink }
     }
 }
 
