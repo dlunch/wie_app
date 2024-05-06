@@ -18,8 +18,9 @@ tracing-web = { version = "^0.1" }
 wasm-bindgen = { version = "^0.2" }
 js-sys = { version = "^0.3" }
 web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
-rodio = { version = "^0.18", default-features = false }
+rodio = { version = "^0.17", default-features = false }
 midir = { version = "^0.10", default-features = false }
+spin = { version = "^0.9", features = ["spin_mutex"], default-features = false }
 
 wie_backend = { workspace = true }
 wie_ktf = { workspace = true }
