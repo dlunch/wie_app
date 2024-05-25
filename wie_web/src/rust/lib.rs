@@ -12,7 +12,6 @@ use alloc::{
 };
 use core::sync::atomic::{AtomicBool, Ordering};
 
-use midir::MidiOutput;
 use rodio::{OutputStream, OutputStreamHandle};
 use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 use tracing_web::MakeConsoleWriter;
@@ -67,12 +66,7 @@ impl Platform for WieWebPlatform {
     }
 
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
-        let midi_out = MidiOutput::new("wie").unwrap();
-        let midi_ports = midi_out.ports();
-        let out_port = midi_ports.last().unwrap();
-        let midi_out = midi_out.connect(out_port, "wie").unwrap();
-
-        Box::new(AudioSink::new(midi_out, &self.output_stream_handle))
+        Box::new(AudioSink::new(&self.output_stream_handle))
     }
 }
 
