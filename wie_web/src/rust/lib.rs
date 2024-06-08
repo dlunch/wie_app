@@ -68,6 +68,11 @@ impl Platform for WieWebPlatform {
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
         Box::new(AudioSink::new(&self.output_stream_handle))
     }
+
+    fn write_stdout(&self, data: &[u8]) {
+        let string = core::str::from_utf8(data).unwrap();
+        tracing::info!("{}", string);
+    }
 }
 
 #[wasm_bindgen]
