@@ -1,4 +1,4 @@
-import { WieWeb } from "./pkg";
+import { WieWeb, WieWebBridge } from "./pkg";
 
 const main = () => {
   const file = document.getElementById("file") as HTMLInputElement;
@@ -14,11 +14,16 @@ const main = () => {
         let data = e.target?.result as ArrayBuffer;
 
         try {
+          const bridge = new WieWebBridge((type) =>
+            console.log(`midi: ${type}`)
+          );
+
           const canvas = document.getElementById("canvas") as HTMLCanvasElement;
           const wie_web = new WieWeb(
             selected_file.name,
             new Uint8Array(data),
-            canvas
+            canvas,
+            bridge
           );
 
           for (const button of document.querySelectorAll("button[data-key]")) {

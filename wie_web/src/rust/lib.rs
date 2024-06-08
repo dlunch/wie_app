@@ -26,7 +26,22 @@ use wie_skt::SktArchive;
 
 use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowImpl};
 
+#[wasm_bindgen]
+#[derive(Clone)]
+pub struct WieWebBridge {
+    midi_event: js_sys::Function,
+}
+
+#[wasm_bindgen]
+impl WieWebBridge {
+    #[wasm_bindgen(constructor)]
+    pub fn new(midi_event: js_sys::Function) -> Self {
+        Self { midi_event }
+    }
+}
+
 struct WieWebPlatform {
+    bridge: WieWebBridge,
     database_repository: DatabaseRepository,
     window: Box<dyn Screen>,
     _output_stream: OutputStream,
@@ -38,9 +53,10 @@ unsafe impl Sync for WieWebPlatform {}
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
-    fn new(app_id: &str, window: Box<dyn Screen>) -> Self {
+    fn new(app_id: &str, window: Box<dyn Screen>, bridge: WieWebBridge) -> Self {
         let (output_stream, output_stream_handle) = OutputStream::try_default().unwrap();
         Self {
+            bridge,
             database_repository: DatabaseRepository::new(app_id),
             window,
             _output_stream: output_stream,
@@ -66,7 +82,7 @@ impl Platform for WieWebPlatform {
     }
 
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
-        Box::new(AudioSink::new(&self.output_stream_handle))
+        Box::new(AudioSink::new(&self.output_stream_handle, self.bridge.clone()))
     }
 
     fn write_stdout(&self, data: &[u8]) {
@@ -84,7 +100,7 @@ pub struct WieWeb {
 #[wasm_bindgen]
 impl WieWeb {
     #[wasm_bindgen(constructor)]
-    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
+    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement, bridge: WieWebBridge) -> Result<WieWeb, JsError> {
         (move || {
             let archive: Box<dyn Archive> = if filename.ends_with("zip") {
                 let files = extract_zip(buf).unwrap();
@@ -117,7 +133,7 @@ impl WieWeb {
             let should_redraw = Arc::new(AtomicBool::new(true));
             let window = WindowImpl::new(canvas, should_redraw.clone());
 
-            let platform = WieWebPlatform::new(&archive.id(), Box::new(window));
+            let platform = WieWebPlatform::new(&archive.id(), Box::new(window), bridge);
 
             let mut app = archive.load_app(Box::new(platform))?;
 
