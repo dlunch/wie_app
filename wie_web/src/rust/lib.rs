@@ -29,14 +29,27 @@ use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowIm
 #[wasm_bindgen]
 #[derive(Clone)]
 pub struct WieWebBridge {
-    midi_event: js_sys::Function,
+    midi_note_on: js_sys::Function,
+    midi_note_off: js_sys::Function,
+    midi_control_change: js_sys::Function,
+    midi_program_change: js_sys::Function,
 }
 
 #[wasm_bindgen]
 impl WieWebBridge {
     #[wasm_bindgen(constructor)]
-    pub fn new(midi_event: js_sys::Function) -> Self {
-        Self { midi_event }
+    pub fn new(
+        midi_note_on: js_sys::Function,
+        midi_note_off: js_sys::Function,
+        midi_control_change: js_sys::Function,
+        midi_program_change: js_sys::Function,
+    ) -> Self {
+        Self {
+            midi_note_on,
+            midi_note_off,
+            midi_control_change,
+            midi_program_change,
+        }
     }
 }
 

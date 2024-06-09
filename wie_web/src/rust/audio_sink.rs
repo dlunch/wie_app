@@ -26,19 +26,31 @@ impl wie_backend::AudioSink for AudioSink {
         self.sink.append(buffer);
     }
 
-    fn midi_note_on(&self, _channel_id: u8, _note: u8, _velocity: u8) {
-        self.bridge.midi_event.call1(&JsValue::null(), &0.into()).unwrap();
+    fn midi_note_on(&self, channel_id: u8, note: u8, velocity: u8) {
+        self.bridge
+            .midi_note_on
+            .call3(&JsValue::null(), &channel_id.into(), &note.into(), &velocity.into())
+            .unwrap();
     }
 
-    fn midi_note_off(&self, _channel_id: u8, _note: u8, _velocity: u8) {
-        self.bridge.midi_event.call1(&JsValue::null(), &1.into()).unwrap();
+    fn midi_note_off(&self, channel_id: u8, note: u8, velocity: u8) {
+        self.bridge
+            .midi_note_off
+            .call3(&JsValue::null(), &channel_id.into(), &note.into(), &velocity.into())
+            .unwrap();
     }
 
-    fn midi_control_change(&self, _channel_id: u8, _control: u8, _value: u8) {
-        self.bridge.midi_event.call1(&JsValue::null(), &2.into()).unwrap();
+    fn midi_control_change(&self, channel_id: u8, control: u8, value: u8) {
+        self.bridge
+            .midi_control_change
+            .call3(&JsValue::null(), &channel_id.into(), &control.into(), &value.into())
+            .unwrap();
     }
 
-    fn midi_program_change(&self, _channel_id: u8, _program: u8) {
-        self.bridge.midi_event.call1(&JsValue::null(), &3.into()).unwrap();
+    fn midi_program_change(&self, channel_id: u8, program: u8) {
+        self.bridge
+            .midi_program_change
+            .call2(&JsValue::null(), &channel_id.into(), &program.into())
+            .unwrap();
     }
 }
