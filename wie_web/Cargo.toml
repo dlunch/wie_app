@@ -19,7 +19,7 @@ tracing = { version = "^0.1", default-features = false }
 wasm-bindgen = { version = "^0.2" }
 js-sys = { version = "^0.3" }
 web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
-rodio = { version = "^0.18", features = ["wasm-bindgen"], default-features = false }
+rodio = { version = "^0.19", features = ["wasm-bindgen"], default-features = false }
 
 wie_backend = { workspace = true }
 wie_ktf = { workspace = true }
