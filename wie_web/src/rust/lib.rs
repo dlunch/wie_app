@@ -131,11 +131,16 @@ impl WieWeb {
                 let filename_without_ext = filename.trim_end_matches(".jar");
 
                 if KtfArchive::is_ktf_jar(buf) {
-                    Box::new(KtfArchive::from_jar(buf.to_vec(), filename_without_ext.into(), None, Default::default()))
+                    Box::new(KtfArchive::from_jar(
+                        filename.to_string(),
+                        buf.to_vec(),
+                        filename_without_ext.into(),
+                        None,
+                    ))
                 } else if LgtArchive::is_lgt_jar(buf) {
                     Box::new(LgtArchive::from_jar(buf.to_vec(), filename_without_ext, None))
                 } else if SktArchive::is_skt_jar(buf) {
-                    Box::new(SktArchive::from_jar(buf.to_vec(), filename_without_ext, None, Default::default()))
+                    Box::new(SktArchive::from_jar(filename.to_string(), buf.to_vec(), filename_without_ext, None))
                 } else {
                     Box::new(J2MEArchive::from_jar(filename_without_ext.into(), buf.to_vec()))
                 }
