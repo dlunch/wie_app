@@ -5,13 +5,13 @@ use wie_backend::RecordId;
 pub struct DatabaseRepository {}
 
 impl DatabaseRepository {
-    pub fn new(_app_id: &str) -> Self {
+    pub fn new() -> Self {
         Self {}
     }
 }
 
 impl wie_backend::DatabaseRepository for DatabaseRepository {
-    fn open(&self, _name: &str) -> Box<dyn wie_backend::Database> {
+    fn open(&self, _name: &str, _app_id: &str) -> Box<dyn wie_backend::Database> {
         Box::new(Database::new().unwrap())
     }
 }

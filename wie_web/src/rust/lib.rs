@@ -18,11 +18,11 @@ use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{prelude::*, JsError};
 use web_sys::HtmlCanvasElement;
 
-use wie_backend::{extract_zip, App, Archive, Event, Instant, KeyCode, Platform, Screen};
-use wie_j2me::J2MEArchive;
-use wie_ktf::KtfArchive;
-use wie_lgt::LgtArchive;
-use wie_skt::SktArchive;
+use wie_backend::{extract_zip, Emulator, Event, Instant, KeyCode, Platform, Screen};
+use wie_j2me::J2MEEmulator;
+use wie_ktf::KtfEmulator;
+use wie_lgt::LgtEmulator;
+use wie_skt::SktEmulator;
 
 use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowImpl};
 
@@ -66,11 +66,11 @@ unsafe impl Sync for WieWebPlatform {}
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
-    fn new(app_id: &str, window: Box<dyn Screen>, bridge: WieWebBridge) -> Self {
+    fn new(window: Box<dyn Screen>, bridge: WieWebBridge) -> Self {
         let (output_stream, output_stream_handle) = OutputStream::try_default().unwrap();
         Self {
             bridge,
-            database_repository: DatabaseRepository::new(app_id),
+            database_repository: DatabaseRepository::new(),
             window,
             _output_stream: output_stream,
             output_stream_handle,
@@ -106,7 +106,7 @@ impl Platform for WieWebPlatform {
 
 #[wasm_bindgen]
 pub struct WieWeb {
-    app: Box<dyn App>,
+    emulator: Box<dyn Emulator>,
     should_redraw: Arc<AtomicBool>,
 }
 
@@ -115,67 +115,57 @@ impl WieWeb {
     #[wasm_bindgen(constructor)]
     pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement, bridge: WieWebBridge) -> Result<WieWeb, JsError> {
         (move || {
-            let archive: Box<dyn Archive> = if filename.ends_with("zip") {
+            let should_redraw = Arc::new(AtomicBool::new(true));
+            let window = WindowImpl::new(canvas, should_redraw.clone());
+            let platform = Box::new(WieWebPlatform::new(Box::new(window), bridge));
+
+            let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {
                 let files = extract_zip(buf).unwrap();
 
-                if KtfArchive::is_ktf_archive(&files) {
-                    Box::new(KtfArchive::from_zip(files)?)
-                } else if LgtArchive::is_lgt_archive(&files) {
-                    Box::new(LgtArchive::from_zip(files)?)
-                } else if SktArchive::is_skt_archive(&files) {
-                    Box::new(SktArchive::from_zip(files)?)
+                if KtfEmulator::loadable_archive(&files) {
+                    Box::new(KtfEmulator::from_archive(platform, files)?)
+                } else if LgtEmulator::loadable_archive(&files) {
+                    Box::new(LgtEmulator::from_archive(platform, files)?)
+                } else if SktEmulator::loadable_archive(&files) {
+                    Box::new(SktEmulator::from_archive(platform, files)?)
                 } else {
                     anyhow::bail!("Unknown archive format");
                 }
             } else if filename.ends_with("jar") {
                 let filename_without_ext = filename.trim_end_matches(".jar");
 
-                if KtfArchive::is_ktf_jar(buf) {
-                    Box::new(KtfArchive::from_jar(
-                        filename.to_string(),
-                        buf.to_vec(),
-                        filename_without_ext.into(),
-                        None,
-                    ))
-                } else if LgtArchive::is_lgt_jar(buf) {
-                    Box::new(LgtArchive::from_jar(buf.to_vec(), filename_without_ext, None))
-                } else if SktArchive::is_skt_jar(buf) {
-                    Box::new(SktArchive::from_jar(filename.to_string(), buf.to_vec(), filename_without_ext, None))
+                if KtfEmulator::loadable_jar(buf) {
+                    Box::new(KtfEmulator::from_jar(platform, filename, buf.to_vec(), filename_without_ext, None)?)
+                } else if LgtEmulator::loadable_jar(buf) {
+                    Box::new(LgtEmulator::from_jar(platform, filename, buf.to_vec(), filename_without_ext, None)?)
+                } else if SktEmulator::loadable_jar(buf) {
+                    Box::new(SktEmulator::from_jar(platform, filename, buf.to_vec(), filename_without_ext, None)?)
                 } else {
-                    Box::new(J2MEArchive::from_jar(filename_without_ext.into(), buf.to_vec()))
+                    Box::new(J2MEEmulator::from_jar(platform, filename_without_ext, buf.to_vec())?)
                 }
             } else {
                 anyhow::bail!("Unknown file format");
             };
 
-            let should_redraw = Arc::new(AtomicBool::new(true));
-            let window = WindowImpl::new(canvas, should_redraw.clone());
-
-            let platform = WieWebPlatform::new(&archive.id(), Box::new(window), bridge);
-
-            let mut app = archive.load_app(Box::new(platform))?;
-
-            app.start()?;
-
-            anyhow::Ok(Self { app, should_redraw })
+            anyhow::Ok(Self { emulator, should_redraw })
         })()
         .map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn update(&mut self) -> Result<(), JsError> {
         if self.should_redraw.load(Ordering::SeqCst) {
-            self.app.on_event(Event::Redraw);
+            self.emulator.handle_event(Event::Redraw);
             self.should_redraw.store(false, Ordering::SeqCst)
         }
 
-        self.app.tick().map_err(|e| JsError::new(&e.to_string()))
+        self.emulator.tick().map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn send_key(&mut self, key: String) -> Result<(), JsError> {
         let key = KeyCode::parse(&key);
 
-        self.app.on_event(Event::Keydown(key));
-        self.app.on_event(Event::Keyup(key));
+        self.emulator.handle_event(Event::Keydown(key));
+        self.emulator.handle_event(Event::Keyup(key));
 
         Ok(())
     }
