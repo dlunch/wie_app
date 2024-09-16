@@ -5,6 +5,7 @@ use wasm_bindgen::{Clamped, JsCast};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
 
 use wie_backend::{canvas::Image, Screen};
+use wie_util::Result;
 
 pub struct WindowImpl {
     canvas: HtmlCanvasElement,
@@ -20,7 +21,7 @@ impl WindowImpl {
 }
 
 impl Screen for WindowImpl {
-    fn request_redraw(&self) -> anyhow::Result<()> {
+    fn request_redraw(&self) -> Result<()> {
         self.should_redraw.store(true, Ordering::SeqCst);
 
         Ok(())

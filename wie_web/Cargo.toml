@@ -9,7 +9,7 @@ crate-type = ["cdylib"]
 path = "src/rust/lib.rs"
 
 [dependencies]
-anyhow = { workspace = true }
+anyhow = { version = "^1.0" }
 
 console_error_panic_hook = { version = "^0.1" }
 time = { version = "^0.3", features = ["wasm-bindgen"] }
@@ -21,8 +21,9 @@ js-sys = { version = "^0.3" }
 web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
 rodio = { version = "^0.19", features = ["wasm-bindgen"], default-features = false }
 
-wie_backend = { workspace = true }
-wie_ktf = { workspace = true }
-wie_lgt = { workspace = true }
-wie_skt = { workspace = true }
-wie_j2me = { workspace = true }
+wie_backend = { git = "https://github.com/dlunch/wie.git" }
+wie_ktf = { git = "https://github.com/dlunch/wie.git" }
+wie_lgt = { git = "https://github.com/dlunch/wie.git" }
+wie_skt = { git = "https://github.com/dlunch/wie.git" }
+wie_j2me = { git = "https://github.com/dlunch/wie.git" }
+wie_util = { git = "https://github.com/dlunch/wie.git" }

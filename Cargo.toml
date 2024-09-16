@@ -20,13 +20,3 @@ strip = true
 version = "0.0.1"
 edition = "2021"
 license = "Proprietary"
-
-[workspace.dependencies]
-anyhow = { version = "^1.0" }
-
-wie_backend = { git = "https://github.com/dlunch/wie.git" }
-wie_common = { git = "https://github.com/dlunch/wie.git" }
-wie_ktf = { git = "https://github.com/dlunch/wie.git" }
-wie_lgt = { git = "https://github.com/dlunch/wie.git" }
-wie_skt = { git = "https://github.com/dlunch/wie.git" }
-wie_j2me = { git = "https://github.com/dlunch/wie.git" }
