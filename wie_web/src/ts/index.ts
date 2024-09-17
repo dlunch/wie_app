@@ -26,6 +26,9 @@ const main = () => {
     let selected_file = file.files[0];
 
     if (selected_file) {
+      document.getElementById("file")?.remove();
+      document.getElementById("start")?.remove();
+
       let reader = new FileReader();
 
       reader.onload = (e) => {
