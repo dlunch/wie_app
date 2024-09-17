@@ -23,16 +23,22 @@ const main = () => {
   const button = document.getElementById("start") as HTMLButtonElement;
 
   button.addEventListener("click", () => {
-    let selected_file = file.files[0];
+    const selected_file = file.files[0];
 
     if (selected_file) {
       document.getElementById("file")?.remove();
       document.getElementById("start")?.remove();
 
-      let reader = new FileReader();
+      const original_console_error = console.error;
+      console.error = (message: string, ...args) => {
+        alert(message);
+        original_console_error(message, ...args);
+      };
+
+      const reader = new FileReader();
 
       reader.onload = (e) => {
-        let data = e.target?.result as ArrayBuffer;
+        const data = e.target?.result as ArrayBuffer;
 
         try {
           const midi_player = new MidiPlayer();
@@ -61,7 +67,7 @@ const main = () => {
               wie_web.send_key(key);
             });
           }
-          let update = () => {
+          const update = () => {
             try {
               wie_web.update();
             } catch (e) {
