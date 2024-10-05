@@ -161,10 +161,17 @@ impl WieWeb {
         self.emulator.tick().map_err(|e| JsError::new(&e.to_string()))
     }
 
-    pub fn send_key(&mut self, key: String) -> Result<(), JsError> {
+    pub fn key_down(&mut self, key: String) -> Result<(), JsError> {
         let key = KeyCode::parse(&key);
 
         self.emulator.handle_event(Event::Keydown(key));
+
+        Ok(())
+    }
+
+    pub fn key_up(&mut self, key: String) -> Result<(), JsError> {
+        let key = KeyCode::parse(&key);
+
         self.emulator.handle_event(Event::Keyup(key));
 
         Ok(())

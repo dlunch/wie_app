@@ -64,7 +64,8 @@ const main = () => {
           for (const button of document.querySelectorAll("button[data-key]")) {
             button.addEventListener("mousedown", (e) => {
               const key = (e.target as HTMLButtonElement).dataset.key;
-              wie_web.send_key(key);
+              wie_web.key_down(key);
+              setTimeout(() => wie_web.key_up(key), 100);
             });
           }
           const update = () => {
