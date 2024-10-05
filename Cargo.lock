@@ -89,7 +89,7 @@ dependencies = [
 [[package]]
 name = "arm32_cpu"
 version = "0.1.0"
-source = "git+https://github.com/dlunch/arm32_cpu.git#acf01730991edf93b671280555f75c234f175c43"
+source = "git+https://github.com/dlunch/arm32_cpu.git#8565f1efd3fad97c1846c8edadd1c86708bf6bb5"
 dependencies = [
  "log",
 ]
@@ -203,9 +203,9 @@ checksum = "428d9aa8fbc0670b7b8d6030a7fadd0f86151cae55e4dbbece15f3780a3dfaf3"
 
 [[package]]
 name = "cc"
-version = "1.1.22"
+version = "1.1.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9540e661f81799159abee814118cc139a2004b3a3aa3ea37724a1b66530b90e0"
+checksum = "e8d9e0b4957f635b8d3da819d0db5603620467ecf1f692d22a8c2717ce27e6d8"
 dependencies = [
  "jobserver",
  "libc",
@@ -247,7 +247,7 @@ dependencies = [
 [[package]]
 name = "classfile"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#1b9973c5ff256706a48134d148bec953e7b20b80"
+source = "git+https://github.com/dlunch/RustJava.git#301d48caed9e3c127c6a51a1a4fd0c0c93c03d8e"
 dependencies = [
  "java_constants",
  "nom",
@@ -551,6 +551,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "hashbrown"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e087f84d4f86bf4b218b927129862374b72199ae7d8657835f1e89000eea4fb"
+
+[[package]]
 name = "idna"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -574,12 +580,12 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.5.0"
+version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68b900aa2f7301e21c36462b170ee99994de34dff39a4a6a528e80e7376d07e5"
+checksum = "707907fe3c25f5424cce2cb7e1cbcafee6bdbe735ca90ef77c29e84591e5b9da"
 dependencies = [
  "equivalent",
- "hashbrown",
+ "hashbrown 0.15.0",
 ]
 
 [[package]]
@@ -600,7 +606,7 @@ checksum = "49f1f14873335454500d59611f1cf4a4b0f786f9ac11f4312a78e4cf2566695b"
 [[package]]
 name = "java_class_proto"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#1b9973c5ff256706a48134d148bec953e7b20b80"
+source = "git+https://github.com/dlunch/RustJava.git#301d48caed9e3c127c6a51a1a4fd0c0c93c03d8e"
 dependencies = [
  "async-trait",
  "dyn-clone",
@@ -611,7 +617,7 @@ dependencies = [
 [[package]]
 name = "java_constants"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#1b9973c5ff256706a48134d148bec953e7b20b80"
+source = "git+https://github.com/dlunch/RustJava.git#301d48caed9e3c127c6a51a1a4fd0c0c93c03d8e"
 dependencies = [
  "bitflags 2.6.0",
 ]
@@ -619,7 +625,7 @@ dependencies = [
 [[package]]
 name = "java_runtime"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#1b9973c5ff256706a48134d148bec953e7b20b80"
+source = "git+https://github.com/dlunch/RustJava.git#301d48caed9e3c127c6a51a1a4fd0c0c93c03d8e"
 dependencies = [
  "async-lock",
  "async-trait",
@@ -627,7 +633,7 @@ dependencies = [
  "dyn-clone",
  "encoding_rs",
  "event-listener",
- "hashbrown",
+ "hashbrown 0.14.5",
  "java_class_proto",
  "java_constants",
  "jvm",
@@ -679,7 +685,7 @@ dependencies = [
 [[package]]
 name = "jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#1b9973c5ff256706a48134d148bec953e7b20b80"
+source = "git+https://github.com/dlunch/RustJava.git#301d48caed9e3c127c6a51a1a4fd0c0c93c03d8e"
 dependencies = [
  "anyhow",
  "async-lock",
@@ -695,7 +701,7 @@ dependencies = [
 [[package]]
 name = "jvm_rust"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#1b9973c5ff256706a48134d148bec953e7b20b80"
+source = "git+https://github.com/dlunch/RustJava.git#301d48caed9e3c127c6a51a1a4fd0c0c93c03d8e"
 dependencies = [
  "async-lock",
  "async-recursion",
@@ -923,9 +929,12 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.19.0"
+version = "1.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
+checksum = "82881c4be219ab5faaf2ad5e5e5ecdff8c66bd7402ca3160975c93b24961afd1"
+dependencies = [
+ "portable-atomic",
+]
 
 [[package]]
 name = "overload"
@@ -980,6 +989,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "portable-atomic"
+version = "1.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cc9c68a3f6da06753e9335d63e27f6b9754dd1920d941135b7ea8224f141adb2"
+
+[[package]]
 name = "powerfmt"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1014,9 +1029,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.10.6"
+version = "1.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4219d74c6b67a3654a9fbebc4b419e22126d13d2f3c4a07ee0cb61ff79a79619"
+checksum = "38200e5ee88914975b69f657f0801b6f6dccafd44fd9326302a4aaeecfacb1d8"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1026,9 +1041,9 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.7"
+version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "38caf58cc5ef2fed281f89292ef23f6365465ed9a41b7a7754eb4e26496c92df"
+checksum = "368758f23274712b504848e9d5a6f010445cc8b87a7cdb4d7cbee666c1288da3"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1037,9 +1052,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.4"
+version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
+checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 
 [[package]]
 name = "rodio"
@@ -1343,9 +1358,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-bidi"
-version = "0.3.15"
+version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08f95100a766bf4f8f28f90d77e0a5461bbdb219042e7679bebe79004fed8d75"
+checksum = "5ab17db44d7388991a428b2ee655ce0c212e862eff1768a455c58f9aad6e7893"
 
 [[package]]
 name = "unicode-ident"
@@ -1475,7 +1490,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -1493,7 +1508,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -1507,7 +1522,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1522,7 +1537,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1539,7 +1554,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -1553,6 +1568,7 @@ dependencies = [
  "wie_backend",
  "wie_core_arm",
  "wie_jvm_support",
+ "wie_midp",
  "wie_util",
  "wie_wipi_c",
  "wie_wipi_java",
@@ -1561,7 +1577,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1577,7 +1593,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bitflags 2.6.0",
@@ -1590,12 +1606,13 @@ dependencies = [
  "tracing",
  "wie_backend",
  "wie_jvm_support",
+ "wie_util",
 ]
 
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1612,7 +1629,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bitflags 2.6.0",
@@ -1631,7 +1648,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "bytemuck",
  "encoding_rs",
@@ -1663,7 +1680,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1675,7 +1692,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7034af26307a4b77359a4e6c0ce7a7108786eb9f"
+source = "git+https://github.com/dlunch/wie.git#f784ee86cedbf98f92e2f4e23311a588b557befe"
 dependencies = [
  "async-trait",
  "bitflags 2.6.0",
@@ -1687,6 +1704,7 @@ dependencies = [
  "tracing",
  "wie_backend",
  "wie_jvm_support",
+ "wie_midp",
 ]
 
 [[package]]
