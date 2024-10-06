@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.repository == 'dlunch/wie_app' && github.event.pull_request.merged == true
+    if: github.repository == 'dlunch/wie_app' && (github.event_name == 'push' || github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     permissions:
       contents: read
