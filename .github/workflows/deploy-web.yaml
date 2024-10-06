@@ -4,6 +4,10 @@ on:
     branches:
       - main
       - release
+  pull_request:
+    branches:
+      - main
+    types: [closed]
 
 name: Deploy Web
 
@@ -18,7 +22,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.repository == 'dlunch/wie_app'
+    if: github.repository == 'dlunch/wie_app' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: read
