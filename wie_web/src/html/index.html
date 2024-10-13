@@ -3,6 +3,40 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="index.ts" defer="defer"></script>
+    <style type="text/css">
+      body, p {
+        margin: 0px;
+      }
+
+      #canvas {
+        aspect-ratio: 3 / 4;
+        width: min(100vw, 480px);
+      }
+
+      .button-container {
+        margin: 0 auto;
+        max-width: fit-content;
+      }
+
+      .button-container > p {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+      }
+
+      .button-container > p > button {
+        min-width: fit-content;
+        width: 2em;
+        height: 2em;
+      }
+
+      button[data-key="UP"], button[data-key="DOWN"] {
+        margin-left: 2.4em
+      }
+
+      button[data-key="CLR"] {
+         margin-left: 1.7em
+      }
+    </style>
   </head>
   <body>
     <p>
@@ -11,39 +45,41 @@
     </p>
     <canvas id="canvas" width="240" height="320"></canvas>
 
-    <p>
-      <button data-key="UP" style="margin-left: 2.5em">↑</button>
-    </p>
-    <p>
-      <button data-key="LEFT">←</button>
-      <button data-key="OK">OK</button>
-      <button data-key="RIGHT">→</button>
-    </p>
-    <p>
-      <button data-key="DOWN" style="margin-left: 2.5em">↓</button>
-    </p>
-    <p style="margin-left: 1.5em">
-      <button data-key="CLR">CLR</button>
-    </p>
-    <p style="margin-left: 0.5em">
-      <button data-key="1">1</button>
-      <button data-key="2">2</button>
-      <button data-key="3">3</button>
-    </p>
-    <p style="margin-left: 0.5em">
-      <button data-key="4">4</button>
-      <button data-key="5">5</button>
-      <button data-key="6">6</button>
-    </p>
-    <p style="margin-left: 0.5em">
-      <button data-key="7">7</button>
-      <button data-key="8">8</button>
-      <button data-key="9">9</button>
-    </p>
-    <p style="margin-left: 0.5em">
-      <button data-key="*">*</button>
-      <button data-key="0">0</button>
-      <button data-key="#">#</button>
-    </p>
+    <div class="button-container">
+      <p>
+        <button data-key="UP">↑</button>
+      </p>
+      <p>
+        <button data-key="LEFT">←</button>
+        <button data-key="OK">OK</button>
+        <button data-key="RIGHT">→</button>
+      </p>
+      <p>
+        <button data-key="DOWN"">↓</button>
+      </p>
+      <p>
+        <button data-key="CLR">CLR</button>
+      </p>
+      <p>
+        <button data-key="1">1</button>
+        <button data-key="2">2</button>
+        <button data-key="3">3</button>
+      </p>
+      <p>
+        <button data-key="4">4</button>
+        <button data-key="5">5</button>
+        <button data-key="6">6</button>
+      </p>
+      <p>
+        <button data-key="7">7</button>
+        <button data-key="8">8</button>
+        <button data-key="9">9</button>
+      </p>
+      <p>
+        <button data-key="*">*</button>
+        <button data-key="0">0</button>
+        <button data-key="#">#</button>
+      </p>
+    </div>
   </body>
 </html>
