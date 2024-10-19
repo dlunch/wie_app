@@ -10,7 +10,10 @@ use alloc::{
     string::{String, ToString},
     sync::Arc,
 };
-use core::sync::atomic::{AtomicBool, Ordering};
+use core::{
+    str,
+    sync::atomic::{AtomicBool, Ordering},
+};
 
 use rodio::{OutputStream, OutputStreamHandle};
 use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt, Layer};
@@ -99,7 +102,12 @@ impl Platform for WieWebPlatform {
     }
 
     fn write_stdout(&self, data: &[u8]) {
-        let string = core::str::from_utf8(data).unwrap();
+        let string = str::from_utf8(data).unwrap();
+        tracing::info!("{}", string);
+    }
+
+    fn write_stderr(&self, data: &[u8]) {
+        let string = str::from_utf8(data).unwrap();
         tracing::info!("{}", string);
     }
 }
