@@ -15,6 +15,7 @@ use core::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
+use hashbrown::HashMap;
 use rodio::{OutputStream, OutputStreamHandle};
 use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 use tracing_web::MakeConsoleWriter;
@@ -116,6 +117,7 @@ impl Platform for WieWebPlatform {
 pub struct WieWeb {
     emulator: Box<dyn Emulator>,
     should_redraw: Arc<AtomicBool>,
+    key_events: HashMap<KeyCode, f64>,
 }
 
 #[wasm_bindgen]
@@ -155,7 +157,11 @@ impl WieWeb {
                 anyhow::bail!("Unknown file format");
             };
 
-            anyhow::Ok(Self { emulator, should_redraw })
+            anyhow::Ok(Self {
+                emulator,
+                should_redraw,
+                key_events: HashMap::new(),
+            })
         })()
         .map_err(|e| JsError::new(&e.to_string()))
     }
@@ -166,13 +172,26 @@ impl WieWeb {
             self.should_redraw.store(false, Ordering::SeqCst)
         }
 
+        let date = js_sys::Date::new_0();
+        let millis = date.value_of();
+
+        for (key, key_millis) in self.key_events.iter_mut() {
+            if millis - *key_millis > 100.0 {
+                self.emulator.handle_event(Event::Keyrepeat(*key));
+                *key_millis = millis;
+            }
+        }
+
         self.emulator.tick().map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn key_down(&mut self, key: String) -> Result<(), JsError> {
+        let date = js_sys::Date::new_0();
+        let millis = date.value_of();
         let key = KeyCode::parse(&key);
 
         self.emulator.handle_event(Event::Keydown(key));
+        self.key_events.insert(key, millis);
 
         Ok(())
     }
@@ -181,6 +200,7 @@ impl WieWeb {
         let key = KeyCode::parse(&key);
 
         self.emulator.handle_event(Event::Keyup(key));
+        self.key_events.remove(&key);
 
         Ok(())
     }

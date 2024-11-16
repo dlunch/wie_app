@@ -65,7 +65,10 @@ const main = () => {
             button.addEventListener("mousedown", (e) => {
               const key = (e.target as HTMLButtonElement).dataset.key;
               wie_web.key_down(key);
-              setTimeout(() => wie_web.key_up(key), 100);
+            });
+            button.addEventListener("mouseup", (e) => {
+              const key = (e.target as HTMLButtonElement).dataset.key;
+              wie_web.key_up(key);
             });
           }
           const update = () => {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script src="index.ts" defer="defer"></script>
     <style type="text/css">
       body, p {
@@ -31,6 +31,10 @@
       .button-container > p > button {
         width: 2.5em;
         height: 2em;
+      }
+
+      button {
+        touch-action: none;
       }
     </style>
   </head>
