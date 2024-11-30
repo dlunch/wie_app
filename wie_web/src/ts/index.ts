@@ -63,10 +63,14 @@ const main = () => {
 
           for (const button of document.querySelectorAll("button[data-key]")) {
             button.addEventListener("mousedown", (e) => {
+              e.preventDefault();
+
               const key = (e.target as HTMLButtonElement).dataset.key;
               wie_web.key_down(key);
             });
             button.addEventListener("mouseup", (e) => {
+              e.preventDefault();
+
               const key = (e.target as HTMLButtonElement).dataset.key;
               wie_web.key_up(key);
             });
