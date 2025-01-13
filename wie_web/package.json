@@ -16,7 +16,7 @@
     "html-bundler-webpack-plugin": "^4.12.1",
     "sass": "^1.83.1",
     "sass-loader": "^16.0.4",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.7.3",
