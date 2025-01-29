@@ -8,12 +8,10 @@
     "start": "webpack serve --open --config wie_web/webpack.config.dev.ts"
   },
   "author": "",
-  "devDependencies": {
-    "@types/node": "^22.12.0",
-    "@types/webpack": "^5.28.5",
+  "dependencies": {
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "css-loader": "^7.1.2",
-    "html-bundler-webpack-plugin": "^4.15.3",
+    "html-bundler-webpack-plugin": "^4.16.0",
     "sass": "^1.83.4",
     "sass-loader": "^16.0.4",
     "ts-loader": "^9.5.2",
@@ -24,5 +22,9 @@
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.12.0",
+    "@types/webpack": "^5.28.5"
   }
 }
