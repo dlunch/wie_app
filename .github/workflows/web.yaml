@@ -32,8 +32,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: target
-          key: ${{ runner.os }}-${{ matrix.rust }}-build-target-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.rust }}-build-target-
+          key: ${{ runner.os }}-${{ matrix.rust }}-build-wasm-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.rust }}-build-wasm-target-
 
       - name: Cache .npm
         uses: actions/cache@v4

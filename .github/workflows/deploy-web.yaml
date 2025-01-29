@@ -37,15 +37,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cargo
-          key: ${{ runner.os }}-wasm-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-wasm-cargo-
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
 
       - name: Cache cargo build
         uses: actions/cache@v4
         with:
           path: target
-          key: ${{ runner.os }}-wasm-build-target-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-wasm-build-target-
+          key: ${{ runner.os }}-build-wasm-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-build-wasm-target-
 
       - name: Cache .npm
         uses: actions/cache@v4
