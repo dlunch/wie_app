@@ -5,12 +5,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "paths": {
-      "@pkg": ["./pkg"]
-    }
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
+      "@pkg": ["./pkg"],
+      "*": ["./src/ts/*"]
     }
   }
 }
