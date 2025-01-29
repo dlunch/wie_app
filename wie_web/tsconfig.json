@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src/ts",
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "module": "ESNext",
-    "target": "ESNext"
+    "target": "ESNext",
+    "paths": {
+      "@pkg": ["./pkg"]
+    }
   },
   "ts-node": {
     "compilerOptions": {

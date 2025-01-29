@@ -1,4 +1,4 @@
-import { WieWeb, WieWebBridge } from "./pkg";
+import { WieWeb, WieWebBridge } from "@pkg";
 
 class MidiPlayer {
   public note_on(channel_id: number, note: number, velocity: number) {

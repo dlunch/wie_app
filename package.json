@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "build:dev": "webpack --config webpack.config.dev.ts",
-    "build:prod": "webpack --config webpack.config.prod.ts",
-    "start": "webpack serve --open --config webpack.config.dev.ts"
+    "build:dev": "webpack --config wie_web/webpack.config.dev.ts",
+    "build:prod": "webpack --config wie_web/webpack.config.prod.ts",
+    "start": "webpack serve --open --config wie_web/webpack.config.dev.ts"
   },
   "author": "",
   "devDependencies": {
