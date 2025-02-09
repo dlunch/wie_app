@@ -96,18 +96,18 @@ checksum = "3b43422f69d8ff38f95f1b2bb76517c91589a924d1559a0e935d7c8ce0274c11"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
 name = "async-trait"
-version = "0.1.85"
+version = "0.1.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f934833b4b7233644e5848f235df3f57ed8c80f1528a26c3dfa13d2147fa056"
+checksum = "644dd749086bf3771a2fbc5f256fdb982d53f011c7d5d560304eafeecebce79d"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -131,7 +131,7 @@ dependencies = [
  "regex",
  "rustc-hash",
  "shlex",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -169,7 +169,7 @@ checksum = "3fa76293b4f7bb636ab88fd78228235b5248b4d05cc589aed610f954af5d7c7a"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -180,15 +180,15 @@ checksum = "8f1fe948ff07f4bd06c30984e69f5b4899c516a3ef74f34df92a2df2ab535495"
 
 [[package]]
 name = "bytes"
-version = "1.9.0"
+version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "325918d6fe32f23b19878fe4b34794ae41fc19ddbe53b10571a4874d44ffd39b"
+checksum = "f61dac84819c6588b558454b194026eb1f09c293b9036ae9b159e74e73ab6cf9"
 
 [[package]]
 name = "cc"
-version = "1.2.10"
+version = "1.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13208fcbb66eaeffe09b99fffbe1af420f00a7b35aa99ad683dfc1aa76145229"
+checksum = "c7777341816418c02e033934a09f20dc0ccaf65a5201ef8a450ae0105a573fda"
 dependencies = [
  "jobserver",
  "libc",
@@ -283,9 +283,9 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
 name = "core_maths"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e3b02505ccb8c50b0aa21ace0fc08c3e53adebd4e58caa18a36152803c7709a3"
+checksum = "77745e017f5edba1a9c1d854f6f3a52dac8a12dd5af5d2f54aecf61e43d80d30"
 dependencies = [
  "libm",
 ]
@@ -371,7 +371,7 @@ checksum = "30542c1ad912e0e3d22a1935c290e12e8a29d704a420177a31faad4a601a0800"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -382,20 +382,20 @@ checksum = "97369cbbc041bc366949bc74d34658d6cda5621039731c6310521892a3a20ae0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
 name = "dyn-clone"
-version = "1.0.17"
+version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d6ef0072f8a535281e4876be788938b528e9a1d43900b82c2569af7da799125"
+checksum = "feeef44e73baff3a26d371801df019877a9866a8c493d315ab00177843314f35"
 
 [[package]]
 name = "dyn-hash"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a650a461c6a8ff1ef205ed9a2ad56579309853fecefc2423f73dced342f92258"
+checksum = "0f0c23f46b192893998c459e1603a90f3232ec91d56f379273fecf2ccb67ffff"
 
 [[package]]
 name = "either"
@@ -661,7 +661,7 @@ checksum = "1ec89e9337638ecdc08744df490b221a7399bf8d164eb52a665454e60e075ad6"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1010,7 +1010,7 @@ checksum = "ed3955f1a9c7c0c15e092f9c887db08b1fc683305fdf6eb6684f22555355e202"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1040,7 +1040,7 @@ dependencies = [
  "proc-macro-crate",
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1068,9 +1068,9 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.20.2"
+version = "1.20.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1261fe7e33c73b354eab43b1273a57c8f967d0391e80353e51f764ac02cf6775"
+checksum = "945462a4b81e43c4e3ba96bd7b49d834c6f61198356aa858733bc4acf3cbe62e"
 
 [[package]]
 name = "overload"
@@ -1271,7 +1271,7 @@ checksum = "5a9bf7cf98d04a2b28aead066b7496853d4779c9cc183c440dbac457641e19a0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1346,9 +1346,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.96"
+version = "2.0.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d5d0adab1ae378d7f53bdebc67a39f1f151407ef230f0ce2883572f5d8985c80"
+checksum = "36147f1a48ae0ec2b5b3bc5b537d267457555a10dc06f3dbc8cb11ba3006d3b1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1363,7 +1363,7 @@ checksum = "c8af7666ab7b6390ab78131fb5b0fce11d6b7a6951602017c35fa82800708971"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1392,7 +1392,7 @@ checksum = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1403,7 +1403,7 @@ checksum = "26afc1baea8a989337eeb52b6e72a039780ce45c3edfcc9c5b9d112feeb173c2"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1466,9 +1466,9 @@ checksum = "0dd7358ecb8fc2f8d014bf86f6f638ce72ba252a2c3a2572f2a795f1d23efb41"
 
 [[package]]
 name = "toml_edit"
-version = "0.22.22"
+version = "0.22.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ae48d6208a266e853d946088ed816055e556cc6028c5e8e2b84d9fa5dd7c7f5"
+checksum = "02a8b472d1a3d7c18e2d61a489aee3453fd9031c33e4f55bd533f4a7adca1bee"
 dependencies = [
  "indexmap",
  "toml_datetime",
@@ -1494,7 +1494,7 @@ checksum = "395ae124c09f9e6918a2310af6038fba074bcf474ac352496d5910dd59a2226d"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
@@ -1622,7 +1622,7 @@ dependencies = [
  "log",
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
  "wasm-bindgen-shared",
 ]
 
@@ -1657,7 +1657,7 @@ checksum = "8ae87ea40c9f689fc23f209965b6fb8a99ad69aeeb0231408be24920604395de"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
@@ -1684,7 +1684,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -1702,7 +1702,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -1716,7 +1716,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1731,7 +1731,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1748,7 +1748,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -1771,7 +1771,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1794,7 +1794,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bitflags 2.8.0",
@@ -1813,7 +1813,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1830,7 +1830,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bitflags 2.8.0",
@@ -1849,7 +1849,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "bytemuck",
  "tracing",
@@ -1881,7 +1881,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -1894,7 +1894,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#7f0e78f6595810cbc0b64b5922de995a1b15f075"
+source = "git+https://github.com/dlunch/wie.git#f27b4634b0bb1127a72ef6d98913efc831f112fa"
 dependencies = [
  "async-trait",
  "bitflags 2.8.0",
@@ -2110,9 +2110,9 @@ checksum = "589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec"
 
 [[package]]
 name = "winnow"
-version = "0.6.25"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ad699df48212c6cc6eb4435f35500ac6fd3b9913324f938aea302022ce19d310"
+checksum = "86e376c75f4f43f44db463cf729e0d3acbf954d13e22c51e26e4c264b4ab545f"
 dependencies = [
  "memchr",
 ]
@@ -2149,7 +2149,7 @@ checksum = "2380878cad4ac9aac1e2435f3eb4020e8374b5f13c296cb75b4620ff8e229154"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
  "synstructure",
 ]
 
@@ -2170,7 +2170,7 @@ checksum = "595eed982f7d355beb85837f651fa22e90b3c044842dc7f2c2842c086f295808"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
  "synstructure",
 ]
 
@@ -2193,7 +2193,7 @@ checksum = "6eafa6dfb17584ea3e2bd6e76e0cc15ad7af12b09abdd1ca55961bed9b1063c6"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.96",
+ "syn 2.0.98",
 ]
 
 [[package]]
