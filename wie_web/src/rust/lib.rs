@@ -22,7 +22,7 @@ use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{prelude::*, JsError};
 use web_sys::HtmlCanvasElement;
 
-use wie_backend::{extract_zip, Emulator, Event, Instant, KeyCode, Platform, Screen};
+use wie_backend::{extract_zip, Emulator, Event, Instant, KeyCode, Options, Platform, Screen};
 use wie_j2me::J2MEEmulator;
 use wie_ktf::KtfEmulator;
 use wie_lgt::LgtEmulator;
@@ -128,14 +128,15 @@ impl WieWeb {
             let should_redraw = Arc::new(AtomicBool::new(true));
             let window = WindowImpl::new(canvas, should_redraw.clone());
             let platform = Box::new(WieWebPlatform::new(Box::new(window), bridge));
+            let options = Options { enable_gdbserver: false };
 
             let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {
                 let files = extract_zip(buf).unwrap();
 
                 if KtfEmulator::loadable_archive(&files) {
-                    Box::new(KtfEmulator::from_archive(platform, files)?)
+                    Box::new(KtfEmulator::from_archive(platform, files, options)?)
                 } else if LgtEmulator::loadable_archive(&files) {
-                    Box::new(LgtEmulator::from_archive(platform, files)?)
+                    Box::new(LgtEmulator::from_archive(platform, files, options)?)
                 } else if SktEmulator::loadable_archive(&files) {
                     Box::new(SktEmulator::from_archive(platform, files)?)
                 } else {
@@ -145,9 +146,23 @@ impl WieWeb {
                 let filename_without_ext = filename.trim_end_matches(".jar");
 
                 if KtfEmulator::loadable_jar(buf) {
-                    Box::new(KtfEmulator::from_jar(platform, filename, buf.to_vec(), filename_without_ext, None)?)
+                    Box::new(KtfEmulator::from_jar(
+                        platform,
+                        filename,
+                        buf.to_vec(),
+                        filename_without_ext,
+                        None,
+                        options,
+                    )?)
                 } else if LgtEmulator::loadable_jar(buf) {
-                    Box::new(LgtEmulator::from_jar(platform, filename, buf.to_vec(), filename_without_ext, None)?)
+                    Box::new(LgtEmulator::from_jar(
+                        platform,
+                        filename,
+                        buf.to_vec(),
+                        filename_without_ext,
+                        None,
+                        options,
+                    )?)
                 } else if SktEmulator::loadable_jar(buf) {
                     Box::new(SktEmulator::from_jar(platform, filename, buf.to_vec(), filename_without_ext, None)?)
                 } else {
