@@ -4,7 +4,7 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use wasm_bindgen::{Clamped, JsCast};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, ImageData};
 
-use wie_backend::{canvas::Image, Screen};
+use wie_backend::{Screen, canvas::Image};
 use wie_util::Result;
 
 pub struct WindowImpl {

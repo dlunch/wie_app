@@ -17,12 +17,12 @@ use core::{
 
 use hashbrown::HashMap;
 use rodio::{OutputStream, OutputStreamHandle};
-use tracing_subscriber::{filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt, Layer};
+use tracing_subscriber::{Layer, filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt};
 use tracing_web::MakeConsoleWriter;
-use wasm_bindgen::{prelude::*, JsError};
+use wasm_bindgen::{JsError, prelude::*};
 use web_sys::HtmlCanvasElement;
 
-use wie_backend::{extract_zip, Emulator, Event, Instant, KeyCode, Options, Platform, Screen};
+use wie_backend::{Emulator, Event, Instant, KeyCode, Options, Platform, Screen, extract_zip};
 use wie_j2me::J2MEEmulator;
 use wie_ktf::KtfEmulator;
 use wie_lgt::LgtEmulator;

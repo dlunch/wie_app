@@ -1,4 +1,4 @@
-use rodio::{buffer::SamplesBuffer, OutputStreamHandle, Sink};
+use rodio::{OutputStreamHandle, Sink, buffer::SamplesBuffer};
 use wasm_bindgen::JsValue;
 
 use super::WieWebBridge;
