@@ -59,6 +59,10 @@ jobs:
           toolchain: stable
           targets: wasm32-unknown-unknown
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+
       - name: npm install
         working-directory: ./wie_web
         run: npm install

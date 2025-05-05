@@ -2,6 +2,7 @@
   "name": "wie_web",
   "version": "0.1.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "build:dev": "webpack --config wie_web/webpack.config.dev.ts",
     "build:prod": "webpack --config wie_web/webpack.config.prod.ts",
@@ -15,7 +16,6 @@
     "sass": "^1.87.0",
     "sass-loader": "^16.0.5",
     "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "5.8.3",
     "webpack": "^5.99.7",
