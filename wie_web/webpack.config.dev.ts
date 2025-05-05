@@ -11,6 +11,7 @@ import commonConfig from "./webpack.config.common.ts";
 const config: webpack.Configuration = merge(commonConfig, {
   mode: "development",
   devServer: {
+    open: false,
     static: path.join(import.meta.dirname, "dist"),
     watchFiles: {
       paths: ["src/**/*.*"],

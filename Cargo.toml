@@ -1,7 +1,12 @@
 [workspace]
 resolver = "2"
 
-members = ["wie_web"]
+members = ["wie_web", "tauri"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2024"
+license = "Proprietary"
 
 [profile.dev]
 opt-level = 0
@@ -15,8 +20,3 @@ opt-level = 1
 [profile.release]
 lto = true
 strip = true
-
-[workspace.package]
-version = "0.0.1"
-edition = "2021"
-license = "Proprietary"
