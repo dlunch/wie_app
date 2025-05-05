@@ -6,12 +6,12 @@ import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
 import TsConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 const commonConfig: webpack.Configuration = {
-  context: path.resolve(__dirname),
+  context: import.meta.dirname,
   experiments: {
     futureDefaults: true,
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(import.meta.dirname, "dist"),
     clean: true,
   },
   ignoreWarnings: [
@@ -21,7 +21,7 @@ const commonConfig: webpack.Configuration = {
     extensions: [".ts", ".js"],
     plugins: [
       new TsConfigPathsPlugin({
-        configFile: path.resolve(__dirname, "./tsconfig.json"),
+        configFile: path.resolve(import.meta.dirname, "./tsconfig.json"),
       }),
     ],
   },
@@ -64,8 +64,8 @@ const commonConfig: webpack.Configuration = {
     }),
     new WasmPackPlugin({
       forceMode: "production",
-      crateDirectory: path.resolve(__dirname, "."),
-      outDir: path.resolve(__dirname, "./pkg"),
+      crateDirectory: path.resolve(import.meta.dirname, "."),
+      outDir: path.resolve(import.meta.dirname, "./pkg"),
       forceWatch: false,
     }),
   ],

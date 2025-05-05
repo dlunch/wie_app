@@ -1,7 +1,8 @@
 import webpack from "webpack";
-import merge from "webpack-merge";
+import { merge } from "webpack-merge";
 
-import commonConfig from "./webpack.config.common";
+// @ts-ignore: allowImportingTsExtensions
+import commonConfig from "./webpack.config.common.ts";
 
 const config: webpack.Configuration = merge(commonConfig, {
   mode: "production",
