@@ -65,7 +65,7 @@ const commonConfig: webpack.Configuration = {
     new WasmPackPlugin({
       forceMode: "production",
       crateDirectory: path.resolve(import.meta.dirname, "."),
-      extraArgs: "-- . -p wie_web",
+      outDir: path.resolve(import.meta.dirname, "./pkg"),
     }),
   ],
 };
