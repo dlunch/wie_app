@@ -11,20 +11,19 @@
   "dependencies": {
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "css-loader": "^7.1.2",
-    "html-bundler-webpack-plugin": "^4.16.0",
-    "sass": "^1.83.4",
-    "sass-loader": "^16.0.4",
+    "html-bundler-webpack-plugin": "^4.20.2",
+    "sass": "^1.87.0",
+    "sass-loader": "^16.0.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
-    "typescript": "^5.7.3",
-    "wasm-pack": "^0.13.1",
-    "webpack": "^5.97.1",
+    "typescript": "5.8.3",
+    "webpack": "^5.99.7",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "webpack-dev-server": "^5.2.1"
   },
   "devDependencies": {
-    "@types/node": "^22.12.0",
+    "@types/node": "^22.15.3",
     "@types/webpack": "^5.28.5"
   }
 }
