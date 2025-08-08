@@ -1610,9 +1610,9 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.15.4"
+version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5971ac85611da7067dbfcabef3c70ebb5606018acd9e2a3903a0da507521e0d5"
+checksum = "9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1"
 dependencies = [
  "allocator-api2",
  "equivalent",
@@ -1909,7 +1909,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cea70ddb795996207ad57735b50c5982d8844f38ba9ee5f1aedcfb708a2aa11e"
 dependencies = [
  "equivalent",
- "hashbrown 0.15.4",
+ "hashbrown 0.15.5",
  "serde",
 ]
 
@@ -1974,7 +1974,7 @@ dependencies = [
  "dyn-clone",
  "encoding_rs",
  "event-listener",
- "hashbrown 0.15.4",
+ "hashbrown 0.15.5",
  "java_class_proto",
  "java_constants",
  "jvm",
@@ -2072,7 +2072,7 @@ dependencies = [
  "bytemuck",
  "dyn-clone",
  "dyn-hash",
- "hashbrown 0.15.4",
+ "hashbrown 0.15.5",
  "java_constants",
  "nom",
  "parking_lot",
@@ -4992,7 +4992,7 @@ dependencies = [
  "ab_glyph",
  "async-trait",
  "bytemuck",
- "hashbrown 0.15.4",
+ "hashbrown 0.15.5",
  "image",
  "lazy_static",
  "num-traits",
@@ -5171,7 +5171,7 @@ version = "0.0.1"
 dependencies = [
  "anyhow",
  "console_error_panic_hook",
- "hashbrown 0.15.4",
+ "hashbrown 0.15.5",
  "js-sys",
  "rodio",
  "time",
