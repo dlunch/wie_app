@@ -26,7 +26,11 @@ impl Database {
 
 impl wie_backend::Database for Database {
     fn add(&mut self, _data: &[u8]) -> RecordId {
-        0
+        1
+    }
+
+    fn next_id(&self) -> RecordId {
+        1
     }
 
     fn get(&self, _id: RecordId) -> Option<Vec<u8>> {

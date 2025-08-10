@@ -17,7 +17,7 @@ use core::{
 };
 
 use hashbrown::HashMap;
-use rodio::{OutputStream, OutputStreamHandle};
+use rodio::{OutputStream, OutputStreamBuilder};
 use tracing_subscriber::{Layer, filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt};
 use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{JsError, prelude::*};
@@ -62,8 +62,7 @@ struct WieWebPlatform {
     bridge: WieWebBridge,
     database_repository: DatabaseRepository,
     window: Box<dyn Screen>,
-    _output_stream: OutputStream,
-    output_stream_handle: OutputStreamHandle,
+    output_stream: OutputStream,
 }
 
 // XXX we're on single thread
@@ -72,13 +71,12 @@ unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
     fn new(window: Box<dyn Screen>, bridge: WieWebBridge) -> Self {
-        let (output_stream, output_stream_handle) = OutputStream::try_default().unwrap();
+        let output_stream = OutputStreamBuilder::open_default_stream().unwrap();
         Self {
             bridge,
             database_repository: DatabaseRepository::new(),
             window,
-            _output_stream: output_stream,
-            output_stream_handle,
+            output_stream,
         }
     }
 }
@@ -100,7 +98,7 @@ impl Platform for WieWebPlatform {
     }
 
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
-        Box::new(AudioSink::new(&self.output_stream_handle, self.bridge.clone()))
+        Box::new(AudioSink::new(&self.output_stream, self.bridge.clone()))
     }
 
     fn write_stdout(&self, data: &[u8]) {
@@ -112,6 +110,8 @@ impl Platform for WieWebPlatform {
         let string = str::from_utf8(data).unwrap();
         tracing::info!("{}", string);
     }
+
+    fn exit(&self) {}
 }
 
 #[wasm_bindgen]

@@ -25,7 +25,7 @@ tracing = { version = "^0.1", default-features = false, features = ["release_max
 wasm-bindgen = { version = "^0.2" }
 js-sys = { version = "^0.3" }
 web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
-rodio = { version = "^0.21", features = ["wasm-bindgen"], default-features = false }
+rodio = { version = "^0.21", features = ["playback", "wasm-bindgen"], default-features = false }
 hashbrown = { version = "^0.15" }
 
 wie_backend = { git = "https://github.com/dlunch/wie.git" }

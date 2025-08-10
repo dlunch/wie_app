@@ -1,4 +1,6 @@
-use rodio::{OutputStreamHandle, Sink, buffer::SamplesBuffer};
+use alloc::vec::Vec;
+
+use rodio::{OutputStream, Sink, buffer::SamplesBuffer, conversions::SampleTypeConverter};
 use wasm_bindgen::JsValue;
 
 use super::WieWebBridge;
@@ -13,15 +15,19 @@ unsafe impl Sync for AudioSink {}
 unsafe impl Send for AudioSink {}
 
 impl AudioSink {
-    pub fn new(stream_handle: &OutputStreamHandle, bridge: WieWebBridge) -> Self {
-        let sink = Sink::try_new(stream_handle).unwrap();
+    pub fn new(stream: &OutputStream, bridge: WieWebBridge) -> Self {
+        let sink = Sink::connect_new(stream.mixer());
         Self { bridge, sink }
     }
 }
 
 impl wie_backend::AudioSink for AudioSink {
     fn play_wave(&self, channel: u8, sampling_rate: u32, wave_data: &[i16]) {
-        let buffer = SamplesBuffer::new(channel as _, sampling_rate as _, wave_data);
+        let buffer = SamplesBuffer::new(
+            channel as _,
+            sampling_rate as _,
+            SampleTypeConverter::new(wave_data.iter().copied()).collect::<Vec<_>>(),
+        );
 
         self.sink.append(buffer);
     }
