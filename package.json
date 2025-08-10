@@ -4,9 +4,9 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build:dev": "webpack --config wie_web/webpack.config.dev.ts",
-    "build:prod": "webpack --config wie_web/webpack.config.prod.ts",
-    "start": "webpack serve --config wie_web/webpack.config.dev.ts"
+    "build:dev": "webpack --config wie_web/webpack.config.dev.ts --disable-interpret",
+    "build:prod": "webpack --config wie_web/webpack.config.prod.ts --disable-interpret",
+    "start": "webpack serve --config wie_web/webpack.config.dev.ts --disable-interpret"
   },
   "author": "",
   "dependencies": {
