@@ -11,6 +11,6 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "npm"
-    directory: "/wie_web"
+    directory: "/"
     schedule:
       interval: "daily"
