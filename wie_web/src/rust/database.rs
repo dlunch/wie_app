@@ -10,8 +10,9 @@ impl DatabaseRepository {
     }
 }
 
+#[async_trait::async_trait]
 impl wie_backend::DatabaseRepository for DatabaseRepository {
-    fn open(&self, _name: &str, _app_id: &str) -> Box<dyn wie_backend::Database> {
+    async fn open(&self, _name: &str, _app_id: &str) -> Box<dyn wie_backend::Database> {
         Box::new(Database::new().unwrap())
     }
 }
@@ -24,28 +25,29 @@ impl Database {
     }
 }
 
+#[async_trait::async_trait]
 impl wie_backend::Database for Database {
-    fn add(&mut self, _data: &[u8]) -> RecordId {
+    async fn add(&mut self, _data: &[u8]) -> RecordId {
         1
     }
 
-    fn next_id(&self) -> RecordId {
+    async fn next_id(&self) -> RecordId {
         1
     }
 
-    fn get(&self, _id: RecordId) -> Option<Vec<u8>> {
+    async fn get(&self, _id: RecordId) -> Option<Vec<u8>> {
         None
     }
 
-    fn set(&mut self, _id: RecordId, _data: &[u8]) -> bool {
+    async fn set(&mut self, _id: RecordId, _data: &[u8]) -> bool {
         true
     }
 
-    fn delete(&mut self, _id: RecordId) -> bool {
+    async fn delete(&mut self, _id: RecordId) -> bool {
         true
     }
 
-    fn get_record_ids(&self) -> Vec<RecordId> {
+    async fn get_record_ids(&self) -> Vec<RecordId> {
         Vec::new()
     }
 }
