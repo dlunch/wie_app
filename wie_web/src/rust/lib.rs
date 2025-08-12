@@ -31,35 +31,7 @@ use wie_skt::SktEmulator;
 
 use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowImpl};
 
-#[wasm_bindgen]
-#[derive(Clone)]
-pub struct WieWebBridge {
-    midi_note_on: js_sys::Function,
-    midi_note_off: js_sys::Function,
-    midi_control_change: js_sys::Function,
-    midi_program_change: js_sys::Function,
-}
-
-#[wasm_bindgen]
-impl WieWebBridge {
-    #[wasm_bindgen(constructor)]
-    pub fn new(
-        midi_note_on: js_sys::Function,
-        midi_note_off: js_sys::Function,
-        midi_control_change: js_sys::Function,
-        midi_program_change: js_sys::Function,
-    ) -> Self {
-        Self {
-            midi_note_on,
-            midi_note_off,
-            midi_control_change,
-            midi_program_change,
-        }
-    }
-}
-
 struct WieWebPlatform {
-    bridge: WieWebBridge,
     database_repository: DatabaseRepository,
     window: Box<dyn Screen>,
     output_stream: OutputStream,
@@ -70,10 +42,9 @@ unsafe impl Sync for WieWebPlatform {}
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
-    fn new(window: Box<dyn Screen>, bridge: WieWebBridge) -> Self {
+    fn new(window: Box<dyn Screen>) -> Self {
         let output_stream = OutputStreamBuilder::open_default_stream().unwrap();
         Self {
-            bridge,
             database_repository: DatabaseRepository::new(),
             window,
             output_stream,
@@ -98,7 +69,7 @@ impl Platform for WieWebPlatform {
     }
 
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
-        Box::new(AudioSink::new(&self.output_stream, self.bridge.clone()))
+        Box::new(AudioSink::new(&self.output_stream))
     }
 
     fn write_stdout(&self, data: &[u8]) {
@@ -124,11 +95,11 @@ pub struct WieWeb {
 #[wasm_bindgen]
 impl WieWeb {
     #[wasm_bindgen(constructor)]
-    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement, bridge: WieWebBridge) -> Result<WieWeb, JsError> {
+    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
         (move || {
             let should_redraw = Arc::new(AtomicBool::new(true));
             let window = WindowImpl::new(canvas, should_redraw.clone());
-            let platform = Box::new(WieWebPlatform::new(Box::new(window), bridge));
+            let platform = Box::new(WieWebPlatform::new(Box::new(window)));
             let options = Options { enable_gdbserver: false };
 
             let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {

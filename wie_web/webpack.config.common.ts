@@ -22,6 +22,7 @@ const commonConfig: webpack.Configuration = {
     plugins: [
       new TsConfigPathsPlugin({
         configFile: path.resolve(import.meta.dirname, "./tsconfig.json"),
+        extensions: [".ts", ".js"],
       }),
     ],
   },

@@ -1,12 +1,27 @@
 use alloc::vec::Vec;
 
 use rodio::{OutputStream, Sink, buffer::SamplesBuffer, conversions::SampleTypeConverter};
-use wasm_bindgen::JsValue;
+use wasm_bindgen::prelude::*;
 
-use super::WieWebBridge;
+#[wasm_bindgen(module = "midi.ts")]
+extern "C" {
+    type MidiPlayer;
+
+    #[wasm_bindgen(constructor)]
+    fn new() -> MidiPlayer;
+
+    #[wasm_bindgen(method)]
+    fn note_on(this: &MidiPlayer, channel_id: u8, note: u8, velocity: u8);
+    #[wasm_bindgen(method)]
+    fn note_off(this: &MidiPlayer, channel_id: u8, note: u8, velocity: u8);
+    #[wasm_bindgen(method)]
+    fn control_change(this: &MidiPlayer, channel_id: u8, control: u8, value: u8);
+    #[wasm_bindgen(method)]
+    fn program_change(this: &MidiPlayer, channel_id: u8, program: u8);
+}
 
 pub struct AudioSink {
-    bridge: WieWebBridge,
+    midi_player: MidiPlayer,
     sink: Sink,
 }
 
@@ -15,9 +30,12 @@ unsafe impl Sync for AudioSink {}
 unsafe impl Send for AudioSink {}
 
 impl AudioSink {
-    pub fn new(stream: &OutputStream, bridge: WieWebBridge) -> Self {
+    pub fn new(stream: &OutputStream) -> Self {
         let sink = Sink::connect_new(stream.mixer());
-        Self { bridge, sink }
+        Self {
+            midi_player: MidiPlayer::new(),
+            sink,
+        }
     }
 }
 
@@ -33,30 +51,18 @@ impl wie_backend::AudioSink for AudioSink {
     }
 
     fn midi_note_on(&self, channel_id: u8, note: u8, velocity: u8) {
-        self.bridge
-            .midi_note_on
-            .call3(&JsValue::null(), &channel_id.into(), &note.into(), &velocity.into())
-            .unwrap();
+        self.midi_player.note_on(channel_id, note, velocity);
     }
 
     fn midi_note_off(&self, channel_id: u8, note: u8, velocity: u8) {
-        self.bridge
-            .midi_note_off
-            .call3(&JsValue::null(), &channel_id.into(), &note.into(), &velocity.into())
-            .unwrap();
+        self.midi_player.note_off(channel_id, note, velocity);
     }
 
     fn midi_control_change(&self, channel_id: u8, control: u8, value: u8) {
-        self.bridge
-            .midi_control_change
-            .call3(&JsValue::null(), &channel_id.into(), &control.into(), &value.into())
-            .unwrap();
+        self.midi_player.control_change(channel_id, control, value);
     }
 
     fn midi_program_change(&self, channel_id: u8, program: u8) {
-        self.bridge
-            .midi_program_change
-            .call2(&JsValue::null(), &channel_id.into(), &program.into())
-            .unwrap();
+        self.midi_player.program_change(channel_id, program);
     }
 }
