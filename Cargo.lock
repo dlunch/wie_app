@@ -5317,6 +5317,7 @@ dependencies = [
  "tracing-subscriber",
  "tracing-web",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "web-sys",
  "wie_backend",
  "wie_j2me",

@@ -1,6 +1,29 @@
 use alloc::{boxed::Box, vec::Vec};
 
+use js_sys::Int32Array;
+use wasm_bindgen::prelude::*;
+
 use wie_backend::RecordId;
+
+#[wasm_bindgen(module = "database.ts")]
+extern "C" {
+    type IndexedDBStore;
+
+    #[wasm_bindgen(static_method_of = IndexedDBStore)]
+    async fn open(db_name: &str, store_name: &str) -> IndexedDBStore;
+
+    #[wasm_bindgen(method)]
+    async fn get_record_ids(this: &IndexedDBStore) -> Int32Array; // Vec<RecordId>
+
+    #[wasm_bindgen(method)]
+    async fn set(this: &IndexedDBStore, id: RecordId, data: &[u8]);
+
+    #[wasm_bindgen(method)]
+    async fn get(this: &IndexedDBStore, id: RecordId) -> JsValue; // Option<Vec<u8>>
+
+    #[wasm_bindgen(method)]
+    async fn delete(this: &IndexedDBStore, id: RecordId);
+}
 
 pub struct DatabaseRepository {}
 
