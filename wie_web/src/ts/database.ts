@@ -22,6 +22,11 @@ class IndexedDBStore {
       request.onerror = (event) => {
         reject((event.target as IDBOpenDBRequest).error);
       };
+
+      request.onupgradeneeded = (event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+        db.createObjectStore(store_name);
+      };
     });
   }
 
