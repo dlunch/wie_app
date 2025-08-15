@@ -1,4 +1,4 @@
-class IndexedDBStore {
+export class IndexedDBStore {
   private db: IDBDatabase;
   private store_name: string;
 

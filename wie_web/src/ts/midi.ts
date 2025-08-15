@@ -1,4 +1,4 @@
-class MidiPlayer {
+export class MidiPlayer {
   constructor() {}
 
   public note_on(channel_id: number, note: number, velocity: number) {
