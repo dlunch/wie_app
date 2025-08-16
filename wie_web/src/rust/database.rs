@@ -12,7 +12,7 @@ extern "C" {
     type IndexedDBStore;
 
     #[wasm_bindgen(static_method_of = IndexedDBStore)]
-    async fn open(db_name: &str, store_name: &str) -> IndexedDBStore;
+    async fn open(store_name: &str, key_prefix: &str) -> IndexedDBStore;
 
     #[wasm_bindgen(method)]
     async fn get_record_ids(this: &IndexedDBStore) -> Int32Array; // Vec<RecordId>
