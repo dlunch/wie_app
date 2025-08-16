@@ -5,6 +5,10 @@ export class IndexedDBStore {
   private constructor(db: IDBDatabase, store_name: string) {
     this.db = db;
     this.store_name = store_name;
+
+    try {
+      this.db.createObjectStore(this.store_name);
+    } catch (e) {} // create object store always
   }
 
   public static open(
@@ -21,11 +25,6 @@ export class IndexedDBStore {
 
       request.onerror = (event) => {
         reject((event.target as IDBOpenDBRequest).error);
-      };
-
-      request.onupgradeneeded = (event) => {
-        const db = (event.target as IDBOpenDBRequest).result;
-        db.createObjectStore(store_name);
       };
     });
   }
