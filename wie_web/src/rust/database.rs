@@ -81,7 +81,7 @@ impl wie_backend::Database for Database {
         let db: IndexedDBStore = self.db.clone().into();
         let data = run_js_future(&self.system, async move { db.get(id).await }).await.into_inner();
 
-        if data.is_null() {
+        if data.is_undefined() {
             None
         } else {
             let array: Uint8Array = data.into();
