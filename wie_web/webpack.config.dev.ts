@@ -10,6 +10,7 @@ import commonConfig from "./webpack.config.common.ts";
 
 const config: webpack.Configuration = merge(commonConfig, {
   mode: "development",
+  devtool: "eval-source-map",
   devServer: {
     open: false,
     static: path.join(import.meta.dirname, "dist"),
