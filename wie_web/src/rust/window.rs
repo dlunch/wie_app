@@ -13,6 +13,7 @@ pub struct WindowImpl {
 }
 
 unsafe impl Send for WindowImpl {} // XXX We're on wasm, so it's fine
+unsafe impl Sync for WindowImpl {}
 
 impl WindowImpl {
     pub fn new(canvas: HtmlCanvasElement, should_redraw: Arc<AtomicBool>) -> Self {
@@ -27,7 +28,7 @@ impl Screen for WindowImpl {
         Ok(())
     }
 
-    fn paint(&mut self, image: &dyn Image) {
+    fn paint(&self, image: &dyn Image) {
         let context = self
             .canvas
             .get_context("2d")

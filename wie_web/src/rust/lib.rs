@@ -34,7 +34,7 @@ use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowIm
 
 struct WieWebPlatform {
     database_repository: DatabaseRepository,
-    window: Box<dyn Screen>,
+    window: WindowImpl,
     output_stream: OutputStream,
 }
 
@@ -43,7 +43,7 @@ unsafe impl Sync for WieWebPlatform {}
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
-    fn new(window: Box<dyn Screen>) -> Self {
+    fn new(window: WindowImpl) -> Self {
         let output_stream = OutputStreamBuilder::open_default_stream().unwrap();
         Self {
             database_repository: DatabaseRepository::new(),
@@ -54,8 +54,8 @@ impl WieWebPlatform {
 }
 
 impl Platform for WieWebPlatform {
-    fn screen(&mut self) -> &mut dyn Screen {
-        self.window.as_mut()
+    fn screen(&self) -> &dyn Screen {
+        &self.window
     }
 
     fn now(&self) -> Instant {
@@ -100,7 +100,7 @@ impl WieWeb {
         (move || {
             let should_redraw = Arc::new(AtomicBool::new(true));
             let window = WindowImpl::new(canvas, should_redraw.clone());
-            let platform = Box::new(WieWebPlatform::new(Box::new(window)));
+            let platform = Box::new(WieWebPlatform::new(window));
             let options = Options { enable_gdbserver: false };
 
             let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {
