@@ -10,7 +10,6 @@ wasm-opt = ["-O", "--enable-bulk-memory", "--enable-nontrapping-float-to-int"]
 [package.metadata.wasm-pack.profile.profiling]
 wasm-opt = ["-O", "-g", "--enable-bulk-memory", "--enable-nontrapping-float-to-int"]
 
-
 [lib]
 crate-type = ["cdylib"]
 path = "src/rust/lib.rs"
