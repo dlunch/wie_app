@@ -3,6 +3,7 @@ extern crate alloc;
 
 mod audio_sink;
 mod database;
+mod util;
 mod window;
 
 use alloc::{

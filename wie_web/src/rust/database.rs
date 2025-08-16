@@ -1,11 +1,11 @@
 use alloc::{boxed::Box, format, string::ToString, vec::Vec};
 
 use js_sys::{Int32Array, Uint8Array};
-use tokio::sync::oneshot;
 use wasm_bindgen::prelude::*;
 
-use wasm_bindgen_futures::spawn_local;
-use wie_backend::RecordId;
+use wie_backend::{RecordId, System};
+
+use crate::util::run_js_future;
 
 #[wasm_bindgen(module = "database.ts")]
 extern "C" {
@@ -18,7 +18,7 @@ extern "C" {
     async fn get_record_ids(this: &IndexedDBStore) -> Int32Array; // Vec<RecordId>
 
     #[wasm_bindgen(method)]
-    async fn set(this: &IndexedDBStore, id: RecordId, data: &[u8]);
+    async fn set(this: &IndexedDBStore, id: RecordId, data: Uint8Array);
 
     #[wasm_bindgen(method)]
     async fn get(this: &IndexedDBStore, id: RecordId) -> JsValue; // Option<Vec<u8>>
@@ -40,30 +40,25 @@ impl DatabaseRepository {
 
 #[async_trait::async_trait]
 impl wie_backend::DatabaseRepository for DatabaseRepository {
-    async fn open(&self, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
-        Box::new(Database::new(name, app_id).await.unwrap())
+    async fn open(&self, system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
+        Box::new(Database::new(system, name, app_id).await.unwrap())
     }
 }
 
 pub struct Database {
+    system: System,
     db: IndexedDBStore,
 }
-impl Database {
-    pub async fn new(name: &str, app_id: &str) -> anyhow::Result<Self> {
-        let (tx, rx) = oneshot::channel();
 
+impl Database {
+    pub async fn new(system: &System, name: &str, app_id: &str) -> anyhow::Result<Self> {
         let db_name = format!("wie_{app_id}");
         let name = name.to_string();
-        spawn_local(async move {
-            // wasm async method is not Send, so we have to work around it
-            let db = IndexedDBStore::open(&db_name, &name).await;
+        let db = run_js_future(system, async move { IndexedDBStore::open(&db_name, &name).await })
+            .await
+            .into_inner();
 
-            tx.send(db).unwrap_or_else(|_| panic!())
-        });
-
-        let db = rx.await.unwrap();
-
-        Ok(Self { db })
+        Ok(Self { system: system.clone(), db })
     }
 }
 
@@ -83,60 +78,36 @@ impl wie_backend::Database for Database {
     }
 
     async fn get(&self, id: RecordId) -> Option<Vec<u8>> {
-        let (tx, rx) = oneshot::channel();
-
         let db: IndexedDBStore = self.db.clone().into();
-        spawn_local(async move {
-            let data = db.get(id).await;
+        let data = run_js_future(&self.system, async move { db.get(id).await }).await.into_inner();
 
-            let result = if data.is_null() {
-                None
-            } else {
-                let array: Uint8Array = data.into();
-                Some(array.to_vec())
-            };
-
-            tx.send(result).unwrap();
-        });
-
-        rx.await.unwrap()
+        if data.is_null() {
+            None
+        } else {
+            let array: Uint8Array = data.into();
+            Some(array.to_vec())
+        }
     }
 
     async fn set(&mut self, id: RecordId, data: &[u8]) -> bool {
-        let (tx, rx) = oneshot::channel();
-
         let db: IndexedDBStore = self.db.clone().into();
-        let data = data.to_vec();
-        spawn_local(async move {
-            db.set(id, &data).await;
-            tx.send(true).unwrap();
-        });
+        let data = Uint8Array::from(data);
+        run_js_future(&self.system, async move { db.set(id, data).await }).await;
 
-        rx.await.unwrap()
+        true
     }
 
     async fn delete(&mut self, id: RecordId) -> bool {
-        let (tx, rx) = oneshot::channel();
-
         let db: IndexedDBStore = self.db.clone().into();
-        spawn_local(async move {
-            db.delete(id).await;
-            tx.send(true).unwrap();
-        });
+        run_js_future(&self.system, async move { db.delete(id).await }).await;
 
-        rx.await.unwrap()
+        true
     }
 
     async fn get_record_ids(&self) -> Vec<RecordId> {
-        let (tx, rx) = oneshot::channel();
-
         let db: IndexedDBStore = self.db.clone().into();
-        spawn_local(async move {
-            let ids = db.get_record_ids().await;
-            let ids_vec = ids.to_vec().into_iter().map(|id| id as _).collect();
-            tx.send(ids_vec).unwrap();
-        });
+        let ids = run_js_future(&self.system, async move { db.get_record_ids().await }).await.into_inner();
 
-        rx.await.unwrap()
+        ids.to_vec().into_iter().map(|id| id as RecordId).collect()
     }
 }
