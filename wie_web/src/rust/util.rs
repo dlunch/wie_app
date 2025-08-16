@@ -52,9 +52,7 @@ where
 
     async move {
         while !result.is_set() {
-            let now = system.platform().now();
-            let due = now + 10;
-            system.sleep(due).await;
+            system.sleep(1).await;
         }
 
         result
