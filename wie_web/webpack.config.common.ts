@@ -64,7 +64,6 @@ const commonConfig: webpack.Configuration = {
       },
     }),
     new WasmPackPlugin({
-      forceMode: "production",
       crateDirectory: path.resolve(import.meta.dirname, "."),
       outDir: path.resolve(import.meta.dirname, "./pkg"),
     }),

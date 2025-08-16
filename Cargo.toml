@@ -9,13 +9,7 @@ edition = "2024"
 license = "Proprietary"
 
 [profile.dev]
-opt-level = 0
-
-[profile.dev.package.wie_core_arm]
-opt-level = 1
-
-[profile.dev.package.arm32_cpu]
-opt-level = 1
+opt-level = 3
 
 [profile.release]
 lto = true
