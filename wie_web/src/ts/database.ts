@@ -14,7 +14,7 @@ export class IndexedDBStore {
     key_prefix: string
   ): Promise<IndexedDBStore> {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("wie");
+      const request = indexedDB.open(store_name);
 
       request.onsuccess = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
