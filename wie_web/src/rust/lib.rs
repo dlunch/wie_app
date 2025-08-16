@@ -209,7 +209,7 @@ pub fn start() {
         .with_ansi(false)
         .with_timer(UtcTime::rfc_3339())
         .with_writer(MakeConsoleWriter)
-        .with_filter(LevelFilter::ERROR);
+        .with_filter(LevelFilter::INFO);
 
     tracing_subscriber::registry().with(fmt_layer).init();
 }
