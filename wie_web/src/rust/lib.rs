@@ -125,6 +125,7 @@ impl WieWeb {
                         &filename_without_path,
                         buf.to_vec(),
                         filename_without_ext,
+                        filename_without_ext,
                         None,
                         options,
                     )?)
@@ -133,6 +134,7 @@ impl WieWeb {
                         platform,
                         &filename_without_path,
                         buf.to_vec(),
+                        filename_without_ext,
                         filename_without_ext,
                         None,
                         options,
