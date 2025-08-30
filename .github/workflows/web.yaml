@@ -11,7 +11,7 @@ name: Web CI
 
 jobs:
   web_ci:
-    runs-on: ubuntu-latest
+    runs-on: wie-app-runner
     strategy:
       matrix:
         rust: [stable]
@@ -54,6 +54,9 @@ jobs:
       - name: npm install
         working-directory: ./wie_web
         run: npm install
+
+      - name: Install required packages
+        run: sudo apt update;sudo apt install -y --no-install-recommends build-essential
 
       - name: Build
         working-directory: ./wie_web

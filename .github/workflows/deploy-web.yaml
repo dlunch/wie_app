@@ -23,7 +23,7 @@ concurrency:
 jobs:
   deploy:
     if: github.repository == 'dlunch/wie_app'
-    runs-on: ubuntu-latest
+    runs-on: wie-app-runner
     permissions:
       contents: read
       deployments: write
@@ -66,6 +66,9 @@ jobs:
       - name: npm install
         working-directory: ./wie_web
         run: npm install
+
+      - name: Install required packages
+        run: sudo apt update;sudo apt install -y --no-install-recommends build-essential
 
       - name: Build
         if: github.ref == 'refs/heads/release'

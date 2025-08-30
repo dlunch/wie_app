@@ -4,7 +4,7 @@ on:
     - cron: "0 0 * * *"
 jobs:
   audit:
-    runs-on: ubuntu-latest
+    runs-on: wie-app-runner
     steps:
       - name: Cache cargo registry
         uses: actions/cache@v4
