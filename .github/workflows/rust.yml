@@ -11,7 +11,7 @@ name: Rust CI
 
 jobs:
   rust_ci:
-    runs-on: wie-app-runner
+    runs-on: arc-runner
     strategy:
       matrix:
         rust: [stable]

@@ -22,8 +22,8 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.repository == 'dlunch/wie_app'
-    runs-on: wie-app-runner
+    if: github.repository == 'dlunchp/wie_app'
+    runs-on: arc-runner
     permissions:
       contents: read
       deployments: write
