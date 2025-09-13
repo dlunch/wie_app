@@ -1,5 +1,26 @@
 import { WieWeb } from "@pkg";
 
+const key_map = {
+  Digit1: "1",
+  Digit2: "2",
+  Digit3: "3",
+  KeyQ: "4",
+  KeyW: "5",
+  KeyE: "6",
+  KeyA: "7",
+  KeyS: "8",
+  KeyD: "9",
+  KeyZ: "*",
+  KeyX: "0",
+  KeyC: "#",
+  Backspace: "CLR",
+  ArrowUp: "UP",
+  ArrowLeft: "LEFT",
+  ArrowRight: "RIGHT",
+  ArrowDown: "DOWN",
+  Space: "OK",
+};
+
 const main = () => {
   const file = document.getElementById("file") as HTMLInputElement;
   const button = document.getElementById("start") as HTMLButtonElement;
@@ -44,6 +65,18 @@ const main = () => {
               wie_web.key_up(key);
             });
           }
+          document.addEventListener("keydown", (e) => {
+            if (key_map[e.code]) {
+              e.preventDefault();
+              wie_web.key_down(key_map[e.code]);
+            }
+          });
+          document.addEventListener("keyup", (e) => {
+            if (key_map[e.code]) {
+              e.preventDefault();
+              wie_web.key_up(key_map[e.code]);
+            }
+          });
           const update = () => {
             try {
               wie_web.update();
