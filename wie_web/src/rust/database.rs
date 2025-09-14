@@ -1,4 +1,9 @@
-use alloc::{boxed::Box, format, string::ToString, vec::Vec};
+use alloc::{
+    boxed::Box,
+    format,
+    string::{String, ToString},
+    vec::Vec,
+};
 
 use js_sys::{Int32Array, Uint8Array};
 use wasm_bindgen::prelude::*;
@@ -13,6 +18,9 @@ extern "C" {
 
     #[wasm_bindgen(static_method_of = IndexedDBStore)]
     async fn open(store_name: &str, key_prefix: &str) -> IndexedDBStore;
+
+    #[wasm_bindgen(static_method_of = IndexedDBStore)]
+    async fn exists(store_name: &str, key_prefix: &str) -> JsValue; // bool
 
     #[wasm_bindgen(method)]
     async fn get_record_ids(this: &IndexedDBStore) -> Int32Array; // Vec<RecordId>
@@ -41,7 +49,21 @@ impl DatabaseRepository {
 #[async_trait::async_trait]
 impl wie_backend::DatabaseRepository for DatabaseRepository {
     async fn open(&self, system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
-        Box::new(Database::new(system, name, app_id).await.unwrap())
+        let db_name = format!("wie_{app_id}");
+        let key_prefix = name.to_string();
+
+        Box::new(Database::new(system, db_name, key_prefix).await.unwrap())
+    }
+
+    async fn exists(&self, system: &System, name: &str, app_id: &str) -> bool {
+        let db_name = format!("wie_{app_id}");
+        let key_prefix = name.to_string();
+
+        run_js_future(system, async move { IndexedDBStore::exists(&db_name, &key_prefix).await })
+            .await
+            .into_inner()
+            .as_bool()
+            .unwrap()
     }
 }
 
@@ -51,10 +73,8 @@ pub struct Database {
 }
 
 impl Database {
-    pub async fn new(system: &System, name: &str, app_id: &str) -> anyhow::Result<Self> {
-        let db_name = format!("wie_{app_id}");
-        let name = name.to_string();
-        let db = run_js_future(system, async move { IndexedDBStore::open(&db_name, &name).await })
+    pub async fn new(system: &System, db_name: String, key_prefix: String) -> anyhow::Result<Self> {
+        let db = run_js_future(system, async move { IndexedDBStore::open(&db_name, &key_prefix).await })
             .await
             .into_inner();
 

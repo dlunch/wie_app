@@ -32,6 +32,30 @@ export class IndexedDBStore {
     });
   }
 
+  public static async exists(
+    store_name: string,
+    key_prefix: string
+  ): Promise<boolean> {
+    const db = await this.open(store_name, key_prefix);
+
+    const ids: string[] = await new Promise((resolve, reject) => {
+      const transaction = db.db.transaction(store_name, "readonly");
+      const store = transaction.objectStore(store_name);
+      const request = store.getAllKeys();
+
+      request.onsuccess = (event) => {
+        const result = (event.target as IDBRequest).result as string[];
+        resolve(result);
+      };
+
+      request.onerror = (event) => {
+        reject((event.target as IDBRequest).error);
+      };
+    });
+
+    return ids.filter((x) => x.startsWith(key_prefix)).length > 0;
+  }
+
   public get_record_ids(): Promise<Int32Array> {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(this.store_name, "readonly");
@@ -39,9 +63,12 @@ export class IndexedDBStore {
       const request = store.getAllKeys();
 
       request.onsuccess = (event) => {
-        const result = (event.target as IDBRequest).result as Array<string>;
+        const result = (event.target as IDBRequest).result as string[];
         const ids = new Int32Array(
-          result.map((x) => x.replace(this.key_prefix, "")).map(Number)
+          result
+            .filter((x) => x.startsWith(this.key_prefix))
+            .map((x) => x.replace(this.key_prefix, ""))
+            .map(Number)
         );
         resolve(ids);
       };
