@@ -24,7 +24,7 @@ jobs:
       - name: Install packages
         run: sudo apt update;sudo apt install -y --no-install-recommends libwebkit2gtk-4.1-dev libasound2-dev build-essential zstd
 
-      - name: Restorecache cargo
+      - name: Restore cache cargo
         uses: actions/cache/restore@v4
         with:
           path: ~/.cargo
