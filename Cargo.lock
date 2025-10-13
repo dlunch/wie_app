@@ -548,7 +548,7 @@ dependencies = [
 [[package]]
 name = "classfile"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#72e26877bc8bb134b4b2f10ab57bb18673ee926f"
+source = "git+https://github.com/dlunch/RustJava.git#01397e18b1c9ad4897fff959ed3e73728906e43e"
 dependencies = [
  "java_constants",
  "nom",
@@ -1969,7 +1969,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 [[package]]
 name = "java_class_proto"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#72e26877bc8bb134b4b2f10ab57bb18673ee926f"
+source = "git+https://github.com/dlunch/RustJava.git#01397e18b1c9ad4897fff959ed3e73728906e43e"
 dependencies = [
  "async-trait",
  "dyn-clone",
@@ -1980,7 +1980,7 @@ dependencies = [
 [[package]]
 name = "java_constants"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#72e26877bc8bb134b4b2f10ab57bb18673ee926f"
+source = "git+https://github.com/dlunch/RustJava.git#01397e18b1c9ad4897fff959ed3e73728906e43e"
 dependencies = [
  "bitflags 2.9.4",
 ]
@@ -1988,7 +1988,7 @@ dependencies = [
 [[package]]
 name = "java_runtime"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#72e26877bc8bb134b4b2f10ab57bb18673ee926f"
+source = "git+https://github.com/dlunch/RustJava.git#01397e18b1c9ad4897fff959ed3e73728906e43e"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -2003,7 +2003,7 @@ dependencies = [
  "parking_lot",
  "tracing",
  "url",
- "zip 6.0.0",
+ "zip",
 ]
 
 [[package]]
@@ -2086,7 +2086,7 @@ dependencies = [
 [[package]]
 name = "jvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#72e26877bc8bb134b4b2f10ab57bb18673ee926f"
+source = "git+https://github.com/dlunch/RustJava.git#01397e18b1c9ad4897fff959ed3e73728906e43e"
 dependencies = [
  "anyhow",
  "async-recursion",
@@ -2104,7 +2104,7 @@ dependencies = [
 [[package]]
 name = "jvm_rust"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/RustJava.git#72e26877bc8bb134b4b2f10ab57bb18673ee926f"
+source = "git+https://github.com/dlunch/RustJava.git#01397e18b1c9ad4897fff959ed3e73728906e43e"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -5168,7 +5168,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -5182,13 +5182,13 @@ dependencies = [
  "spin",
  "tracing",
  "wie_util",
- "zip 5.1.1",
+ "zip",
 ]
 
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -5205,7 +5205,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5220,7 +5220,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5237,7 +5237,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -5261,7 +5261,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5285,7 +5285,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bitflags 2.9.4",
@@ -5304,7 +5304,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5321,7 +5321,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bitflags 2.9.4",
@@ -5340,7 +5340,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "bytemuck",
  "tracing",
@@ -5374,7 +5374,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5387,7 +5387,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#cc49ccc9600e40ef5808babb8291fd19d1862552"
+source = "git+https://github.com/dlunch/wie.git#5dcc3d9fd4e4d7551ce75cbf7896286fc4681962"
 dependencies = [
  "async-trait",
  "bitflags 2.9.4",
@@ -6054,20 +6054,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.106",
-]
-
-[[package]]
-name = "zip"
-version = "5.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f852905151ac8d4d06fdca66520a661c09730a74c6d4e2b0f27b436b382e532"
-dependencies = [
- "arbitrary",
- "crc32fast",
- "flate2",
- "indexmap 2.11.4",
- "memchr",
- "zopfli",
 ]
 
 [[package]]
