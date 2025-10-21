@@ -11,7 +11,7 @@ name: Web CI
 
 jobs:
   web_ci:
-    runs-on: arc-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         rust: [stable]
