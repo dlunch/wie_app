@@ -23,7 +23,7 @@ concurrency:
 jobs:
   deploy:
     if: github.repository == 'dlunchp/wie_app'
-    runs-on: arc-runner
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
