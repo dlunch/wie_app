@@ -12,7 +12,7 @@
   "dependencies": {
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "css-loader": "^7.1.2",
-    "html-bundler-webpack-plugin": "^4.21.1",
+    "html-bundler-webpack-plugin": "^4.22.0",
     "sass": "^1.94.2",
     "sass-loader": "^16.0.6",
     "ts-loader": "^9.5.4",
