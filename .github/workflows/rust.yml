@@ -25,14 +25,14 @@ jobs:
         run: sudo apt update;sudo apt install -y --no-install-recommends libwebkit2gtk-4.1-dev libasound2-dev build-essential zstd
 
       - name: Restore cache cargo
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo
 
       - name: Restore cache cargo build
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: target
           key: ${{ runner.os }}-${{ matrix.rust }}-build-target-${{ hashFiles('**/Cargo.lock') }}
@@ -50,14 +50,14 @@ jobs:
       - run: cargo test --all
 
       - name: Save cache cargo
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: github.ref == 'refs/heads/main'
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Save cache cargo build
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: github.ref == 'refs/heads/main'
         with:
           path: target
