@@ -5107,7 +5107,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -5121,13 +5121,13 @@ dependencies = [
  "spin",
  "tracing",
  "wie_util",
- "zip 7.0.0",
+ "zip 7.1.0",
 ]
 
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -5144,7 +5144,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5159,7 +5159,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5176,7 +5176,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -5200,7 +5200,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5224,7 +5224,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bitflags 2.10.0",
@@ -5243,7 +5243,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5260,7 +5260,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bitflags 2.10.0",
@@ -5279,7 +5279,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "bytemuck",
  "tracing",
@@ -5314,7 +5314,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5328,7 +5328,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#58b34d947eda29cbbefe954e8b2c949a26870b33"
+source = "git+https://github.com/dlunch/wie.git#e41d79f2f749f5a50ad73032cf1f0ab5420507ab"
 dependencies = [
  "async-trait",
  "bitflags 2.10.0",
@@ -6003,11 +6003,10 @@ dependencies = [
 
 [[package]]
 name = "zip"
-version = "7.0.0"
+version = "7.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bdd8a47718a4ee5fe78e07667cd36f3de80e7c2bfe727c7074245ffc7303c037"
+checksum = "9013f1222db8a6d680f13a7ccdc60a781199cd09c2fa4eff58e728bb181757fc"
 dependencies = [
- "arbitrary",
  "crc32fast",
  "flate2",
  "indexmap 2.12.1",
