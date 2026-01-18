@@ -1,4 +1,5 @@
 import { WieWeb } from "@pkg";
+import "../css/style.css";
 
 const TUTORIAL_STORAGE_KEY = "wie_tutorial_dismissed";
 

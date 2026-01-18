@@ -38,6 +38,7 @@ const commonConfig: webpack.Configuration = {
       },
       {
         test: /\.(css|sass|scss)$/,
+        type: "javascript/auto",
         use: ["css-loader", "sass-loader"],
       },
       {
