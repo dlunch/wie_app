@@ -1,5 +1,36 @@
 import { WieWeb } from "@pkg";
 
+const TUTORIAL_STORAGE_KEY = "wie_tutorial_dismissed";
+
+const initTutorial = () => {
+  const overlay = document.getElementById("tutorial-overlay");
+  const closeButton = document.getElementById("close-tutorial");
+  const dontShowCheckbox = document.getElementById("dont-show-again") as HTMLInputElement;
+
+  if (!overlay || !closeButton || !dontShowCheckbox) return;
+
+  if (localStorage.getItem(TUTORIAL_STORAGE_KEY) === "true") {
+    overlay.classList.add("hidden");
+    return;
+  }
+
+  closeButton.addEventListener("click", () => {
+    if (dontShowCheckbox.checked) {
+      localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+    }
+    overlay.classList.add("hidden");
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      if (dontShowCheckbox.checked) {
+        localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+      }
+      overlay.classList.add("hidden");
+    }
+  });
+};
+
 const key_map = {
   Digit1: "1",
   Digit2: "2",
@@ -102,7 +133,11 @@ const main = () => {
 };
 
 if (document.readyState !== "loading") {
+  initTutorial();
   main();
 } else {
-  document.addEventListener("DOMContentLoaded", () => main());
+  document.addEventListener("DOMContentLoaded", () => {
+    initTutorial();
+    main();
+  });
 }
