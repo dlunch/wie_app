@@ -2,8 +2,9 @@ import path from "path";
 
 import webpack from "webpack";
 import HtmlBundlerPlugin from "html-bundler-webpack-plugin";
-import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
 import TsConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
+
 
 const commonConfig: webpack.Configuration = {
   context: import.meta.dirname,
@@ -19,6 +20,10 @@ const commonConfig: webpack.Configuration = {
     /"global" has been used, it will be undefined in next major version./,
   ],
   resolve: {
+    alias: {
+      "@css": path.resolve(import.meta.dirname, "src/css"),
+      "@ts": path.resolve(import.meta.dirname, "src/ts"),
+    },
     extensions: [".ts", ".js"],
     plugins: [
       new TsConfigPathsPlugin({
