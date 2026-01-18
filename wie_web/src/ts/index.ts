@@ -87,18 +87,21 @@ const main = () => {
           );
 
           for (const button of document.querySelectorAll("button[data-key]")) {
-            button.addEventListener("mousedown", (e) => {
+            const handleKeyDown = (e: Event) => {
               e.preventDefault();
-
-              const key = (e.target as HTMLButtonElement).dataset.key;
+              const key = (e.currentTarget as HTMLButtonElement).dataset.key;
               wie_web.key_down(key);
-            });
-            button.addEventListener("mouseup", (e) => {
+            };
+            const handleKeyUp = (e: Event) => {
               e.preventDefault();
-
-              const key = (e.target as HTMLButtonElement).dataset.key;
+              const key = (e.currentTarget as HTMLButtonElement).dataset.key;
               wie_web.key_up(key);
-            });
+            };
+
+            button.addEventListener("mousedown", handleKeyDown);
+            button.addEventListener("mouseup", handleKeyUp);
+            button.addEventListener("touchstart", handleKeyDown);
+            button.addEventListener("touchend", handleKeyUp);
           }
           document.addEventListener("keydown", (e) => {
             if (key_map[e.code]) {
