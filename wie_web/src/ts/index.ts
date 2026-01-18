@@ -9,25 +9,30 @@ const initTutorial = () => {
 
   if (!overlay || !closeButton || !dontShowCheckbox) return;
 
-  if (localStorage.getItem(TUTORIAL_STORAGE_KEY) === "true") {
-    overlay.classList.add("hidden");
-    return;
+  if (localStorage.getItem(TUTORIAL_STORAGE_KEY) !== "true") {
+    overlay.classList.add("visible");
   }
 
-  closeButton.addEventListener("click", () => {
+  const closeTutorial = () => {
     if (dontShowCheckbox.checked) {
       localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+    } else {
+      localStorage.removeItem(TUTORIAL_STORAGE_KEY);
     }
-    overlay.classList.add("hidden");
-  });
+    overlay.classList.remove("visible");
+  };
+
+  closeButton.addEventListener("click", closeTutorial);
 
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) {
-      if (dontShowCheckbox.checked) {
-        localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
-      }
-      overlay.classList.add("hidden");
+      closeTutorial();
     }
+  });
+
+  const showTutorialButton = document.getElementById("show-tutorial");
+  showTutorialButton?.addEventListener("click", () => {
+    overlay.classList.add("visible");
   });
 };
 
