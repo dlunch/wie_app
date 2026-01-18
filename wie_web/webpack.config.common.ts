@@ -9,6 +9,7 @@ const commonConfig: webpack.Configuration = {
   context: import.meta.dirname,
   experiments: {
     futureDefaults: true,
+    css: false,
   },
   output: {
     path: path.resolve(import.meta.dirname, "dist"),
@@ -38,7 +39,6 @@ const commonConfig: webpack.Configuration = {
       },
       {
         test: /\.(css|sass|scss)$/,
-        type: "javascript/auto",
         use: ["css-loader", "sass-loader"],
       },
       {
