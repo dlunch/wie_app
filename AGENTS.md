@@ -1,34 +1,21 @@
 # wie_app
 
-Web-based feature phone emulator (WIPI/J2ME) using Rust + WebAssembly.
+Web-based feature phone emulator (WIPI/J2ME) using Rust/WebAssembly + TypeScript.
 
-## Project Structure
+## Commands
+- `npm install` - Install dependencies
+- `npm run build:dev` - Development build
+- `npm run build:prod` - Production build
+- `npm start` - Dev server
+- `cargo build` - Build Rust (wasm32-unknown-unknown target)
+- `cargo test` - Run Rust tests
+- `cargo test test_name` - Run single test
 
-- `wie_web/` - Web frontend
-  - `src/html/` - HTML templates
-  - `src/css/` - Stylesheets
-  - `src/ts/` - TypeScript source
-  - `src/rust/` - Rust/WASM source
-  - `pkg/` - Generated WASM package
-- `wie_tauri/` - Tauri desktop app
-
-## Tech Stack
-
-- Rust + wasm-bindgen for core emulator
-- TypeScript for web UI
-- Webpack with html-bundler-webpack-plugin
-- No frontend framework (vanilla JS/TS)
-
-## Build
-
-```bash
-npm run build:dev   # development build
-npm run build:prod  # production build
-npm start           # dev server
-```
-
-## Code Conventions
-
+## Code Style
+- TypeScript: ESNext, no framework (vanilla)
+- Rust: Edition 2024, workspace structure
 - Use webpack aliases: `@css/`, `@ts/`, `@pkg`
-- CSS in separate files under `src/css/`
+- CSS in `wie_web/src/css/`, HTML in `wie_web/src/html/`
 - Korean UI text is acceptable
+- camelCase for TS variables/functions, snake_case for Rust
+- No comments unless absolutely necessary
