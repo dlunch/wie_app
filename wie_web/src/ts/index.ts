@@ -60,8 +60,7 @@ const main = () => {
     const selected_file = file.files[0];
 
     if (selected_file) {
-      document.getElementById("file")?.remove();
-      document.getElementById("start")?.remove();
+      document.querySelector(".file-upload")?.remove();
 
       const original_console_error = console.error;
       console.error = (message: string, ...args) => {
