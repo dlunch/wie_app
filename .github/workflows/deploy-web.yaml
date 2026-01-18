@@ -82,15 +82,11 @@ jobs:
         run: npm run build:dev
 
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: "f02d26a267c8cc8f3fdd15e70e58f9f2"
-          projectName: ${{ fromJSON('["wie-dev", "wie"]')[ github.ref != 'refs/heads/main' ] }}
-          directory: "./wie_web/dist"
-          branch: "main"
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          wranglerVersion: "3"
+          command: pages deploy ./wie_web/dist --project-name=${{ fromJSON('["wie-dev", "wie"]')[ github.ref != 'refs/heads/main' ] }} --branch=main
 
       - name: Save cache cargo
         uses: actions/cache/save@v5
