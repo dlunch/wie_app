@@ -1714,7 +1714,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.62.2",
+ "windows-core 0.61.2",
 ]
 
 [[package]]
@@ -4658,6 +4658,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "typed-path"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7922f2cdc51280d47b491af9eafc41eb0cdab85eabcb390c854412fcbf26dbe8"
+
+[[package]]
 name = "typeid"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5038,7 +5044,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -5052,13 +5058,13 @@ dependencies = [
  "spin",
  "tracing",
  "wie_util",
- "zip 7.1.0",
+ "zip 7.2.0",
 ]
 
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -5075,7 +5081,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5090,7 +5096,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5107,7 +5113,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -5131,7 +5137,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5156,7 +5162,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bitflags 2.10.0",
@@ -5175,7 +5181,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5192,7 +5198,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bitflags 2.10.0",
@@ -5211,7 +5217,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "bytemuck",
  "tracing",
@@ -5246,7 +5252,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5260,7 +5266,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#c0cf5f488f1c552d720d370bc0a3bee649ee7ddd"
+source = "git+https://github.com/dlunch/wie.git#821ea49d5144f770ff87f4a750d3c9aa39fee455"
 dependencies = [
  "async-trait",
  "bitflags 2.10.0",
@@ -5373,20 +5379,7 @@ dependencies = [
  "windows-interface",
  "windows-link 0.1.3",
  "windows-result 0.3.4",
- "windows-strings 0.4.2",
-]
-
-[[package]]
-name = "windows-core"
-version = "0.62.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b8e83a14d34d0623b51dce9581199302a221863196a1dde71a7663a4c2be9deb"
-dependencies = [
- "windows-implement",
- "windows-interface",
- "windows-link 0.2.1",
- "windows-result 0.4.1",
- "windows-strings 0.5.1",
+ "windows-strings",
 ]
 
 [[package]]
@@ -5463,30 +5456,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "windows-result"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7781fa89eaf60850ac3d2da7af8e5242a5ea78d1a11c49bf2910bb5a73853eb5"
-dependencies = [
- "windows-link 0.2.1",
-]
-
-[[package]]
 name = "windows-strings"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "56e6c93f3a0c3b36176cb1327a4958a0353d5d166c2a35cb268ace15e91d3b57"
 dependencies = [
  "windows-link 0.1.3",
-]
-
-[[package]]
-name = "windows-strings"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7837d08f69c77cf6b07689544538e017c1bfcf57e34b4c0ff58e6c2cd3b37091"
-dependencies = [
- "windows-link 0.2.1",
 ]
 
 [[package]]
@@ -5966,14 +5941,15 @@ dependencies = [
 
 [[package]]
 name = "zip"
-version = "7.1.0"
+version = "7.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9013f1222db8a6d680f13a7ccdc60a781199cd09c2fa4eff58e728bb181757fc"
+checksum = "c42e33efc22a0650c311c2ef19115ce232583abbe80850bc8b66509ebef02de0"
 dependencies = [
  "crc32fast",
  "flate2",
  "indexmap 2.13.0",
  "memchr",
+ "typed-path",
  "zopfli",
 ]
 
