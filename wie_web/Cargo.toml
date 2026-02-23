@@ -20,7 +20,7 @@ anyhow = { version = "^1.0" }
 console_error_panic_hook = { version = "^0.1" }
 hashbrown = { version = "^0.16" }
 js-sys = { version = "^0.3" }
-rodio = { version = "^0.21", features = ["playback", "wasm-bindgen"], default-features = false }
+rodio = { version = "^0.22", features = ["playback", "wasm-bindgen"], default-features = false }
 time = { version = "^0.3", features = ["wasm-bindgen"] }
 tracing = { version = "^0.1", features = ["release_max_level_info"] }
 tracing-subscriber = { version = "^0.3", features = ["time"] }
