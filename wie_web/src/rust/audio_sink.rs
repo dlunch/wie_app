@@ -1,6 +1,7 @@
 use alloc::vec::Vec;
+use core::num::NonZero;
 
-use rodio::{OutputStream, Sink, buffer::SamplesBuffer, conversions::SampleTypeConverter};
+use rodio::{MixerDeviceSink, Player, buffer::SamplesBuffer, conversions::SampleTypeConverter};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "midi.ts")]
@@ -22,7 +23,7 @@ extern "C" {
 
 pub struct AudioSink {
     midi_player: MidiPlayer,
-    sink: Sink,
+    sink: Player,
 }
 
 // XXX we're on single thread
@@ -30,8 +31,8 @@ unsafe impl Sync for AudioSink {}
 unsafe impl Send for AudioSink {}
 
 impl AudioSink {
-    pub fn new(stream: &OutputStream) -> Self {
-        let sink = Sink::connect_new(stream.mixer());
+    pub fn new(stream: &MixerDeviceSink) -> Self {
+        let sink = Player::connect_new(stream.mixer());
         Self {
             midi_player: MidiPlayer::new(),
             sink,
@@ -41,9 +42,16 @@ impl AudioSink {
 
 impl wie_backend::AudioSink for AudioSink {
     fn play_wave(&self, channel: u8, sampling_rate: u32, wave_data: &[i16]) {
+        let Some(channel) = NonZero::new(channel as u16) else {
+            return;
+        };
+        let Some(sampling_rate) = NonZero::new(sampling_rate) else {
+            return;
+        };
+
         let buffer = SamplesBuffer::new(
-            channel as _,
-            sampling_rate as _,
+            channel,
+            sampling_rate,
             SampleTypeConverter::new(wave_data.iter().copied()).collect::<Vec<_>>(),
         );
 

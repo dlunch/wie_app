@@ -18,7 +18,7 @@ use core::{
 };
 
 use hashbrown::HashMap;
-use rodio::{OutputStream, OutputStreamBuilder};
+use rodio::{DeviceSinkBuilder, MixerDeviceSink};
 use tracing_subscriber::{Layer, filter::LevelFilter, fmt::time::UtcTime, layer::SubscriberExt, util::SubscriberInitExt};
 use tracing_web::MakeConsoleWriter;
 use wasm_bindgen::{JsError, prelude::*};
@@ -35,7 +35,7 @@ use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowIm
 struct WieWebPlatform {
     database_repository: DatabaseRepository,
     window: WindowImpl,
-    output_stream: OutputStream,
+    output_stream: MixerDeviceSink,
 }
 
 // XXX we're on single thread
@@ -44,7 +44,7 @@ unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
     fn new(window: WindowImpl) -> Self {
-        let output_stream = OutputStreamBuilder::open_default_stream().unwrap();
+        let output_stream = DeviceSinkBuilder::open_default_sink().unwrap();
         Self {
             database_repository: DatabaseRepository::new(),
             window,
