@@ -13,7 +13,10 @@ const config: webpack.Configuration = merge(commonConfig, {
   devtool: "eval-source-map",
   devServer: {
     open: false,
-    static: path.join(import.meta.dirname, "dist"),
+    static: [
+      path.join(import.meta.dirname, "dist"),
+      path.join(import.meta.dirname, "public"),
+    ],
     watchFiles: {
       paths: ["src/**/*.*"],
       options: {

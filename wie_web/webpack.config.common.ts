@@ -4,6 +4,7 @@ import webpack from "webpack";
 import HtmlBundlerPlugin from "html-bundler-webpack-plugin";
 import TsConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
 
 const commonConfig: webpack.Configuration = {
@@ -72,6 +73,15 @@ const commonConfig: webpack.Configuration = {
     new WasmPackPlugin({
       crateDirectory: path.resolve(import.meta.dirname, "."),
       outDir: path.resolve(import.meta.dirname, "./pkg"),
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(import.meta.dirname, "public"), to: "." },
+        {
+          from: path.resolve(import.meta.dirname, "../node_modules/spessasynth_lib/dist/spessasynth_processor.min.js"),
+          to: ".",
+        },
+      ],
     }),
   ],
 };
