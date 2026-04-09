@@ -1,7 +1,7 @@
-use alloc::vec::Vec;
+use alloc::{sync::Arc, vec::Vec};
 use core::num::NonZero;
 
-use rodio::{MixerDeviceSink, Player, buffer::SamplesBuffer, conversions::SampleTypeConverter};
+use rodio::{Player, buffer::SamplesBuffer, conversions::SampleTypeConverter};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "midi.ts")]
@@ -23,7 +23,7 @@ extern "C" {
 
 pub struct AudioSink {
     midi_player: MidiPlayer,
-    sink: Player,
+    sink: Arc<Player>,
 }
 
 // XXX we're on single thread
@@ -31,8 +31,7 @@ unsafe impl Sync for AudioSink {}
 unsafe impl Send for AudioSink {}
 
 impl AudioSink {
-    pub fn new(stream: &MixerDeviceSink) -> Self {
-        let sink = Player::connect_new(stream.mixer());
+    pub fn new(sink: Arc<Player>) -> Self {
         Self {
             midi_player: MidiPlayer::new(),
             sink,

@@ -5,14 +5,47 @@ body, p {
   -webkit-touch-callout: none;
 }
 
+.controls-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  width: min(100vw, 480px);
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: padding 0.3s ease;
+}
+
+.controls-bar.compact {
+  padding: 2px 12px;
+}
+
+.file-upload-collapse {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+}
+
+.controls-bar.compact .file-upload-collapse {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
 .file-upload {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px;
-  background: #f5f5f5;
-  border-bottom: 1px solid #ddd;
+  min-width: 0;
+  overflow: hidden;
+  min-height: 0;
 }
+
 
 .file-upload input[type="file"] {
   min-width: 0;
@@ -54,11 +87,73 @@ body, p {
   box-sizing: border-box;
 }
 
-#canvas {
+.ad-banner {
+  width: min(100vw, 480px);
+  height: 50px;
+  margin: 0 auto;
+}
+
+.canvas-wrapper {
+  position: relative;
   display: block;
   margin: 0 auto;
   aspect-ratio: 3 / 4;
   width: min(100vw, 480px);
+}
+
+#canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+
+.settings-toggle {
+  background: transparent;
+  color: #999;
+  border: none;
+  padding: 2px 4px;
+  font-size: 0.85em;
+  cursor: pointer;
+  line-height: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.settings-toggle:hover {
+  color: #555;
+}
+
+.settings-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 8px;
+  z-index: 100;
+  background: #333;
+  color: #fff;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.settings-panel.visible {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-panel label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings-panel input[type="range"] {
+  width: 120px;
+  margin-left: auto;
 }
 
 .button-container {

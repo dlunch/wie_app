@@ -1,6 +1,8 @@
 import { WorkletSynthesizer } from 'spessasynth_lib';
 
-type AudioState = { synth: WorkletSynthesizer; ctx: AudioContext };
+type AudioState = { synth: WorkletSynthesizer; ctx: AudioContext; gain: GainNode };
+
+let masterVolume = 0.5;
 
 async function initAudio(): Promise<AudioState> {
   const ctx = new AudioContext();
@@ -9,15 +11,18 @@ async function initAudio(): Promise<AudioState> {
   const buffer = await fetch('GeneralUser.sf3').then(r => r.arrayBuffer());
   await synth.soundBankManager.addSoundBank(buffer, 'main');
   await synth.isReady;
-  synth.connect(ctx.destination);
-  return { synth, ctx };
+  const gain = ctx.createGain();
+  gain.gain.value = masterVolume;
+  synth.connect(gain);
+  gain.connect(ctx.destination);
+  return { synth, ctx, gain };
 }
 
 // Starts loading immediately on DOMContentLoaded.
 // ctx.resume() is called lazily on first note_on (requires user gesture).
 const audioReady: Promise<AudioState | null> = new Promise(resolve => {
   const start = () => initAudio().then(resolve, err => {
-    console.warn('[MidiPlayer] init failed, audio will be silent:', err);
+    console.warn('MidiPlayer init failed, audio will be silent:', err);
     resolve(null);
   });
   if (document.readyState === 'loading') {
@@ -26,6 +31,13 @@ const audioReady: Promise<AudioState | null> = new Promise(resolve => {
     start();
   }
 });
+
+export function setMasterVolume(value: number): void {
+  masterVolume = value;
+  audioReady.then(s => {
+    if (s) s.gain.gain.value = value;
+  });
+}
 
 export class MidiPlayer {
   constructor() {}

@@ -1,4 +1,5 @@
 import { WieWeb } from "@pkg";
+import { setMasterVolume } from "./midi";
 
 const TUTORIAL_STORAGE_KEY = "wie_tutorial_dismissed";
 
@@ -58,6 +59,8 @@ const key_map = {
 };
 
 const main = () => {
+  initVolume();
+
   const file = document.getElementById("file") as HTMLInputElement;
   const button = document.getElementById("start") as HTMLButtonElement;
 
@@ -65,7 +68,12 @@ const main = () => {
     const selected_file = file.files[0];
 
     if (selected_file) {
-      document.querySelector(".file-upload")?.remove();
+      const fileUploadCollapse = document.querySelector(".file-upload-collapse") as HTMLElement | null;
+      const controlsBar = document.querySelector(".controls-bar") as HTMLElement | null;
+      if (controlsBar && fileUploadCollapse) {
+        controlsBar.classList.add("compact");
+        setTimeout(() => fileUploadCollapse.remove(), 350);
+      }
 
       const original_console_error = console.error;
       console.error = (message: string, ...args) => {
@@ -85,6 +93,9 @@ const main = () => {
             new Uint8Array(data),
             canvas
           );
+          const pcmSlider = document.getElementById("volume-pcm") as HTMLInputElement;
+          wie_web.set_pcm_volume(Number(pcmSlider.value) / 100);
+          pcmSlider?.addEventListener("input", () => wie_web.set_pcm_volume(Number(pcmSlider.value) / 100));
 
           for (const button of document.querySelectorAll("button[data-key]")) {
             const handleKeyDown = (e: Event) => {
@@ -137,6 +148,22 @@ const main = () => {
       reader.readAsArrayBuffer(selected_file);
     }
   });
+};
+
+const initVolume = () => {
+  const toggle = document.getElementById("settings-toggle");
+  const panel = document.getElementById("settings-panel");
+  const midiSlider = document.getElementById("volume-midi") as HTMLInputElement;
+
+  toggle?.addEventListener("click", () => panel?.classList.toggle("visible"));
+  document.addEventListener("click", (e) => {
+    if (!toggle?.contains(e.target as Node) && !panel?.contains(e.target as Node)) {
+      panel?.classList.remove("visible");
+    }
+  });
+
+  setMasterVolume(Number(midiSlider.value) / 100);
+  midiSlider?.addEventListener("input", () => setMasterVolume(Number(midiSlider.value) / 100));
 };
 
 if (document.readyState !== "loading") {

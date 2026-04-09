@@ -82,14 +82,26 @@
       </div>
     </div>
 
-    <div class="file-upload">
-      <input type="file" id="file" />
-      <button id="start">실행</button>
-      <button id="show-tutorial">사용법</button>
-      <a href="https://github.com/dlunch/wie" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/github/white" alt="GitHub" width="16" height="16" /></a>
-      <a href="https://wie-site.dlunch.net/" target="_blank" rel="noopener noreferrer">🌐</a>
+    <div class="controls-bar">
+      <div class="file-upload-collapse">
+        <div class="file-upload">
+          <input type="file" id="file" />
+          <button id="start">실행</button>
+          <button id="show-tutorial">사용법</button>
+          <a href="https://github.com/dlunch/wie" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/github/white" alt="GitHub" width="16" height="16" /></a>
+          <a href="https://wie-site.dlunch.net/" target="_blank" rel="noopener noreferrer">🌐</a>
+        </div>
+      </div>
+      <button id="settings-toggle" class="settings-toggle">⚙️</button>
+      <div id="settings-panel" class="settings-panel">
+        <label>🎵 MIDI <input type="range" id="volume-midi" min="0" max="100" value="50" /></label>
+        <label>🔊 효과음 <input type="range" id="volume-pcm" min="0" max="100" value="50" /></label>
+      </div>
     </div>
-    <canvas id="canvas" width="240" height="320"></canvas>
+    <div class="ad-banner" id="ad-banner"></div>
+    <div class="canvas-wrapper">
+      <canvas id="canvas" width="240" height="320"></canvas>
+    </div>
 
     <div class="button-container">
       <p>
