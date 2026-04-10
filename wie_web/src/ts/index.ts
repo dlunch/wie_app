@@ -37,7 +37,7 @@ const initTutorial = () => {
   });
 };
 
-const key_map = {
+const key_map: Record<string, string> = {
   Digit1: "1",
   Digit2: "2",
   Digit3: "3",
@@ -65,7 +65,7 @@ const main = () => {
   const button = document.getElementById("start") as HTMLButtonElement;
 
   button.addEventListener("click", () => {
-    const selected_file = file.files[0];
+    const selected_file = file.files?.[0];
 
     if (selected_file) {
       const fileUploadCollapse = document.querySelector(".file-upload-collapse") as HTMLElement | null;
@@ -101,12 +101,12 @@ const main = () => {
             const handleKeyDown = (e: Event) => {
               e.preventDefault();
               const key = (e.currentTarget as HTMLButtonElement).dataset.key;
-              wie_web.key_down(key);
+              if (key) wie_web.key_down(key);
             };
             const handleKeyUp = (e: Event) => {
               e.preventDefault();
               const key = (e.currentTarget as HTMLButtonElement).dataset.key;
-              wie_web.key_up(key);
+              if (key) wie_web.key_up(key);
             };
 
             button.addEventListener("mousedown", handleKeyDown);
@@ -131,7 +131,7 @@ const main = () => {
               wie_web.update();
             } catch (e) {
               wie_web.free();
-              alert(e.message);
+              alert(String(e));
               throw e;
             }
 
@@ -140,7 +140,7 @@ const main = () => {
 
           requestAnimationFrame(update);
         } catch (e) {
-          alert(e.message);
+          alert(String(e));
           throw e;
         }
       };
