@@ -14,14 +14,14 @@ body, p {
   padding: 6px 12px;
   background: #f5f5f5;
   border-bottom: 1px solid #ddd;
-  width: min(100vw, 480px);
-  margin: 0 auto;
+  width: 100%;
   box-sizing: border-box;
   transition: padding 0.3s ease;
 }
 
 .controls-bar.compact {
-  padding: 2px 12px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .file-upload-collapse {
