@@ -13,7 +13,6 @@ use alloc::{
     boxed::Box,
     string::{String, ToString},
     sync::Arc,
-    vec::Vec,
 };
 use core::{
     str,
@@ -47,10 +46,10 @@ unsafe impl Sync for WieWebPlatform {}
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
-    async fn new(window: WindowImpl, player: Arc<Player>) -> Self {
+    fn new(window: WindowImpl, player: Arc<Player>) -> Self {
         Self {
             database_repository: DatabaseRepository::new(),
-            filesystem: WebFilesystem::new().await,
+            filesystem: WebFilesystem::new(),
             window,
             player,
         }
@@ -118,26 +117,14 @@ pub struct WieWeb {
 
 #[wasm_bindgen]
 impl WieWeb {
-    pub async fn create(filename: String, buf: Vec<u8>, canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
-        let should_redraw = Arc::new(AtomicBool::new(true));
-        let window = WindowImpl::new(canvas, should_redraw.clone());
-        let output_stream = DeviceSinkBuilder::open_default_sink().unwrap();
-        let player = Arc::new(Player::connect_new(output_stream.mixer()));
-        let platform = Box::new(WieWebPlatform::new(window, player.clone()).await);
-
-        Self::build(filename, buf, platform, should_redraw, player).map_err(|e| JsError::new(&e.to_string()))
-    }
-
-    fn build(
-        filename: String,
-        buf: Vec<u8>,
-        platform: Box<WieWebPlatform>,
-        should_redraw: Arc<AtomicBool>,
-        player: Arc<Player>,
-    ) -> anyhow::Result<WieWeb> {
-        let filename = filename.as_str();
-        let buf = buf.as_slice();
+    #[wasm_bindgen(constructor)]
+    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
         (move || {
+            let should_redraw = Arc::new(AtomicBool::new(true));
+            let window = WindowImpl::new(canvas, should_redraw.clone());
+            let output_stream = DeviceSinkBuilder::open_default_sink().unwrap();
+            let player = Arc::new(Player::connect_new(output_stream.mixer()));
+            let platform = Box::new(WieWebPlatform::new(window, player.clone()));
             let options = Options { enable_gdbserver: false };
 
             let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {
@@ -198,6 +185,7 @@ impl WieWeb {
                 player,
             })
         })()
+        .map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn update(&mut self) -> Result<(), JsError> {

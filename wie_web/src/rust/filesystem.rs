@@ -1,7 +1,8 @@
-use alloc::boxed::Box;
-use core::cmp::min;
+use alloc::{boxed::Box, rc::Rc, vec};
+use core::cell::RefCell;
+use core::cmp::{max, min};
 
-use js_sys::{Array, Uint8Array};
+use js_sys::Array;
 use wasm_bindgen::JsValue;
 
 use wie_backend::Filesystem;
@@ -16,67 +17,75 @@ fn make_key(aid: &str, path: &str) -> JsValue {
 }
 
 pub struct WebFilesystem {
-    store: Store,
+    store: Rc<RefCell<Option<Store>>>,
 }
 
+// single threaded wasm; RefCell + Rc are only touched sequentially.
+unsafe impl Send for WebFilesystem {}
+unsafe impl Sync for WebFilesystem {}
+
 impl WebFilesystem {
-    pub async fn new() -> Self {
+    pub fn new() -> Self {
         Self {
-            store: Store::open(DB_NAME, STORE_NAME).await,
+            store: Rc::new(RefCell::new(None)),
         }
+    }
+
+    async fn store(&self) -> Store {
+        if let Some(store) = self.store.borrow().as_ref() {
+            return store.clone();
+        }
+        let store = Store::open(DB_NAME, STORE_NAME).await;
+        *self.store.borrow_mut() = Some(store.clone());
+        store
     }
 }
 
 #[async_trait::async_trait]
 impl Filesystem for WebFilesystem {
     async fn exists(&self, aid: &str, path: &str) -> bool {
-        self.store.get(make_key(aid, path)).await.is_some()
+        self.store().await.get(make_key(aid, path)).await.is_some()
     }
 
     async fn size(&self, aid: &str, path: &str) -> Option<usize> {
-        self.store.get(make_key(aid, path)).await.map(|a| a.length() as usize)
+        self.store().await.get(make_key(aid, path)).await.map(|v| v.len())
     }
 
     async fn read(&self, aid: &str, path: &str, offset: usize, count: usize, buf: &mut [u8]) -> Option<usize> {
-        let array = self.store.get(make_key(aid, path)).await?;
-        let size = array.length() as usize;
+        let data = self.store().await.get(make_key(aid, path)).await?;
 
-        if offset >= size {
+        if offset >= data.len() {
             return Some(0);
         }
 
-        let size_to_read = min(count, size - offset);
-        array
-            .subarray(offset as u32, (offset + size_to_read) as u32)
-            .copy_to(&mut buf[..size_to_read]);
+        let size_to_read = min(count, data.len() - offset);
+        buf[..size_to_read].copy_from_slice(&data[offset..offset + size_to_read]);
         Some(size_to_read)
     }
 
     async fn write(&self, aid: &str, path: &str, offset: usize, data: &[u8]) -> usize {
         let key = make_key(aid, path);
-        let existing = self.store.get(key.clone()).await;
-        let existing_len = existing.as_ref().map(|a| a.length() as usize).unwrap_or(0);
-        let new_len = core::cmp::max(existing_len, offset + data.len());
+        let store = self.store().await;
+        let existing = store.get(key.clone()).await.unwrap_or_default();
+        let new_len = max(existing.len(), offset + data.len());
 
-        let next = Uint8Array::new_with_length(new_len as u32);
-        if let Some(existing) = existing {
-            next.set(&existing, 0);
-        }
-        next.subarray(offset as u32, (offset + data.len()) as u32).copy_from(data);
+        let mut next = vec![0u8; new_len];
+        next[..existing.len()].copy_from_slice(&existing);
+        next[offset..offset + data.len()].copy_from_slice(data);
 
-        self.store.set(key, next).await;
+        store.set(key, &next).await;
         data.len()
     }
 
     async fn truncate(&self, aid: &str, path: &str, len: usize) {
         let key = make_key(aid, path);
-        let existing = self.store.get(key.clone()).await;
-        let next = Uint8Array::new_with_length(len as u32);
-        if let Some(existing) = existing {
-            let copy_len = min(existing.length() as usize, len) as u32;
-            next.set(&existing.subarray(0, copy_len), 0);
-        }
+        let store = self.store().await;
+        let existing = store.get(key.clone()).await.unwrap_or_default();
 
-        self.store.set(key, next).await;
+        let mut next = vec![0u8; len];
+        let copy_len = min(existing.len(), len);
+        next[..copy_len].copy_from_slice(&existing[..copy_len]);
+
+        store.set(key, &next).await;
     }
 }

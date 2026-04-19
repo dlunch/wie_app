@@ -5,7 +5,6 @@ use alloc::{
     vec::Vec,
 };
 
-use js_sys::Uint8Array;
 use wasm_bindgen::JsValue;
 
 use wie_backend::{RecordId, System};
@@ -73,8 +72,7 @@ impl wie_backend::Database for Database {
     }
 
     async fn set(&mut self, id: RecordId, data: &[u8]) -> bool {
-        let array = Uint8Array::from(data);
-        self.store.set(self.record_key(id), array).await;
+        self.store.set(self.record_key(id), data).await;
         true
     }
 
