@@ -5,38 +5,46 @@ use alloc::{
     vec::Vec,
 };
 
-use js_sys::{Int32Array, Uint8Array};
+use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
 
 use wie_backend::{RecordId, System};
 
 use crate::util::run_js_future;
 
-#[wasm_bindgen(module = "/src/ts/database.ts")]
+#[wasm_bindgen(module = "/src/ts/indexed_db_store.ts")]
 extern "C" {
     type IndexedDBStore;
 
     #[wasm_bindgen(static_method_of = IndexedDBStore)]
-    async fn open(store_name: &str, key_prefix: &str) -> IndexedDBStore;
-
-    #[wasm_bindgen(static_method_of = IndexedDBStore)]
-    async fn exists(store_name: &str, key_prefix: &str) -> JsValue; // bool
+    async fn open(db_name: &str, store_name: &str) -> IndexedDBStore;
 
     #[wasm_bindgen(method)]
-    async fn get_record_ids(this: &IndexedDBStore) -> Int32Array; // Vec<RecordId>
+    async fn get_all_keys(this: &IndexedDBStore) -> js_sys::Array;
 
     #[wasm_bindgen(method)]
-    async fn set(this: &IndexedDBStore, id: RecordId, data: Uint8Array);
+    async fn get(this: &IndexedDBStore, key: &str) -> JsValue;
 
     #[wasm_bindgen(method)]
-    async fn get(this: &IndexedDBStore, id: RecordId) -> JsValue; // Option<Vec<u8>>
+    async fn set(this: &IndexedDBStore, key: &str, data: Uint8Array);
 
     #[wasm_bindgen(method)]
-    async fn delete(this: &IndexedDBStore, id: RecordId);
+    async fn delete(this: &IndexedDBStore, key: &str);
 }
 
 unsafe impl Sync for IndexedDBStore {}
 unsafe impl Send for IndexedDBStore {}
+
+fn db_name(app_id: &str) -> String {
+    format!("wie_{app_id}")
+}
+
+async fn open_store(app_id: &str) -> IndexedDBStore {
+    let db_name = db_name(app_id);
+    run_js_future(async move { IndexedDBStore::open(&db_name, &db_name).await })
+        .await
+        .into_inner()
+}
 
 pub struct DatabaseRepository {}
 
@@ -49,35 +57,27 @@ impl DatabaseRepository {
 #[async_trait::async_trait]
 impl wie_backend::DatabaseRepository for DatabaseRepository {
     async fn open(&self, _system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
-        let db_name = format!("wie_{app_id}");
-        let key_prefix = name.to_string();
-
-        Box::new(Database::new(db_name, key_prefix).await.unwrap())
+        let store = open_store(app_id).await;
+        Box::new(Database { store, key_prefix: name.to_string() })
     }
 
     async fn exists(&self, _system: &System, name: &str, app_id: &str) -> bool {
-        let db_name = format!("wie_{app_id}");
-        let key_prefix = name.to_string();
+        let store = open_store(app_id).await;
+        let prefix = name.to_string();
+        let keys = run_js_future(async move { store.get_all_keys().await }).await.into_inner();
 
-        run_js_future(async move { IndexedDBStore::exists(&db_name, &key_prefix).await })
-            .await
-            .into_inner()
-            .as_bool()
-            .unwrap()
+        keys.iter().any(|k| k.as_string().map(|s| s.starts_with(&prefix)).unwrap_or(false))
     }
 }
 
 pub struct Database {
-    db: IndexedDBStore,
+    store: IndexedDBStore,
+    key_prefix: String,
 }
 
 impl Database {
-    pub async fn new(db_name: String, key_prefix: String) -> anyhow::Result<Self> {
-        let db = run_js_future(async move { IndexedDBStore::open(&db_name, &key_prefix).await })
-            .await
-            .into_inner();
-
-        Ok(Self { db })
+    fn record_key(&self, id: RecordId) -> String {
+        format!("{}{}", self.key_prefix, id)
     }
 }
 
@@ -97,8 +97,9 @@ impl wie_backend::Database for Database {
     }
 
     async fn get(&self, id: RecordId) -> Option<Vec<u8>> {
-        let db: IndexedDBStore = self.db.clone().into();
-        let data = run_js_future(async move { db.get(id).await }).await.into_inner();
+        let store: IndexedDBStore = self.store.clone().into();
+        let key = self.record_key(id);
+        let data = run_js_future(async move { store.get(&key).await }).await.into_inner();
 
         if data.is_undefined() {
             None
@@ -109,24 +110,30 @@ impl wie_backend::Database for Database {
     }
 
     async fn set(&mut self, id: RecordId, data: &[u8]) -> bool {
-        let db: IndexedDBStore = self.db.clone().into();
+        let store: IndexedDBStore = self.store.clone().into();
+        let key = self.record_key(id);
         let data = Uint8Array::from(data);
-        run_js_future(async move { db.set(id, data).await }).await;
+        run_js_future(async move { store.set(&key, data).await }).await;
 
         true
     }
 
     async fn delete(&mut self, id: RecordId) -> bool {
-        let db: IndexedDBStore = self.db.clone().into();
-        run_js_future(async move { db.delete(id).await }).await;
+        let store: IndexedDBStore = self.store.clone().into();
+        let key = self.record_key(id);
+        run_js_future(async move { store.delete(&key).await }).await;
 
         true
     }
 
     async fn get_record_ids(&self) -> Vec<RecordId> {
-        let db: IndexedDBStore = self.db.clone().into();
-        let ids = run_js_future(async move { db.get_record_ids().await }).await.into_inner();
+        let store: IndexedDBStore = self.store.clone().into();
+        let keys = run_js_future(async move { store.get_all_keys().await }).await.into_inner();
 
-        ids.to_vec().into_iter().map(|id| id as RecordId).collect()
+        let prefix = &self.key_prefix;
+        keys.iter()
+            .filter_map(|k| k.as_string())
+            .filter_map(|s| s.strip_prefix(prefix.as_str()).and_then(|tail| tail.parse::<RecordId>().ok()))
+            .collect()
     }
 }
