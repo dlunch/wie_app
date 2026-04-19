@@ -83,12 +83,12 @@ const main = () => {
 
       const reader = new FileReader();
 
-      reader.onload = async (e) => {
+      reader.onload = (e) => {
         const data = e.target?.result as ArrayBuffer;
 
         try {
           const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-          const wie_web = await WieWeb.create(
+          const wie_web = new WieWeb(
             selected_file.name,
             new Uint8Array(data),
             canvas
