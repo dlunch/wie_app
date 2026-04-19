@@ -3,6 +3,7 @@ extern crate alloc;
 
 mod audio_sink;
 mod database;
+mod filesystem;
 mod util;
 mod window;
 
@@ -11,6 +12,7 @@ use alloc::{
     boxed::Box,
     string::{String, ToString},
     sync::Arc,
+    vec::Vec,
 };
 use core::{
     str,
@@ -30,10 +32,11 @@ use wie_ktf::KtfEmulator;
 use wie_lgt::LgtEmulator;
 use wie_skt::SktEmulator;
 
-use self::{audio_sink::AudioSink, database::DatabaseRepository, window::WindowImpl};
+use self::{audio_sink::AudioSink, database::DatabaseRepository, filesystem::WebFilesystem, window::WindowImpl};
 
 struct WieWebPlatform {
     database_repository: DatabaseRepository,
+    filesystem: WebFilesystem,
     window: WindowImpl,
     player: Arc<Player>,
 }
@@ -43,9 +46,10 @@ unsafe impl Sync for WieWebPlatform {}
 unsafe impl Send for WieWebPlatform {}
 
 impl WieWebPlatform {
-    fn new(window: WindowImpl, player: Arc<Player>) -> Self {
+    async fn new(window: WindowImpl, player: Arc<Player>) -> Self {
         Self {
             database_repository: DatabaseRepository::new(),
+            filesystem: WebFilesystem::new().await,
             window,
             player,
         }
@@ -68,6 +72,10 @@ impl Platform for WieWebPlatform {
         &self.database_repository
     }
 
+    fn filesystem(&self) -> &dyn wie_backend::Filesystem {
+        &self.filesystem
+    }
+
     fn audio_sink(&self) -> Box<dyn wie_backend::AudioSink> {
         Box::new(AudioSink::new(self.player.clone()))
     }
@@ -83,6 +91,16 @@ impl Platform for WieWebPlatform {
     }
 
     fn exit(&self) {}
+
+    fn vibrate(&self, duration_ms: u64, intensity: u8) {
+        if duration_ms == 0 || intensity == 0 {
+            return;
+        }
+
+        let Some(window) = web_sys::window() else { return };
+        let duration = core::cmp::min(duration_ms, u32::MAX as u64) as u32;
+        window.navigator().vibrate_with_duration(duration);
+    }
 }
 
 #[wasm_bindgen]
@@ -95,14 +113,26 @@ pub struct WieWeb {
 
 #[wasm_bindgen]
 impl WieWeb {
-    #[wasm_bindgen(constructor)]
-    pub fn new(filename: &str, buf: &[u8], canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
+    pub async fn create(filename: String, buf: Vec<u8>, canvas: HtmlCanvasElement) -> Result<WieWeb, JsError> {
+        let should_redraw = Arc::new(AtomicBool::new(true));
+        let window = WindowImpl::new(canvas, should_redraw.clone());
+        let output_stream = DeviceSinkBuilder::open_default_sink().unwrap();
+        let player = Arc::new(Player::connect_new(output_stream.mixer()));
+        let platform = Box::new(WieWebPlatform::new(window, player.clone()).await);
+
+        Self::build(filename, buf, platform, should_redraw, player).map_err(|e| JsError::new(&e.to_string()))
+    }
+
+    fn build(
+        filename: String,
+        buf: Vec<u8>,
+        platform: Box<WieWebPlatform>,
+        should_redraw: Arc<AtomicBool>,
+        player: Arc<Player>,
+    ) -> anyhow::Result<WieWeb> {
+        let filename = filename.as_str();
+        let buf = buf.as_slice();
         (move || {
-            let should_redraw = Arc::new(AtomicBool::new(true));
-            let window = WindowImpl::new(canvas, should_redraw.clone());
-            let output_stream = DeviceSinkBuilder::open_default_sink().unwrap();
-            let player = Arc::new(Player::connect_new(output_stream.mixer()));
-            let platform = Box::new(WieWebPlatform::new(window, player.clone()));
             let options = Options { enable_gdbserver: false };
 
             let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {
@@ -163,7 +193,6 @@ impl WieWeb {
                 player,
             })
         })()
-        .map_err(|e| JsError::new(&e.to_string()))
     }
 
     pub fn update(&mut self) -> Result<(), JsError> {
