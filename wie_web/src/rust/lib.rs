@@ -4,6 +4,7 @@ extern crate alloc;
 mod audio_sink;
 mod database;
 mod filesystem;
+mod indexed_db_store;
 mod util;
 mod window;
 
@@ -98,8 +99,12 @@ impl Platform for WieWebPlatform {
         }
 
         let Some(window) = web_sys::window() else { return };
+        let navigator = window.navigator();
+        if !js_sys::Reflect::has(navigator.as_ref(), &JsValue::from_str("vibrate")).unwrap_or(false) {
+            return;
+        }
         let duration = core::cmp::min(duration_ms, u32::MAX as u64) as u32;
-        window.navigator().vibrate_with_duration(duration);
+        navigator.vibrate_with_duration(duration);
     }
 }
 

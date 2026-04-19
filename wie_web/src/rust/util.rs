@@ -1,78 +1,77 @@
 use alloc::sync::Arc;
 use core::{
-    future::{Future, poll_fn},
-    task::Poll,
+    cell::UnsafeCell,
+    future::Future,
+    pin::Pin,
+    sync::atomic::{AtomicBool, Ordering},
+    task::{Context, Poll, Waker},
 };
 
 use wasm_bindgen_futures::spawn_local;
 
-// result wrapper holds result of non-send future
-pub struct ResultWrapper<T> {
-    result: Arc<Option<T>>,
+// Send/Sync single-slot channel driven by a Waker. Works on single-threaded
+// wasm where the sender and the receiver run on the same thread but the
+// outer future needs to satisfy `Send` (async_trait default bound).
+struct OneshotInner<T> {
+    value: UnsafeCell<Option<T>>,
+    waker: UnsafeCell<Option<Waker>>,
+    set: AtomicBool,
 }
 
-impl<T> Clone for ResultWrapper<T> {
-    fn clone(&self) -> Self {
-        Self { result: self.result.clone() }
-    }
+unsafe impl<T> Send for OneshotInner<T> {}
+unsafe impl<T> Sync for OneshotInner<T> {}
+
+struct Sender<T> {
+    inner: Arc<OneshotInner<T>>,
 }
 
-impl<T> ResultWrapper<T> {
-    fn new() -> Self {
-        Self { result: Arc::new(None) }
-    }
+pub struct Receiver<T> {
+    inner: Arc<OneshotInner<T>>,
+}
 
-    fn set(&self, value: T) {
-        unsafe {
-            let result_ptr = Arc::as_ptr(&self.result) as *mut Option<T>;
-            result_ptr.replace(Some(value));
+fn oneshot<T>() -> (Sender<T>, Receiver<T>) {
+    let inner = Arc::new(OneshotInner {
+        value: UnsafeCell::new(None),
+        waker: UnsafeCell::new(None),
+        set: AtomicBool::new(false),
+    });
+    (Sender { inner: inner.clone() }, Receiver { inner })
+}
+
+impl<T> Sender<T> {
+    fn send(self, value: T) {
+        unsafe { *self.inner.value.get() = Some(value) };
+        self.inner.set.store(true, Ordering::Release);
+        if let Some(waker) = unsafe { (*self.inner.waker.get()).take() } {
+            waker.wake();
         }
     }
-
-    fn is_set(&self) -> bool {
-        self.result.is_some()
-    }
-
-    pub fn into_inner(self) -> T {
-        Arc::into_inner(self.result).unwrap().unwrap()
-    }
 }
 
-unsafe impl<T> Send for ResultWrapper<T> {}
-unsafe impl<T> Sync for ResultWrapper<T> {}
+impl<T> Future for Receiver<T> {
+    type Output = T;
 
-// yields to the executor once; wakes itself so it is re-polled on the
-// next microtask. Send because it holds no state that references JS.
-async fn yield_once() {
-    let mut polled = false;
-    poll_fn(|cx| {
-        if polled {
-            Poll::Ready(())
-        } else {
-            polled = true;
-            cx.waker().wake_by_ref();
-            Poll::Pending
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<T> {
+        if self.inner.set.load(Ordering::Acquire) {
+            let value = unsafe { (*self.inner.value.get()).take() };
+            return Poll::Ready(value.unwrap());
         }
-    })
-    .await
+        unsafe { *self.inner.waker.get() = Some(cx.waker().clone()) };
+        if self.inner.set.load(Ordering::Acquire) {
+            let value = unsafe { (*self.inner.value.get()).take() };
+            return Poll::Ready(value.unwrap());
+        }
+        Poll::Pending
+    }
 }
 
 // wrapper to run non-send js future from a send future
-pub fn run_js_future<F, R>(f: F) -> impl Future<Output = ResultWrapper<R>> + Sync + Send
+pub fn run_js_future<F, R>(f: F) -> impl Future<Output = R> + Send + Sync
 where
     F: Future<Output = R> + 'static,
     R: 'static,
 {
-    let result = ResultWrapper::new();
-    let result_clone = result.clone();
-
-    spawn_local(async move { result_clone.set(f.await) });
-
-    async move {
-        while !result.is_set() {
-            yield_once().await;
-        }
-
-        result
-    }
+    let (tx, rx) = oneshot();
+    spawn_local(async move { tx.send(f.await) });
+    rx
 }
