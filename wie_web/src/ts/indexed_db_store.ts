@@ -28,14 +28,14 @@ export class IndexedDBStore {
     });
   }
 
-  public get_all_keys(): Promise<string[]> {
+  public get_all_keys(): Promise<IDBValidKey[]> {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(this.store_name, "readonly");
       const store = transaction.objectStore(this.store_name);
       const request = store.getAllKeys();
 
       request.onsuccess = () => {
-        resolve(request.result as string[]);
+        resolve(request.result);
       };
 
       request.onerror = () => {
@@ -44,7 +44,7 @@ export class IndexedDBStore {
     });
   }
 
-  public get(key: string): Promise<Uint8Array | undefined> {
+  public get(key: IDBValidKey): Promise<Uint8Array | undefined> {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(this.store_name, "readonly");
       const store = transaction.objectStore(this.store_name);
@@ -60,7 +60,7 @@ export class IndexedDBStore {
     });
   }
 
-  public set(key: string, data: Uint8Array): Promise<void> {
+  public set(key: IDBValidKey, data: Uint8Array): Promise<void> {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(this.store_name, "readwrite");
       const store = transaction.objectStore(this.store_name);
@@ -76,7 +76,7 @@ export class IndexedDBStore {
     });
   }
 
-  public delete(key: string): Promise<void> {
+  public delete(key: IDBValidKey): Promise<void> {
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction(this.store_name, "readwrite");
       const store = transaction.objectStore(this.store_name);

@@ -6,6 +6,7 @@ use alloc::{
 };
 
 use js_sys::Uint8Array;
+use wasm_bindgen::JsValue;
 
 use wie_backend::{RecordId, System};
 
@@ -33,7 +34,11 @@ impl wie_backend::DatabaseRepository for DatabaseRepository {
     async fn exists(&self, _system: &System, name: &str, app_id: &str) -> bool {
         let db_name = format!("wie_{app_id}");
         let store = Store::open(&db_name, &db_name).await;
-        store.get_all_keys().await.iter().any(|k| k.starts_with(name))
+        store
+            .get_all_keys()
+            .await
+            .iter()
+            .any(|k| k.as_string().map(|s| s.starts_with(name)).unwrap_or(false))
     }
 }
 
@@ -43,8 +48,8 @@ pub struct Database {
 }
 
 impl Database {
-    fn record_key(&self, id: RecordId) -> String {
-        format!("{}{}", self.key_prefix, id)
+    fn record_key(&self, id: RecordId) -> JsValue {
+        JsValue::from_str(&format!("{}{}", self.key_prefix, id))
     }
 }
 
@@ -64,17 +69,17 @@ impl wie_backend::Database for Database {
     }
 
     async fn get(&self, id: RecordId) -> Option<Vec<u8>> {
-        self.store.get(&self.record_key(id)).await.map(|a| a.to_vec())
+        self.store.get(self.record_key(id)).await.map(|a| a.to_vec())
     }
 
     async fn set(&mut self, id: RecordId, data: &[u8]) -> bool {
         let array = Uint8Array::from(data);
-        self.store.set(&self.record_key(id), array).await;
+        self.store.set(self.record_key(id), array).await;
         true
     }
 
     async fn delete(&mut self, id: RecordId) -> bool {
-        self.store.delete(&self.record_key(id)).await;
+        self.store.delete(self.record_key(id)).await;
         true
     }
 
@@ -83,7 +88,8 @@ impl wie_backend::Database for Database {
             .get_all_keys()
             .await
             .iter()
-            .filter_map(|k| k.strip_prefix(self.key_prefix.as_str()).and_then(|tail| tail.parse::<RecordId>().ok()))
+            .filter_map(|k| k.as_string())
+            .filter_map(|s| s.strip_prefix(self.key_prefix.as_str()).and_then(|tail| tail.parse::<RecordId>().ok()))
             .collect()
     }
 }
