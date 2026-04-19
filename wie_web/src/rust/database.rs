@@ -24,7 +24,10 @@ impl wie_backend::DatabaseRepository for DatabaseRepository {
     async fn open(&self, _system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
         let db_name = format!("wie_{app_id}");
         let store = Store::open(&db_name, &db_name).await;
-        Box::new(Database { store, key_prefix: name.to_string() })
+        Box::new(Database {
+            store,
+            key_prefix: name.to_string(),
+        })
     }
 
     async fn exists(&self, _system: &System, name: &str, app_id: &str) -> bool {

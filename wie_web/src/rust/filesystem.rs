@@ -1,8 +1,4 @@
-use alloc::{
-    boxed::Box,
-    format,
-    string::String,
-};
+use alloc::{boxed::Box, format, string::String};
 use core::cmp::min;
 
 use js_sys::Uint8Array;
@@ -24,7 +20,9 @@ pub struct WebFilesystem {
 
 impl WebFilesystem {
     pub async fn new() -> Self {
-        Self { store: Store::open(DB_NAME, STORE_NAME).await }
+        Self {
+            store: Store::open(DB_NAME, STORE_NAME).await,
+        }
     }
 }
 
@@ -63,8 +61,7 @@ impl Filesystem for WebFilesystem {
         if let Some(existing) = existing {
             next.set(&existing, 0);
         }
-        next.subarray(offset as u32, (offset + data.len()) as u32)
-            .copy_from(data);
+        next.subarray(offset as u32, (offset + data.len()) as u32).copy_from(data);
 
         self.store.set(&key, next).await;
         data.len()
