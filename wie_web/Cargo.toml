@@ -20,6 +20,7 @@ anyhow = { version = "^1.0" }
 console_error_panic_hook = { version = "^0.1" }
 hashbrown = { version = "^0.16" }
 js-sys = { version = "^0.3" }
+spin = { version = "^0.10" }
 rodio = { version = "^0.22", features = ["playback", "wasm-bindgen"], default-features = false }
 time = { version = "^0.3", features = ["wasm-bindgen"] }
 tracing = { version = "^0.1", features = ["release_max_level_info"] }
@@ -27,7 +28,7 @@ tracing-subscriber = { version = "^0.3", features = ["time"] }
 tracing-web = { version = "^0.1" }
 wasm-bindgen = { version = "^0.2" }
 wasm-bindgen-futures = { version = "^0.4" }
-web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData"] }
+web-sys = { version = "^0.3", features = ["HtmlCanvasElement", "CanvasRenderingContext2d", "ImageData", "Window", "Navigator"] }
 
 wie_backend = { git = "https://github.com/dlunch/wie.git" }
 wie_ktf = { git = "https://github.com/dlunch/wie.git" }
