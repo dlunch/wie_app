@@ -1,7 +1,8 @@
-use alloc::{boxed::Box, format, string::String};
+use alloc::boxed::Box;
 use core::cmp::min;
 
-use js_sys::Uint8Array;
+use js_sys::{Array, Uint8Array};
+use wasm_bindgen::JsValue;
 
 use wie_backend::Filesystem;
 
@@ -10,8 +11,8 @@ use crate::indexed_db_store::Store;
 const DB_NAME: &str = "wie_filesystem";
 const STORE_NAME: &str = "files";
 
-fn make_key(aid: &str, path: &str) -> String {
-    format!("{aid}\0{path}")
+fn make_key(aid: &str, path: &str) -> JsValue {
+    Array::of2(&JsValue::from_str(aid), &JsValue::from_str(path)).into()
 }
 
 pub struct WebFilesystem {
@@ -29,15 +30,15 @@ impl WebFilesystem {
 #[async_trait::async_trait]
 impl Filesystem for WebFilesystem {
     async fn exists(&self, aid: &str, path: &str) -> bool {
-        self.store.get(&make_key(aid, path)).await.is_some()
+        self.store.get(make_key(aid, path)).await.is_some()
     }
 
     async fn size(&self, aid: &str, path: &str) -> Option<usize> {
-        self.store.get(&make_key(aid, path)).await.map(|a| a.length() as usize)
+        self.store.get(make_key(aid, path)).await.map(|a| a.length() as usize)
     }
 
     async fn read(&self, aid: &str, path: &str, offset: usize, count: usize, buf: &mut [u8]) -> Option<usize> {
-        let array = self.store.get(&make_key(aid, path)).await?;
+        let array = self.store.get(make_key(aid, path)).await?;
         let size = array.length() as usize;
 
         if offset >= size {
@@ -53,7 +54,7 @@ impl Filesystem for WebFilesystem {
 
     async fn write(&self, aid: &str, path: &str, offset: usize, data: &[u8]) -> usize {
         let key = make_key(aid, path);
-        let existing = self.store.get(&key).await;
+        let existing = self.store.get(key.clone()).await;
         let existing_len = existing.as_ref().map(|a| a.length() as usize).unwrap_or(0);
         let new_len = core::cmp::max(existing_len, offset + data.len());
 
@@ -63,19 +64,19 @@ impl Filesystem for WebFilesystem {
         }
         next.subarray(offset as u32, (offset + data.len()) as u32).copy_from(data);
 
-        self.store.set(&key, next).await;
+        self.store.set(key, next).await;
         data.len()
     }
 
     async fn truncate(&self, aid: &str, path: &str, len: usize) {
         let key = make_key(aid, path);
-        let existing = self.store.get(&key).await;
+        let existing = self.store.get(key.clone()).await;
         let next = Uint8Array::new_with_length(len as u32);
         if let Some(existing) = existing {
             let copy_len = min(existing.length() as usize, len) as u32;
             next.set(&existing.subarray(0, copy_len), 0);
         }
 
-        self.store.set(&key, next).await;
+        self.store.set(key, next).await;
     }
 }

@@ -1,4 +1,4 @@
-use alloc::{borrow::ToOwned, string::String, vec::Vec};
+use alloc::{borrow::ToOwned, vec::Vec};
 
 use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
@@ -16,13 +16,13 @@ extern "C" {
     async fn get_all_keys(this: &IndexedDBStore) -> js_sys::Array;
 
     #[wasm_bindgen(method)]
-    async fn get(this: &IndexedDBStore, key: &str) -> JsValue;
+    async fn get(this: &IndexedDBStore, key: &JsValue) -> JsValue;
 
     #[wasm_bindgen(method)]
-    async fn set(this: &IndexedDBStore, key: &str, data: Uint8Array);
+    async fn set(this: &IndexedDBStore, key: &JsValue, data: Uint8Array);
 
     #[wasm_bindgen(method)]
-    async fn delete(this: &IndexedDBStore, key: &str);
+    async fn delete(this: &IndexedDBStore, key: &JsValue);
 }
 
 unsafe impl Sync for IndexedDBStore {}
@@ -44,28 +44,25 @@ impl Store {
         self.js.clone().into()
     }
 
-    pub async fn get_all_keys(&self) -> Vec<String> {
+    pub async fn get_all_keys(&self) -> Vec<JsValue> {
         let js = self.clone_js();
         let keys = run_js_future(async move { js.get_all_keys().await }).await;
-        keys.iter().filter_map(|k| k.as_string()).collect()
+        keys.iter().collect()
     }
 
-    pub async fn get(&self, key: &str) -> Option<Uint8Array> {
+    pub async fn get(&self, key: JsValue) -> Option<Uint8Array> {
         let js = self.clone_js();
-        let key = key.to_owned();
         let data = run_js_future(async move { js.get(&key).await }).await;
         if data.is_undefined() { None } else { Some(data.into()) }
     }
 
-    pub async fn set(&self, key: &str, data: Uint8Array) {
+    pub async fn set(&self, key: JsValue, data: Uint8Array) {
         let js = self.clone_js();
-        let key = key.to_owned();
         run_js_future(async move { js.set(&key, data).await }).await;
     }
 
-    pub async fn delete(&self, key: &str) {
+    pub async fn delete(&self, key: JsValue) {
         let js = self.clone_js();
-        let key = key.to_owned();
         run_js_future(async move { js.delete(&key).await }).await;
     }
 }
