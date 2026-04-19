@@ -1,8 +1,4 @@
-use alloc::{
-    borrow::ToOwned,
-    string::String,
-    vec::Vec,
-};
+use alloc::{borrow::ToOwned, string::String, vec::Vec};
 
 use js_sys::Uint8Array;
 use wasm_bindgen::prelude::*;
