@@ -12,7 +12,7 @@ use wie_backend::{RecordId, System};
 
 use crate::util::run_js_future;
 
-#[wasm_bindgen(module = "database.ts")]
+#[wasm_bindgen(module = "/src/ts/database.ts")]
 extern "C" {
     type IndexedDBStore;
 
@@ -48,18 +48,18 @@ impl DatabaseRepository {
 
 #[async_trait::async_trait]
 impl wie_backend::DatabaseRepository for DatabaseRepository {
-    async fn open(&self, system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
+    async fn open(&self, _system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
         let db_name = format!("wie_{app_id}");
         let key_prefix = name.to_string();
 
-        Box::new(Database::new(system, db_name, key_prefix).await.unwrap())
+        Box::new(Database::new(db_name, key_prefix).await.unwrap())
     }
 
-    async fn exists(&self, system: &System, name: &str, app_id: &str) -> bool {
+    async fn exists(&self, _system: &System, name: &str, app_id: &str) -> bool {
         let db_name = format!("wie_{app_id}");
         let key_prefix = name.to_string();
 
-        run_js_future(system, async move { IndexedDBStore::exists(&db_name, &key_prefix).await })
+        run_js_future(async move { IndexedDBStore::exists(&db_name, &key_prefix).await })
             .await
             .into_inner()
             .as_bool()
@@ -68,17 +68,16 @@ impl wie_backend::DatabaseRepository for DatabaseRepository {
 }
 
 pub struct Database {
-    system: System,
     db: IndexedDBStore,
 }
 
 impl Database {
-    pub async fn new(system: &System, db_name: String, key_prefix: String) -> anyhow::Result<Self> {
-        let db = run_js_future(system, async move { IndexedDBStore::open(&db_name, &key_prefix).await })
+    pub async fn new(db_name: String, key_prefix: String) -> anyhow::Result<Self> {
+        let db = run_js_future(async move { IndexedDBStore::open(&db_name, &key_prefix).await })
             .await
             .into_inner();
 
-        Ok(Self { system: system.clone(), db })
+        Ok(Self { db })
     }
 }
 
@@ -99,7 +98,7 @@ impl wie_backend::Database for Database {
 
     async fn get(&self, id: RecordId) -> Option<Vec<u8>> {
         let db: IndexedDBStore = self.db.clone().into();
-        let data = run_js_future(&self.system, async move { db.get(id).await }).await.into_inner();
+        let data = run_js_future(async move { db.get(id).await }).await.into_inner();
 
         if data.is_undefined() {
             None
@@ -112,21 +111,21 @@ impl wie_backend::Database for Database {
     async fn set(&mut self, id: RecordId, data: &[u8]) -> bool {
         let db: IndexedDBStore = self.db.clone().into();
         let data = Uint8Array::from(data);
-        run_js_future(&self.system, async move { db.set(id, data).await }).await;
+        run_js_future(async move { db.set(id, data).await }).await;
 
         true
     }
 
     async fn delete(&mut self, id: RecordId) -> bool {
         let db: IndexedDBStore = self.db.clone().into();
-        run_js_future(&self.system, async move { db.delete(id).await }).await;
+        run_js_future(async move { db.delete(id).await }).await;
 
         true
     }
 
     async fn get_record_ids(&self) -> Vec<RecordId> {
         let db: IndexedDBStore = self.db.clone().into();
-        let ids = run_js_future(&self.system, async move { db.get_record_ids().await }).await.into_inner();
+        let ids = run_js_future(async move { db.get_record_ids().await }).await.into_inner();
 
         ids.to_vec().into_iter().map(|id| id as RecordId).collect()
     }
