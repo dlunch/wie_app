@@ -1,17 +1,12 @@
-use alloc::{
-    boxed::Box,
-    string::{String, ToString},
-    vec::Vec,
-};
+use alloc::{boxed::Box, string::ToString};
 use core::cmp::min;
 
-use hashbrown::HashMap;
 use js_sys::Uint8Array;
-use spin::Mutex;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::spawn_local;
 
 use wie_backend::Filesystem;
+
+use crate::util::run_js_future;
 
 #[wasm_bindgen(module = "/src/ts/filesystem.ts")]
 extern "C" {
@@ -21,13 +16,16 @@ extern "C" {
     async fn open() -> IndexedDBFilesystem;
 
     #[wasm_bindgen(method)]
-    async fn load_all(this: &IndexedDBFilesystem) -> js_sys::Array;
+    async fn exists(this: &IndexedDBFilesystem, aid: &str, path: &str) -> JsValue; // bool
 
     #[wasm_bindgen(method)]
-    async fn set(this: &IndexedDBFilesystem, aid: &str, path: &str, data: Uint8Array);
+    async fn get(this: &IndexedDBFilesystem, aid: &str, path: &str) -> JsValue; // Uint8Array | undefined
 
     #[wasm_bindgen(method)]
-    async fn delete(this: &IndexedDBFilesystem, aid: &str, path: &str);
+    async fn write(this: &IndexedDBFilesystem, aid: &str, path: &str, offset: usize, data: Uint8Array) -> JsValue; // number
+
+    #[wasm_bindgen(method)]
+    async fn truncate(this: &IndexedDBFilesystem, aid: &str, path: &str, length: usize);
 }
 
 unsafe impl Sync for IndexedDBFilesystem {}
@@ -35,82 +33,89 @@ unsafe impl Send for IndexedDBFilesystem {}
 
 pub struct WebFilesystem {
     db: IndexedDBFilesystem,
-    files: Mutex<HashMap<(String, String), Vec<u8>>>,
 }
 
 impl WebFilesystem {
     pub async fn new() -> Self {
-        let db = IndexedDBFilesystem::open().await;
-        let entries = db.load_all().await;
-
-        let mut files = HashMap::new();
-        for entry in entries.iter() {
-            let row: js_sys::Array = entry.into();
-            let Some(aid) = row.get(0).as_string() else { continue };
-            let Some(path) = row.get(1).as_string() else { continue };
-            let data: Uint8Array = row.get(2).into();
-            files.insert((aid, path), data.to_vec());
-        }
-
-        Self { db, files: Mutex::new(files) }
+        let db = run_js_future(async { IndexedDBFilesystem::open().await }).await.into_inner();
+        Self { db }
     }
 
-    fn persist(&self, aid: String, path: String, data: Vec<u8>) {
-        let db: IndexedDBFilesystem = self.db.clone().into();
-        spawn_local(async move {
-            let array = Uint8Array::from(data.as_slice());
-            db.set(&aid, &path, array).await;
-        });
+    fn db(&self) -> IndexedDBFilesystem {
+        self.db.clone().into()
     }
-
 }
 
 #[async_trait::async_trait]
 impl Filesystem for WebFilesystem {
     async fn exists(&self, aid: &str, path: &str) -> bool {
-        self.files.lock().contains_key(&(aid.to_string(), path.to_string()))
+        let db = self.db();
+        let aid = aid.to_string();
+        let path = path.to_string();
+        run_js_future(async move { db.exists(&aid, &path).await })
+            .await
+            .into_inner()
+            .as_bool()
+            .unwrap_or(false)
     }
 
     async fn size(&self, aid: &str, path: &str) -> Option<usize> {
-        self.files.lock().get(&(aid.to_string(), path.to_string())).map(|v| v.len())
+        let db = self.db();
+        let aid = aid.to_string();
+        let path = path.to_string();
+        let data = run_js_future(async move { db.get(&aid, &path).await }).await.into_inner();
+
+        if data.is_undefined() {
+            None
+        } else {
+            let array: Uint8Array = data.into();
+            Some(array.length() as usize)
+        }
     }
 
     async fn read(&self, aid: &str, path: &str, offset: usize, count: usize, buf: &mut [u8]) -> Option<usize> {
-        let files = self.files.lock();
-        let data = files.get(&(aid.to_string(), path.to_string()))?;
+        let db = self.db();
+        let aid_owned = aid.to_string();
+        let path_owned = path.to_string();
+        let data = run_js_future(async move { db.get(&aid_owned, &path_owned).await })
+            .await
+            .into_inner();
 
-        if offset >= data.len() {
+        if data.is_undefined() {
+            return None;
+        }
+
+        let array: Uint8Array = data.into();
+        let size = array.length() as usize;
+
+        if offset >= size {
             return Some(0);
         }
 
-        let size_to_read = min(count, data.len() - offset);
-        buf[..size_to_read].copy_from_slice(&data[offset..offset + size_to_read]);
+        let size_to_read = min(count, size - offset);
+        array
+            .subarray(offset as u32, (offset + size_to_read) as u32)
+            .copy_to(&mut buf[..size_to_read]);
         Some(size_to_read)
     }
 
     async fn write(&self, aid: &str, path: &str, offset: usize, data: &[u8]) -> usize {
-        let snapshot = {
-            let mut files = self.files.lock();
-            let file = files.entry((aid.to_string(), path.to_string())).or_default();
-            if file.len() < offset + data.len() {
-                file.resize(offset + data.len(), 0);
-            }
-            file[offset..offset + data.len()].copy_from_slice(data);
-            file.clone()
-        };
+        let db = self.db();
+        let aid = aid.to_string();
+        let path = path.to_string();
+        let array = Uint8Array::from(data);
+        let len = data.len();
+        let result = run_js_future(async move { db.write(&aid, &path, offset, array).await })
+            .await
+            .into_inner();
 
-        self.persist(aid.to_string(), path.to_string(), snapshot);
-        data.len()
+        result.as_f64().map(|v| v as usize).unwrap_or(len)
     }
 
     async fn truncate(&self, aid: &str, path: &str, len: usize) {
-        let snapshot = {
-            let mut files = self.files.lock();
-            let file = files.entry((aid.to_string(), path.to_string())).or_default();
-            file.resize(len, 0);
-            file.clone()
-        };
-
-        self.persist(aid.to_string(), path.to_string(), snapshot);
+        let db = self.db();
+        let aid = aid.to_string();
+        let path = path.to_string();
+        run_js_future(async move { db.truncate(&aid, &path, len).await }).await;
     }
 }

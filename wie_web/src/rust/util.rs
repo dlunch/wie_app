@@ -1,8 +1,10 @@
 use alloc::sync::Arc;
+use core::{
+    future::{Future, poll_fn},
+    task::Poll,
+};
 
 use wasm_bindgen_futures::spawn_local;
-
-use wie_backend::System;
 
 // result wrapper holds result of non-send future
 pub struct ResultWrapper<T> {
@@ -39,8 +41,24 @@ impl<T> ResultWrapper<T> {
 unsafe impl<T> Send for ResultWrapper<T> {}
 unsafe impl<T> Sync for ResultWrapper<T> {}
 
-// wrapper to run non-send js future to run on send future
-pub fn run_js_future<F, R>(system: &System, f: F) -> impl Future<Output = ResultWrapper<R>> + Sync + Send
+// yields to the executor once; wakes itself so it is re-polled on the
+// next microtask. Send because it holds no state that references JS.
+async fn yield_once() {
+    let mut polled = false;
+    poll_fn(|cx| {
+        if polled {
+            Poll::Ready(())
+        } else {
+            polled = true;
+            cx.waker().wake_by_ref();
+            Poll::Pending
+        }
+    })
+    .await
+}
+
+// wrapper to run non-send js future from a send future
+pub fn run_js_future<F, R>(f: F) -> impl Future<Output = ResultWrapper<R>> + Sync + Send
 where
     F: Future<Output = R> + 'static,
     R: 'static,
@@ -52,7 +70,7 @@ where
 
     async move {
         while !result.is_set() {
-            system.sleep(1).await;
+            yield_once().await;
         }
 
         result
