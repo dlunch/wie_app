@@ -125,7 +125,10 @@ impl WieWeb {
             let output_stream = DeviceSinkBuilder::open_default_sink().unwrap();
             let player = Arc::new(Player::connect_new(output_stream.mixer()));
             let platform = Box::new(WieWebPlatform::new(window, player.clone()));
-            let options = Options { enable_gdbserver: false };
+            let options = Options {
+                enable_gdbserver: false,
+                profile: None,
+            };
 
             let emulator: Box<dyn Emulator> = if filename.ends_with("zip") {
                 let files = extract_zip(buf).unwrap();
