@@ -10,7 +10,6 @@
   },
   "author": "",
   "dependencies": {
-    "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "css-loader": "^7.1.4",
     "html-bundler-webpack-plugin": "^4.22.0",
     "sass": "^1.97.3",

@@ -1,10 +1,36 @@
 import path from "path";
+import { spawn } from "child_process";
 
 import webpack from "webpack";
 import HtmlBundlerPlugin from "html-bundler-webpack-plugin";
 import TsConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
-import WasmPackPlugin from "@wasm-tool/wasm-pack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
+
+class WasmPackPlugin {
+  readonly crateDir: string;
+
+  constructor(crateDir: string) {
+    this.crateDir = crateDir;
+  }
+
+  apply(compiler: webpack.Compiler) {
+    const dev = compiler.options.mode !== "production";
+
+    compiler.hooks.beforeCompile.tapPromise("WasmPackPlugin", () =>
+      new Promise<void>((resolve, reject) => {
+        const args = ["build", this.crateDir, "--target", "bundler", dev ? "--dev" : "--release"];
+        const proc = spawn("wasm-pack", args, { stdio: "inherit" });
+        proc.on("exit", code => code === 0 ? resolve() : reject(new Error(`wasm-pack exited with code ${code}`)));
+        proc.on("error", reject);
+      })
+    );
+
+    compiler.hooks.afterCompile.tap("WasmPackPlugin", compilation => {
+      compilation.contextDependencies.add(path.join(this.crateDir, "src/rust"));
+      compilation.fileDependencies.add(path.join(this.crateDir, "Cargo.toml"));
+    });
+  }
+}
 
 
 const commonConfig: webpack.Configuration = {
@@ -70,10 +96,7 @@ const commonConfig: webpack.Configuration = {
         filename: "assets/css/[name].[contenthash:8].css",
       },
     }),
-    new WasmPackPlugin({
-      crateDirectory: path.resolve(import.meta.dirname, "."),
-      outDir: path.resolve(import.meta.dirname, "./pkg"),
-    }),
+    new WasmPackPlugin(import.meta.dirname),
     new CopyPlugin({
       patterns: [
         { from: path.resolve(import.meta.dirname, "public"), to: "." },
