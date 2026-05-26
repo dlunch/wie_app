@@ -73,6 +73,7 @@ const main = () => {
     if (selected_file) {
       const prestart = document.getElementById("prestart");
       const cornerActions = document.querySelector(".corner-actions");
+      const settingsToggle = document.getElementById("settings-toggle");
       const settingsPanel = document.getElementById("settings-panel");
       const buttonContainer = document.querySelector(".button-container");
       if (prestart) {
@@ -80,11 +81,11 @@ const main = () => {
         cornerActions?.classList.add("hidden");
         setTimeout(() => {
           prestart.remove();
-          if (cornerActions && settingsPanel && buttonContainer) {
-            buttonContainer.appendChild(cornerActions);
+          if (settingsToggle && settingsPanel && buttonContainer) {
+            buttonContainer.appendChild(settingsToggle);
             buttonContainer.appendChild(settingsPanel);
-            cornerActions.classList.remove("hidden");
           }
+          cornerActions?.remove();
         }, 300);
       }
 

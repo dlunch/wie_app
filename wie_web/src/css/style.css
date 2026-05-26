@@ -89,19 +89,21 @@ body, p {
   background: rgba(0, 0, 0, 0.85);
 }
 
-.button-container > .corner-actions > a,
-.button-container > .corner-actions > button {
+.button-container > .settings-toggle {
+  position: absolute;
+  top: 4px;
+  right: 8px;
   background: transparent;
   color: #333;
+  border: none;
+  padding: 6px 10px;
+  font-size: 1.2em;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.button-container > .corner-actions > a:hover,
-.button-container > .corner-actions > button:hover {
+.button-container > .settings-toggle:hover {
   background: rgba(0, 0, 0, 0.1);
-}
-
-.button-container > .corner-actions img {
-  filter: invert(1);
 }
 
 .canvas-wrapper {
