@@ -70,9 +70,13 @@ const main = () => {
     if (selected_file) {
       const fileUploadCollapse = document.querySelector(".file-upload-collapse") as HTMLElement | null;
       const controlsBar = document.querySelector(".controls-bar") as HTMLElement | null;
+      const adBanner = document.getElementById("ad-banner");
       if (controlsBar && fileUploadCollapse) {
         controlsBar.classList.add("compact");
-        setTimeout(() => fileUploadCollapse.remove(), 350);
+        setTimeout(() => {
+          fileUploadCollapse.remove();
+          adBanner?.remove();
+        }, 350);
       }
 
       const original_console_error = console.error;
