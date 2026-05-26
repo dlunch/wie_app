@@ -76,6 +76,14 @@ const main = () => {
         setTimeout(() => {
           fileUploadCollapse.remove();
           adBanner?.remove();
+          const settingsToggle = document.getElementById("settings-toggle");
+          const settingsPanel = document.getElementById("settings-panel");
+          const buttonContainer = document.querySelector(".button-container");
+          if (settingsToggle && settingsPanel && buttonContainer) {
+            buttonContainer.prepend(settingsPanel);
+            buttonContainer.prepend(settingsToggle);
+          }
+          controlsBar.remove();
         }, 350);
       }
 
