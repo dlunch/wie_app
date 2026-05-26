@@ -62,29 +62,30 @@ const main = () => {
   initVolume();
 
   const file = document.getElementById("file") as HTMLInputElement;
-  const button = document.getElementById("start") as HTMLButtonElement;
+  const fileName = document.getElementById("file-name");
 
-  button.addEventListener("click", () => {
+  file.addEventListener("change", () => {
     const selected_file = file.files?.[0];
+    if (fileName) {
+      fileName.textContent = selected_file?.name ?? "파일 선택";
+    }
 
     if (selected_file) {
-      const fileUploadCollapse = document.querySelector(".file-upload-collapse") as HTMLElement | null;
-      const controlsBar = document.querySelector(".controls-bar") as HTMLElement | null;
-      const adBanner = document.getElementById("ad-banner");
-      if (controlsBar && fileUploadCollapse) {
-        controlsBar.classList.add("compact");
+      const prestart = document.getElementById("prestart");
+      const cornerActions = document.querySelector(".corner-actions");
+      const settingsPanel = document.getElementById("settings-panel");
+      const buttonContainer = document.querySelector(".button-container");
+      if (prestart) {
+        prestart.classList.add("hidden");
+        cornerActions?.classList.add("hidden");
         setTimeout(() => {
-          fileUploadCollapse.remove();
-          adBanner?.remove();
-          const settingsToggle = document.getElementById("settings-toggle");
-          const settingsPanel = document.getElementById("settings-panel");
-          const buttonContainer = document.querySelector(".button-container");
-          if (settingsToggle && settingsPanel && buttonContainer) {
-            buttonContainer.prepend(settingsPanel);
-            buttonContainer.prepend(settingsToggle);
+          prestart.remove();
+          if (cornerActions && settingsPanel && buttonContainer) {
+            buttonContainer.appendChild(cornerActions);
+            buttonContainer.appendChild(settingsPanel);
+            cornerActions.classList.remove("hidden");
           }
-          controlsBar.remove();
-        }, 350);
+        }, 300);
       }
 
       const original_console_error = console.error;

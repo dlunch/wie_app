@@ -5,104 +5,110 @@ body, p {
   -webkit-touch-callout: none;
 }
 
-.controls-bar {
-  position: relative;
+.prestart {
+  position: absolute;
+  inset: 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 60px 24px 24px;
+  background: #f5f5f5;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+.prestart.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.prestart-row {
+  display: flex;
+  gap: 12px;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 6px 12px;
-  background: #f5f5f5;
-  border-bottom: 1px solid #ddd;
-  width: 100%;
-  box-sizing: border-box;
-  max-height: 200px;
-  overflow: hidden;
-  transition: padding 0.3s ease, max-height 0.3s ease, border-bottom-width 0.3s ease;
+  justify-content: center;
+  max-width: 100%;
 }
 
-.controls-bar.compact {
-  padding-top: 0;
-  padding-bottom: 0;
-  max-height: 0;
-  border-bottom-width: 0;
-}
-
-.file-upload-collapse {
-  flex: 1;
-  min-width: 0;
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
-}
-
-.controls-bar.compact .file-upload-collapse {
-  grid-template-rows: 0fr;
-  opacity: 0;
-}
-
-.file-upload {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  overflow: hidden;
-  min-height: 0;
-}
-
-
-.file-upload input[type="file"] {
-  min-width: 0;
-  flex: 1;
-}
-
-.file-upload button {
+.file-picker {
   background: #333;
   color: #fff;
   border: none;
-  padding: 6px 12px;
+  padding: 14px 36px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 1.1em;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.file-upload button:hover,
-.file-upload a:hover {
+.file-picker:hover {
   background: #555;
 }
 
-.file-upload a {
-  background: #333;
+.corner-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.corner-actions.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.corner-actions > a,
+.corner-actions > button {
+  background: rgba(0, 0, 0, 0.65);
   color: #fff;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
   text-decoration: none;
+  font-size: 18px;
+  line-height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 16px;
-  font-size: 16px;
   box-sizing: border-box;
 }
 
-.ad-banner {
-  width: min(100vw, 480px);
-  height: 50px;
-  margin: 0 auto;
+.corner-actions > a:hover,
+.corner-actions > button:hover {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.button-container > .corner-actions > a,
+.button-container > .corner-actions > button {
+  background: transparent;
+  color: #333;
+}
+
+.button-container > .corner-actions > a:hover,
+.button-container > .corner-actions > button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.button-container > .corner-actions img {
+  filter: invert(1);
 }
 
 .canvas-wrapper {
   position: relative;
-  display: block;
   margin: 0 auto;
-  aspect-ratio: 3 / 4;
   width: min(100vw, 480px);
+  aspect-ratio: 3 / 4;
 }
 
 #canvas {
@@ -111,27 +117,17 @@ body, p {
   height: 100%;
 }
 
-
-.settings-toggle {
-  background: transparent;
-  color: #999;
-  border: none;
-  padding: 2px 4px;
-  font-size: 0.85em;
-  cursor: pointer;
-  line-height: 1;
-  margin-left: auto;
-  flex-shrink: 0;
+.ad-banner {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
 }
 
-.settings-toggle:hover {
-  color: #555;
-}
 
 .settings-panel {
   display: none;
   position: absolute;
-  top: 100%;
+  top: 48px;
   right: 8px;
   z-index: 100;
   background: #333;
@@ -166,20 +162,6 @@ body, p {
   flex-direction: column;
   align-items: center;
   gap: min(1vw, 4px);
-}
-
-.button-container > .settings-toggle {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  margin-left: 0;
-  padding: 6px 10px;
-  font-size: 1.2em;
-}
-
-.button-container > .settings-panel {
-  top: 40px;
-  right: 8px;
 }
 
 .button-container > p {
