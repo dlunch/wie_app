@@ -9,6 +9,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="stylesheet" href="@css/style.css" />
     <script src="@ts/index.ts" defer="defer"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7838202724819744"
+      crossorigin="anonymous"
+    ></script>
     <!-- Google tag (gtag.js) -->
     <script
       async
@@ -100,7 +105,20 @@
         <label>🔊 효과음 <input type="range" id="volume-pcm" min="0" max="100" value="50" /></label>
       </div>
     </div>
-    <div class="ad-banner" id="ad-banner"></div>
+    <div class="ad-banner" id="ad-banner">
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7838202724819744"
+        data-ad-slot="8335895407"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+        <% if (adtest) { %>data-adtest="on"<% } %>
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
     <div class="canvas-wrapper">
       <canvas id="canvas" width="240" height="320"></canvas>
     </div>

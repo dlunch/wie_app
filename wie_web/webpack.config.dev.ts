@@ -8,7 +8,7 @@ import "webpack-dev-server";
 // @ts-ignore: allowImportingTsExtensions
 import commonConfig from "./webpack.config.common.ts";
 
-const config: webpack.Configuration = merge(commonConfig, {
+const config: webpack.Configuration = merge(commonConfig("development"), {
   mode: "development",
   devtool: "eval-source-map",
   devServer: {
