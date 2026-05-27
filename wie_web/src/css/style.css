@@ -111,6 +111,7 @@ body, p {
   margin: 0 auto;
   width: min(100vw, 480px);
   aspect-ratio: 3 / 4;
+  z-index: 1;
 }
 
 #canvas {
