@@ -39,6 +39,10 @@ impl wie_backend::DatabaseRepository for DatabaseRepository {
             .iter()
             .any(|k| k.as_string().map(|s| s.starts_with(name)).unwrap_or(false))
     }
+
+    async fn delete(&self, _system: &System, _name: &str, _app_id: &str) -> bool {
+        true // TODO
+    }
 }
 
 pub struct Database {
