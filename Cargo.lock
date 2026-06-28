@@ -1768,7 +1768,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.62.2",
+ "windows-core 0.61.2",
 ]
 
 [[package]]
@@ -4132,7 +4132,7 @@ dependencies = [
  "serde_with",
  "swift-rs",
  "thiserror 2.0.18",
- "toml 1.1.2+spec-1.1.0",
+ "toml 0.9.12+spec-1.1.0",
  "url",
  "urlpattern",
  "uuid",
@@ -4962,7 +4962,7 @@ dependencies = [
 [[package]]
 name = "wie_backend"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "ab_glyph",
  "async-trait",
@@ -4982,7 +4982,7 @@ dependencies = [
 [[package]]
 name = "wie_core_arm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "arm32_cpu",
  "async-trait",
@@ -5002,7 +5002,7 @@ dependencies = [
 [[package]]
 name = "wie_j2me"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5017,7 +5017,7 @@ dependencies = [
 [[package]]
 name = "wie_jvm_support"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5034,7 +5034,7 @@ dependencies = [
 [[package]]
 name = "wie_ktf"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-recursion",
  "async-trait",
@@ -5060,7 +5060,7 @@ dependencies = [
 [[package]]
 name = "wie_lgt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5087,7 +5087,7 @@ dependencies = [
 [[package]]
 name = "wie_midp"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bitflags 2.13.0",
@@ -5107,7 +5107,7 @@ dependencies = [
 [[package]]
 name = "wie_skt"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5124,7 +5124,7 @@ dependencies = [
 [[package]]
 name = "wie_skvm"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bitflags 2.13.0",
@@ -5143,7 +5143,7 @@ dependencies = [
 [[package]]
 name = "wie_util"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "bytemuck",
  "tracing",
@@ -5179,7 +5179,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_c"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bytemuck",
@@ -5193,7 +5193,7 @@ dependencies = [
 [[package]]
 name = "wie_wipi_java"
 version = "0.0.1"
-source = "git+https://github.com/dlunch/wie.git#37a1794307586b36d8ac796c63ef164b6865e67d"
+source = "git+https://github.com/dlunch/wie.git#a76763566c258eb68ad6581807aeb8546342a91f"
 dependencies = [
  "async-trait",
  "bitflags 2.13.0",
