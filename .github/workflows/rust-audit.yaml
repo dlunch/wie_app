@@ -14,19 +14,19 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: ~/.cargo/registry
-          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-registry-audit-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache cargo index
         uses: actions/cache/restore@v5
         with:
           path: ~/.cargo/git
-          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-index-audit-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache cargo build
         uses: actions/cache/restore@v5
         with:
           path: target
-          key: ${{ runner.os }}-stable-build-target-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-stable-build-target-audit-${{ hashFiles('**/Cargo.lock') }}
 
       - uses: actions/checkout@v6
         with:
