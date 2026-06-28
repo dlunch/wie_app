@@ -7,7 +7,7 @@ use alloc::{
 
 use wasm_bindgen::JsValue;
 
-use wie_backend::{RecordId, System};
+use wie_backend::RecordId;
 
 use crate::indexed_db_store::Store;
 
@@ -21,7 +21,7 @@ impl DatabaseRepository {
 
 #[async_trait::async_trait]
 impl wie_backend::DatabaseRepository for DatabaseRepository {
-    async fn open(&self, _system: &System, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
+    async fn open(&self, name: &str, app_id: &str) -> Box<dyn wie_backend::Database> {
         let db_name = format!("wie_{app_id}");
         let store = Store::open(&db_name, &db_name).await;
         Box::new(Database {
@@ -30,7 +30,7 @@ impl wie_backend::DatabaseRepository for DatabaseRepository {
         })
     }
 
-    async fn exists(&self, _system: &System, name: &str, app_id: &str) -> bool {
+    async fn exists(&self, name: &str, app_id: &str) -> bool {
         let db_name = format!("wie_{app_id}");
         let store = Store::open(&db_name, &db_name).await;
         store
@@ -40,7 +40,7 @@ impl wie_backend::DatabaseRepository for DatabaseRepository {
             .any(|k| k.as_string().map(|s| s.starts_with(name)).unwrap_or(false))
     }
 
-    async fn delete(&self, _system: &System, _name: &str, _app_id: &str) -> bool {
+    async fn delete(&self, _name: &str, _app_id: &str) -> bool {
         true // TODO
     }
 }

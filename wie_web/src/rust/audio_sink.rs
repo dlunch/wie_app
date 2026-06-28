@@ -72,4 +72,12 @@ impl wie_backend::AudioSink for AudioSink {
     fn midi_program_change(&self, channel_id: u8, program: u8) {
         self.midi_player.program_change(channel_id, program);
     }
+
+    fn midi_pitch_bend(&self, _channel_id: u8, _value: u16) {
+        // TODO
+    }
+
+    fn midi_sysex(&self, _data: &[u8]) {
+        // TODO
+    }
 }
