@@ -7,6 +7,9 @@ jobs:
   audit:
     runs-on: arc-runner
     steps:
+      - name: Install packages
+        run: sudo apt update;sudo apt install -y --no-install-recommends build-essential zstd
+        
       - name: Cache cargo registry
         uses: actions/cache/restore@v5
         with:
