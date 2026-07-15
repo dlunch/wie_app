@@ -12,7 +12,7 @@
   "dependencies": {
     "css-loader": "^7.1.4",
     "html-bundler-webpack-plugin": "^4.22.0",
-    "sass": "^1.97.3",
+    "sass": "^1.101.0",
     "sass-loader": "^16.0.7",
     "spessasynth_lib": "^4.2.10",
     "ts-loader": "^9.5.4",
