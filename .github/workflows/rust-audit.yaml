@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache cargo registry
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-audit-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache cargo index
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-audit-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache cargo build
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: target
           key: ${{ runner.os }}-stable-build-target-audit-${{ hashFiles('**/Cargo.lock') }}
