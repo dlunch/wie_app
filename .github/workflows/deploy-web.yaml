@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: github.repository == 'dlunchp/wie_app'
+    if: github.repository == 'dlunch/wie_app'
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -11,7 +11,7 @@ name: Rust CI
 
 jobs:
   rust_ci:
-    runs-on: arc-runner
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         rust: [stable]

@@ -5,11 +5,8 @@ on:
     - cron: "0 0 * * *"
 jobs:
   audit:
-    runs-on: arc-runner
+    runs-on: ubuntu-latest
     steps:
-      - name: Install packages
-        run: sudo apt update;sudo apt install -y --no-install-recommends build-essential zstd
-        
       - name: Cache cargo registry
         uses: actions/cache/restore@v5
         with:
@@ -32,8 +29,6 @@ jobs:
         with:
           submodules: "recursive"
 
-      - uses: dtolnay/rust-toolchain@stable
-      
       - uses: rustsec/audit-check@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
