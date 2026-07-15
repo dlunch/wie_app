@@ -1,7 +1,8 @@
 # wie_app
 
 https://wie.dlunch.net
-Web frontend for [wie](https://github.com/wie) 
+
+Web frontend for [wie](https://github.com/dlunch/wie) 
 
 ## Build
 
