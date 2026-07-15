@@ -38,21 +38,21 @@ jobs:
           sudo apt-get update;sudo apt-get install -y --no-install-recommends build-essential zstd
 
       - name: Restore cache cargo
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
       - name: Restore cache cargo build
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: target
           key: ${{ runner.os }}-build-wasm-target-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-build-wasm-target-
 
       - name: Restore cache .npm
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -93,21 +93,21 @@ jobs:
           command: pages deploy ./wie_web/dist --project-name=${{ fromJSON('["wie-dev", "wie"]')[ github.ref != 'refs/heads/main' ] }} --branch=main
 
       - name: Save cache cargo
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: github.ref == 'refs/heads/main'
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Save cache cargo build
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: github.ref == 'refs/heads/main'
         with:
           path: target
           key: ${{ runner.os }}-build-wasm-target-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Save cache .npm
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: github.ref == 'refs/heads/main'
         with:
           path: ~/.npm
