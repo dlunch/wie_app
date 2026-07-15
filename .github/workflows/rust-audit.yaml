@@ -28,7 +28,7 @@ jobs:
           path: target
           key: ${{ runner.os }}-stable-build-target-audit-${{ hashFiles('**/Cargo.lock') }}
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: "recursive"
 
