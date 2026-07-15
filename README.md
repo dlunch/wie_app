@@ -1,6 +1,7 @@
 # wie_app
 
-Web-based feature phone emulator (WIPI/J2ME).
+https://wie.dlunch.net
+Web frontend for [wie](https://github.com/wie) 
 
 ## Build
 
