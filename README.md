@@ -2,7 +2,7 @@
 
 https://wie.dlunch.net
 
-Web frontend for [wie](https://github.com/dlunch/wie) 
+Web and Android/iOS frontend for [wie](https://github.com/dlunch/wie)
 
 ## Build
 
